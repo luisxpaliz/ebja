@@ -1,0 +1,244 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantillas/contenedorBloqueo.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">
+        ADMINISTRACIÓN DEL SISTEMA - ALFABETIZACIÓN - MENSAJES 
+  	</ui:define>
+
+	<ui:define name="contenido">
+
+		<style>
+.contenido {
+	background: #fff;
+}
+</style>
+		<div>
+			<h:form id="frmForm">
+				<p:panel styleClass="contienePanelBusqueda-ebja">
+					<f:facet name="header">Búsqueda de Mensajes:</f:facet>
+					<p:panelGrid id="pnlBusqueda" cellpadding="10" cellspacing="1"
+						border="1" styleClass="panelBusqueda-ebja">
+						<p:row>
+							<p:column>
+								<div class="userIcon-Mensaje-ebja"></div>
+							</p:column>
+							<p:column styleClass="panelBusqueda-primeraCol-reglas-ebja">
+								<h:outputText value=" Búsqueda de Mensajes por: " />
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-ebja">
+								<p:selectOneRadio layout="pageDirection"
+									styleClass="radioButton-Busqueda-ebja"
+									value="#{mensajeBean.busquedaTipo}">
+									<f:selectItem itemLabel="Código" itemValue="1" />
+									<f:selectItem itemLabel="Texto de Mensaje" itemValue="2" />
+								</p:selectOneRadio>
+							</p:column>
+							<p:column styleClass="panelBusqueda-terceraCol-ebja">
+								<p:inputText id="inpTxtingresarBuscar"
+									styleClass="inputText-ebja"
+									value="#{mensajeBean.busquedaContenido}" maxlength="60">
+									<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ_-\s]+$/i" preventPaste="false"/>
+								</p:inputText>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="text-align:center" colspan="4">
+								<h:panelGroup style="display:block ">
+									<p:commandButton id="submit" value="Buscar"
+										actionListener="#{mensajeBean.buscarMensaje}"
+										styleClass="botonBuscar-ebja" ajax="true" update="@form">
+									</p:commandButton>
+								</h:panelGroup>
+							</p:column>
+						</p:row>
+
+					</p:panelGrid>
+					<br></br>
+					<p:messages id="messagePagMensaje"
+						style="width:100%; margin-top:3px;" />
+					<h:panelGrid id="pnlIngresoRegistro" columns="1" border="0">
+						<h:panelGroup style="display:block; text-align:center">
+							<p:commandButton value="Crear Mensaje"
+								actionListener="#{mensajeBean.setearCrearMensaje}"
+								styleClass="botonBuscar-ebja-a4j"
+								oncomplete="PF('popGuardarMensaje').show();" ajax="true"
+								update=":#{p:component('formGuardarMensaje')}" />
+						</h:panelGroup>
+						<p:dataTable id="tblMensaje" var="mensaje"
+							value="#{mensajeBean.listaMensajes}" scrollable="true"
+							styleClass="tabla-Mensaje-ebja" paginator="true" rows="10"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+
+
+							<p:column headerText="Código" styleClass="tabla-Codigo-ebja">
+								<h:outputText value="#{mensaje[0].nemonico}" />
+							</p:column>
+							<p:column headerText="Programa" styleClass="tabla-Codigo-ebja">
+								<h:outputText value="#{mensaje[0].programaEbja.nombre}" />
+							</p:column>
+							<p:column headerText="Formulario" styleClass="tabla-Codigo-ebja">
+								<h:outputText value="#{mensaje[0].formulario.nombre}" />
+							</p:column>
+							<p:column headerText="Texto Mensaje"
+								styleClass="tabla-Nombre-ebja">
+								<h:outputText value="#{mensaje[0].cabecera}" />
+							</p:column>
+							<p:column headerText="Estado" styleClass="tabla-Estado-ebja">
+								<h:outputText value="#{mensaje[1]}" />
+							</p:column>
+							<p:column styleClass="tabla-editar-ebja" headerText="Editar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{mensajeBean.mensajeSeleccionadoEditar(mensaje)}"
+										oncomplete="PF('popGuardarMensaje').show();" ajax="true"
+										update=":#{p:component('formGuardarMensaje')},:#{p:component('combListPrograma')},:#{p:component('combListFormulario')}">
+										<h:graphicImage value="../../img/edit.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+							<p:column styleClass="tabla-borrar-ebja" headerText="Activar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{mensajeBean.mensajeSeleccionadoActivar(mensaje)}"
+										oncomplete="PF('popConfirmarActivarMensaje').show();"
+										ajax="true">
+										<h:graphicImage value="../../img/visto.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+							<p:column styleClass="tabla-borrar-ebja" headerText="Inactivar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{mensajeBean.mensajeSeleccionadoBorrar(mensaje)}"
+										oncomplete="PF('popConfirmarInactivarMensaje').show();"
+										ajax="true">
+										<h:graphicImage value="../../img/delete.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+							<f:facet name="paginatorBottomRight">
+								<p:commandButton type="button" icon="fa fa-sync" />
+							</f:facet>
+						</p:dataTable>
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+			<h:form id="formGuardarMensaje">
+				<p:dialog header="Guardar Mensaje Seleccionado"
+					widgetVar="popGuardarMensaje" resizable="false" autosized="false"  width="300"
+					height="220">
+					<div>
+						<h:panelGrid id="pnlNuevoRegistroMensaje" columns="2"
+							cellpadding="5" cellspacing="1" border="0"
+							styleClass="popUpCreacionMensaje-ebja"
+							columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja"
+							rendered="true">
+							<h:outputText value=" Programa: " />
+							<p:selectOneMenu id="combListPrograma"
+								value="#{mensajeBean.programaSeleccionado}"
+								styleClass="calendarModuloNuevoNemonico-ebja" required="true"
+								requiredMessage="Debe escojer un programa para guardar el registro">
+								<f:selectItem itemLabel="Seleccionar Programa" />
+								<f:selectItems
+									value="#{mensajeBean.listaPrograma}"
+									var="varPrograma" itemLabel="#{varPrograma.nombre}"
+									itemValue="#{varPrograma.nemonico}"></f:selectItems>
+							</p:selectOneMenu>
+							<h:outputText value=" Formulario: " />
+							<p:selectOneMenu id="combListFormulario"
+								value="#{mensajeBean.formularioSeleccionado}"
+								styleClass="calendarModuloNuevoNemonico-ebja" required="true"
+								requiredMessage="Debe escojer un Formulario para guardar el registro">
+								<f:selectItem itemLabel="Seleccionar Formulario" />
+								<f:selectItems
+									value="#{mensajeBean.listaFormularios}"
+									var="varFormulario" itemLabel="#{varFormulario.nombre}"
+									itemValue="#{varFormulario.nemonico}"></f:selectItems>
+							</p:selectOneMenu>
+							<h:outputText value=" Código: " />
+							<p:inputText id="input-text-codigo" styleClass="calendarModuloNuevoNemonico-ebja"
+								value="#{mensajeBean.nemonico}" required="true"
+								requiredMessage="El campo 'Código' está vacío" maxlength="40">
+								<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ_-\s]+$/i" preventPaste="false"/>
+							</p:inputText>
+							<h:outputText value=" Nombre Mensaje " />
+							<p:inputText id="input-text-nombre" styleClass="calendarModuloNuevoNemonico-ebja"
+								value="#{mensajeBean.cabecera}" required="true"
+								requiredMessage="El campo 'Cabecera Mensaje' está vacío" maxlength="40">
+								<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ_-\s]+$/i" preventPaste="false"/>
+							</p:inputText>
+						</h:panelGrid>
+					</div>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionMensajeBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton id="guardarRegistroMensaje" value="Guardar"
+							styleClass="popUpBoton-ebja" ajax="true"
+							actionListener="#{mensajeBean.ejecutarCrearOEditarRegistro}"
+							oncomplete="PF('popGuardarMensaje').hide();"
+							update=":#{p:component('messagePagMensaje')},:#{p:component('tblMensaje')}" />
+						<p:commandButton id="cancelarRegistroModulo" value="Cancelar"
+							styleClass="popUpBoton-ebja"
+							oncomplete="PF('popGuardarMensaje').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+
+			<h:form>
+				<p:dialog header="Inactivar Registro"
+					widgetVar="popConfirmarInactivarMensaje" resizable="false" autosized="false" 
+					width="250" height="120">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="eliminar-archivo-ebja"></div>
+						<h:outputLabel value="Está seguro que desea Inactivar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionMensajeBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true" actionListener="#{mensajeBean.borrarMensaje}"
+							oncomplete="PF('popConfirmarInactivarMensaje').hide();"
+							update=":#{p:component('tblMensaje')},:#{p:component('messagePagMensaje')}" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true"
+							oncomplete="PF('popConfirmarInactivarMensaje').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+			<h:form>
+				<p:dialog header="Activar Registro"
+					widgetVar="popConfirmarActivarMensaje" resizable="false" autosized="false" 
+					width="250" height="120">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="eliminar-archivo-ebja"></div>
+						<h:outputLabel value="Está seguro que desea Activar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionMensajeBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true" actionListener="#{mensajeBean.activarMensaje}"
+							oncomplete="PF('popConfirmarActivarMensaje').hide();"
+							update=":#{p:component('tblMensaje')},:#{p:component('messagePagMensaje')}" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true" oncomplete="PF('popConfirmarActivarMensaje').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

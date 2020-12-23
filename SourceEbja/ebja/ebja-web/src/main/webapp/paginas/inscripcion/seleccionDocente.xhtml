@@ -1,0 +1,389 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantillas/contenedorBloqueo.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">
+        Selección de Docentes
+  	</ui:define>
+
+	<ui:define name="contenido">
+
+		<style>
+.contenido {
+	background: #fff;
+}
+</style>
+		<h:form id="frmForm">
+			<p:panel styleClass="contienePanelBusqueda-ebja">
+					<f:facet name="header">Búsqueda de Docentes:</f:facet>
+					<p:panelGrid id="pnlBusquedaDocentes" cellpadding="10"
+						cellspacing="1" border="1" styleClass="panelBusqueda-ebja">
+						<p:row>
+							<p:column>
+								<div class="userIcon-Seleccion-Docentes-ebja"></div>
+							</p:column>
+							<p:column styleClass="ebja_global_1stColBusqueda4objetos_003">
+								
+								<p:panelGrid border ="0" cellpadding="10"
+						         cellspacing="1">
+								<p:row><h:outputText value=" Seleccione un Programa: " /></p:row>
+								<p:row><p:selectOneMenu id="cmbListPrograma"
+									value="#{seleccionDocenteBean.idProgramaEbja}"
+									styleClass="comboReglaModulo-ebjaEspecial" required="true"
+								    requiredMessage="Debe seleccionar un 'Programa' para desplegar la lista">
+									<f:selectItem itemLabel="Seleccionar Programa" />
+									<f:selectItems value="#{seleccionDocenteBean.listaProgramaEbja}"
+										var="varPrograma" itemLabel="#{varPrograma.nombre}"
+										itemValue="#{varPrograma.id}" />
+									<p:ajax execute="@this" update="@form" 
+	                							listener="#{seleccionDocenteBean.reseteaObjetos()}"/>
+								</p:selectOneMenu> </p:row>
+								
+								</p:panelGrid>
+							</p:column>
+							<p:column styleClass="ebja_global_2ndColBusqueda4objetos_004">
+								<h:outputText value=" Busqueda de Docentes por: " />
+								<p:selectOneRadio layout="pageDirection"
+									styleClass="radioButton-Busqueda-ebja"
+									value="#{seleccionDocenteBean.busquedaTipoDocente}">
+									<f:selectItem itemLabel="Identificación" itemValue="1" />
+									<f:selectItem itemLabel="Nombre" itemValue="2" />
+									<f:ajax event="change" execute="@this" 
+										listener="#{seleccionDocenteBean.reseteaCamposBusquedaDocente()}"/>
+								</p:selectOneRadio>
+							</p:column>
+							<p:column styleClass="ebja_global_3rdColBusqueda4objetos_006" >
+								<p:panel id = "panelBusquedaDocente">
+									<p:inputText id="inpTxtIngresarContenido"
+										styleClass="inputText-ebja"
+										value="#{seleccionDocenteBean.busquedaContenidoDocente}">
+										</p:inputText>
+								</p:panel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="text-align:center" colspan="4">
+								<h:panelGroup style="display:block">
+									<p:commandButton id="submitBuscarDocente" value="Buscar Docente"
+										actionListener="#{seleccionDocenteBean.buscarDocentes()}"
+										styleClass="botonBuscar-Estudiante-ebja" ajax="true"
+										update="@form">
+									</p:commandButton>
+								</h:panelGroup>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				<br></br>
+				<p:messages id="messageSeleccionDocentes" style="width:100%; margin-top:3px;" />
+				<p:growl id="growl" showDetail="true" sticky="true" />
+				<h:panelGrid id="pnlListaDocentes" columns="1" border="0">					
+					<p:dataTable id="tblListaDocentes" var="docente"
+						value="#{seleccionDocenteBean.listaDocente}"
+						selection="#{seleccionDocenteBean.selectedDocente}" rowKey="#{docente.id}"
+						selectionMode="single"
+						scrollable="true" scrollHeight="200"
+						styleClass="tabla-Acuerdo-ebja" paginator="true" rows="10"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+						<f:facet name="header">LISTA DE DOCENTES HABILITADOS</f:facet>
+						<p:ajax event="rowSelect" listener="#{seleccionDocenteBean.habilitarBotonBuscarInstitucion()}" update=":frmForm:submitBuscarInstitucion" />
+						<p:column headerText="Identificación" style="width:120px; text-align:center;">
+							<h:outputText value="#{docente.persona.numeroIdentificacion}" />
+						</p:column>
+						<p:column headerText="Apellidos y Nombres" style="width:500px">
+							<h:outputText value="#{docente.persona.nombresApellidos}" />
+						</p:column>
+						<f:facet name="paginatorBottomRight">
+							<p:commandButton type="button" icon="fa fa-sync" />
+						</f:facet>
+					</p:dataTable>
+				</h:panelGrid>
+				<br></br>
+					<p:panelGrid id="pnlBusquedaInstituciones" cellpadding="10"
+						cellspacing="1" border="1" styleClass="panelBusqueda-ebja">
+						<p:row>								
+							<p:column styleClass="panelBusqueda-primeraCol-ebja">
+								<h:outputText value=" Busqueda de Institución por: " />
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-ebja">
+								<p:selectOneRadio layout="pageDirection"
+									styleClass="radioButton-Busqueda-ebja"
+									value="#{seleccionDocenteBean.busquedaTipo}">
+									<f:selectItem itemLabel="Amie" itemValue="1" />
+									<f:selectItem itemLabel="División Administrativa" itemValue="2" />
+									<f:ajax event="change" execute="@this" render="panelBusqueda" 
+										listener="#{seleccionDocenteBean.reseteaCamposBusqueda()}"/>
+								</p:selectOneRadio>
+							</p:column>
+							<p:column styleClass="panelBusqueda-terceraCol-reglas-ebja" >
+								<p:panel id = "panelBusqueda">
+									<p:inputText id="inpTxtingresarAmie"
+										styleClass="inputText-ebja"
+										value="#{seleccionDocenteBean.busquedaContenido}"
+										rendered="#{seleccionDocenteBean.busquedaTipo eq 1}">
+										<p:keyFilter mask="alphanum" />
+										</p:inputText>
+										
+									<p:selectOneMenu id="cmbListZona"
+										value="#{seleccionDocenteBean.idZona}"
+										styleClass="comboReglaModulo-ebja"
+										rendered="#{seleccionDocenteBean.busquedaTipo eq 2}">
+										<f:selectItem itemLabel="Seleccionar Zona" />
+										<f:selectItems value="#{seleccionDocenteBean.listaZona}"
+											var="varZona" itemLabel="#{varZona.nombreZona}"
+											itemValue="#{varZona.id}" />
+										<p:ajax execute="@this" update="frmForm"
+				                               	    listener="#{seleccionDocenteBean.obtenerZona()}"/>
+									</p:selectOneMenu>
+									
+									<p:selectOneMenu id="cmbListDistrito"
+										value="#{seleccionDocenteBean.idDistrito}"
+										styleClass="comboReglaModulo-ebja"
+										rendered="#{seleccionDocenteBean.busquedaTipo eq 2}">
+										<f:selectItem itemLabel="Seleccionar Distrito" />
+										<f:selectItems value="#{seleccionDocenteBean.listaDistrito}"
+											var="varDistrito" itemLabel="#{varDistrito.nombreDistrito}"
+											itemValue="#{varDistrito.id}" />
+										<p:ajax execute="@this" update="frmForm"
+				                               	    listener="#{seleccionDocenteBean.obtenerDistrito()}"/>
+									</p:selectOneMenu>
+									
+									<p:selectOneMenu id="cmbListCircuito"
+										value="#{seleccionDocenteBean.idCircuito}"
+										styleClass="comboReglaModulo-ebja"
+										rendered="#{seleccionDocenteBean.busquedaTipo eq 2}">
+										<f:selectItem itemLabel="Seleccionar Circuito" />
+										<f:selectItems value="#{seleccionDocenteBean.listaCircuito}"
+											var="varCircuito" itemLabel="#{varCircuito.codigoSenpladesCircuito}"
+											itemValue="#{varCircuito.id}" />
+									</p:selectOneMenu>
+								</p:panel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="text-align:center" colspan="4">
+								<h:panelGroup style="display:block">
+									<p:commandButton id="submitBuscarInstitucion" value="Buscar Institución Educativa"
+										disabled="#{seleccionDocenteBean.disabledCbBuscarInstitucion}"
+										actionListener="#{seleccionDocenteBean.buscarInstituciones()}"
+										styleClass="botonBuscar-Estudiante-ebja" ajax="true"
+										update="@form">
+									</p:commandButton>
+								</h:panelGroup>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				<br></br>
+				<h:panelGrid id="pnlListaProgramaInstitucion" columns="1" border="0">					
+					<p:dataTable id="tblListaProgramaInstitucion" var="programaInstitucion"
+						value="#{seleccionDocenteBean.listaProgramaInstitucion}"
+						selection="#{seleccionDocenteBean.selectedInstitucion}" rowKey="#{programaInstitucion.id}"
+						selectionMode="single"
+						scrollable="true" scrollHeight="200"
+						styleClass="tabla-Acuerdo-ebja" paginator="true" rows="10"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+						<f:facet name="header">LISTA DE INSTITUCIONES ASIGNADAS AL PROGRAMA: #{seleccionDocenteBean.nombreProgramaEbja}</f:facet>
+						<p:ajax event="rowSelect" listener="#{seleccionDocenteBean.cargarListaDocentesAsignados()}" update=":frmForm:tblListaDocenteCurso,:frmForm:cbAgregar,:formGuardarDocente:pnlNuevoRegistroDocente" />
+						<p:column headerText="Amie" style="width:70px; text-align:center;">
+							<h:outputText value="#{programaInstitucion.institucEstablec.idInstitucion.amie}" />
+						</p:column>
+						<p:column headerText="Institución Educativa" style="width:500px">
+							<h:outputText value="#{programaInstitucion.institucEstablec.idInstitucion.descripcion}" />
+						</p:column>
+						<p:column headerText="Geo código" style="width:70px; text-align:center;">
+							<h:outputText value="#{programaInstitucion.institucEstablec.idEstablecimiento.codigoCuadrante}" />
+						</p:column>
+						<p:column headerText="Zona" style="width:50px; text-align:center;">
+							<h:outputText value="#{programaInstitucion.institucEstablec.idCircuitoParroquia.idCircuito.idDistrito.idZona.codigoSenpladesZona}" />
+						</p:column>
+						<p:column headerText="Distrito" style="width:60px; text-align:center;">
+							<h:outputText value="#{programaInstitucion.institucEstablec.idCircuitoParroquia.idCircuito.idDistrito.codigoSenpladesDistrito}" />
+						</p:column>
+						<p:column headerText="Circuito" style="width:100px; text-align:center;">
+							<h:outputText value="#{programaInstitucion.institucEstablec.idCircuitoParroquia.idCircuito.codigoSenpladesCircuito}" />
+						</p:column>
+						<f:facet name="paginatorBottomRight">
+							<p:commandButton type="button" icon="fa fa-sync" />
+						</f:facet>
+					</p:dataTable>
+				</h:panelGrid>
+				<br/><br/>
+				<h:panelGrid id="pnlListaDocenteCurso" columns="1" border="0">					
+					<p:dataTable id="tblListaDocenteCurso" var="docenteCurso"
+						value="#{seleccionDocenteBean.listaDocenteCurso}"
+						scrollable="true" scrollHeight="200"
+						styleClass="tabla-Acuerdo-ebja" paginator="true" rows="10"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+						<f:facet name="header">
+							LISTA DE DOCENTES ASIGNADOS AL:
+							<br/> PROGRAMA: #{seleccionDocenteBean.nombreProgramaEbja}
+							<br/> AMIE: #{seleccionDocenteBean.amieInstitucionSeleccionada}
+							<br/> GEO CÓDIGO: #{seleccionDocenteBean.geocodigoInstitucionSeleccionada}						
+							<br/> LA INSTITUCIÓN: #{seleccionDocenteBean.nombreInstitucionSeleccionada}  
+						</f:facet>									
+						<p:column headerText="Identificación" style="width:70px; text-align:center;">
+							<h:outputText value="#{docenteCurso.docente.persona.numeroIdentificacion}" />
+						</p:column>
+						<p:column headerText="Docente" style="width:300px; text-align:center;">
+							<h:outputText value="#{docenteCurso.docente.persona.nombresApellidos}" />
+						</p:column>
+						<p:column headerText="Paralelo" style="width:70px; text-align:center;">
+							<h:outputText value="#{docenteCurso.cursoParalelo.paralelo.descripcion}" />
+						</p:column>
+						<p:column headerText="Estado" styleClass="tabla-Regla-Estado-ebja">
+							<h:outputText value="#{docenteCurso.estado=='1'? 'ACTIVO' : 'INACTIVO'} " />
+						</p:column>
+						<p:column styleClass="tabla-editar-regla-ebja" headerText="Editar">
+							<div style="text-align: center;">
+								<p:commandLink
+									actionListener="#{seleccionDocenteBean.docenteSeleccionadoEditar(docenteCurso)}"
+									oncomplete="PF('popGuardarDocente').show();" ajax="true"
+									update=":#{p:component('formGuardarDocente')}">
+									<h:graphicImage value="../../img/edit.png" />
+								</p:commandLink>
+							</div>
+						</p:column>
+						<p:column styleClass="tabla-borrar-regla-ebja"
+							headerText="Activar">
+							<div style="text-align: center;">
+								<p:commandLink
+									actionListener="#{seleccionDocenteBean.docenteSeleccionadoActivar(docenteCurso)}"
+									oncomplete="PF('popConfirmarActivar').show();"
+									ajax="true">
+									<h:graphicImage value="../../img/visto.png" />
+								</p:commandLink>
+							</div>
+						</p:column>
+						<p:column styleClass="tabla-borrar-regla-ebja"
+							headerText="Inactivar">
+							<div style="text-align: center;">
+								<p:commandLink
+									actionListener="#{seleccionDocenteBean.docenteSeleccionadoInactivar(docenteCurso)}"
+									oncomplete="PF('popConfirmarInactivar').show();"
+									ajax="true">
+									<h:graphicImage value="../../img/delete.png" />
+								</p:commandLink>
+							</div>
+						</p:column>
+						<f:facet name="paginatorBottomRight">
+							<p:commandButton type="button" icon="fa fa-sync" />
+						</f:facet>
+					</p:dataTable>
+					<h:panelGroup style="display:block; text-align:center">	
+						<p:commandButton id="cbAgregar" value="Agregar Docente Seleccionado"
+								disabled="#{seleccionDocenteBean.disabledCbAgregar}"
+								actionListener="#{seleccionDocenteBean.setearCrearDocente}"
+								styleClass="botonBuscar-ebja-a4j"
+								oncomplete="PF('popGuardarDocente').show();" ajax="true"
+								update=":#{p:component('formGuardarDocente')}" />
+					</h:panelGroup>
+				</h:panelGrid>				
+			</p:panel>
+		</h:form>
+		
+		<h:form id="formGuardarDocente">
+				<p:dialog header="Asignar Docente a Institución por Programa"
+					widgetVar="popGuardarDocente" autosized="true" width="330"
+					height="340">
+					<div>
+						<h:panelGrid id="pnlNuevoRegistroDocente" columns="2"
+							cellpadding="5" cellspacing="1" border="0"
+							styleClass="popUpCreacionRegla-ebja"
+							columnClasses="popUpBusqueda-primeraCol-regla-ebja,popUpBusqueda-segundaCol-regla-ebja"
+							rendered="true">
+							<h:outputText for="txtPrograma" value=" Programa: " />
+							<p:inputText id="txtPrograma" styleClass="inputText-ebja" value="#{seleccionDocenteBean.nombreProgramaEbja}" readonly="true"/>
+							<h:outputText for="txtAmie" value=" Amie: " />
+							<p:inputText id="txtAmie" styleClass="inputText-ebja" value="#{seleccionDocenteBean.amieInstitucionSeleccionada}" readonly="true"/>
+							<h:outputText for="txtGeoCodigo" value=" Geo Código: " />
+							<p:inputText id="txtGeoCodigo" styleClass="inputText-ebja" value="#{seleccionDocenteBean.geocodigoInstitucionSeleccionada}" readonly="true"/>
+							<h:outputText for="txtInstitucion" value=" Institución: " />
+							<p:inputText id="txtInstitucion" styleClass="inputText-ebja" value="#{seleccionDocenteBean.nombreInstitucionSeleccionada}" readonly="true"/>
+							<h:outputText for="txtIdentificacion" value=" Identificación Docente: " />
+							<p:inputText id="txtIdentificacion" styleClass="inputText-ebja" value="#{seleccionDocenteBean.identificacionDocenteSeleccionado}" readonly="true"/>
+							<h:outputText for="txtDocente" value=" Nombre Docente: " />
+							<p:inputText id="txtDocente" styleClass="inputText-ebja" value="#{seleccionDocenteBean.nombreDocenteSeleccionado}" readonly="true"/>
+							<h:outputText for="cmbParalelo" value=" Paralelo: " />
+							<p:selectOneMenu id="cmbParalelo"
+								value="#{seleccionDocenteBean.idCursoParalelo}"
+								styleClass="comboReglaFase-ebja">
+								<f:selectItem itemLabel="Seleccionar Paralelo" />
+								<f:selectItems value="#{seleccionDocenteBean.listaCursoParalelo}"
+									var="varCursoParalelo" itemLabel="#{varCursoParalelo.paralelo.descripcion}"
+									itemValue="#{varCursoParalelo.id}">
+								</f:selectItems>
+							</p:selectOneMenu>
+						</h:panelGrid>
+					</div>
+					<br></br>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionReglaBotones-ebja"
+						columnClasses="popUpBusqueda-botones-regla-ebja,popUpBusqueda-botones-regla-ebja"
+						border="0">
+						<p:commandButton id="guardarRegistro" value="Guardar"
+							styleClass="popUpBoton-ebja" ajax="true"
+							actionListener="#{seleccionDocenteBean.ejecutarCrearOEditarRegistro()}"
+							oncomplete="PF('popGuardarDocente').hide();"
+							update="frmForm:tblListaDocenteCurso, frmForm:messageSeleccionDocentes, frmForm:growl"
+							 />
+						<p:commandButton id="cancelarRegistro" value="Cancelar"
+							styleClass="popUpBoton-ebja"
+							actionListener="#{seleccionDocenteBean.setearCrearDocente()}"
+							oncomplete="PF('popGuardarDocente').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+			<h:form>
+				<p:dialog header="Inactivar Registro"
+					widgetVar="popConfirmarInactivar" autosized="false"
+					width="250" height="100">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-regla-ebja,popUpBusqueda-segundaCol-regla-ebja">
+						<div class="eliminar-archivo-ebja"></div>
+						<h:outputLabel value="Está seguro que desea Inactivar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true" actionListener="#{seleccionDocenteBean.inactivarDocenteCurso()}"
+							oncomplete="PF('popConfirmarInactivar').hide();"
+							update="frmForm:tblListaDocenteCurso, frmForm:messageSeleccionDocentes, frmForm:growl" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true" oncomplete="PF('popConfirmarInactivar').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+			<h:form>
+				<p:dialog header="Activar Registro"
+					widgetVar="popConfirmarActivar" autosized="false" width="250"
+					height="100">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="eliminar-archivo-ebja"></div>
+						<h:outputLabel value="Está seguro que desea Activar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true" actionListener="#{seleccionDocenteBean.activarDocenteCurso()}"
+							oncomplete="PF('popConfirmarActivar').hide();"
+							update="frmForm:tblListaDocenteCurso, frmForm:messageSeleccionDocentes, frmForm:growl" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true" oncomplete="PF('popConfirmarActivar').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>		
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,112 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantillas/contenedorBloqueo.xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:p1="http://primefaces.prime.com.tr/ui">
+
+	<ui:define name="titulo">#{asignacionAutomaticaBean.tituloPagina}</ui:define>
+
+	<ui:define name="contenido">
+		<style> .contenido { background: #fff; } </style>
+		<div>
+			<h:form id="frmForm">
+				<p:panel styleClass="contienePanelBusqueda-ebja">
+					<f:facet name="header">Parámetros para Proceso:</f:facet>
+					<p:panelGrid cellpadding="1" cellspacing="1" border="1" styleClass="panelBusqueda-ebja">
+						<p:row>
+							<p:column>
+								<div class="userIdMap-Reglas-ebja"></div>
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-reglas-ebja">
+								<p:panelGrid columns="2" styleClass="panelBusqueda-ebja">
+									<h:outputText value=" Oferta: " />
+									<p:selectOneMenu id="combListaProgramaEbja" value="#{asignacionAutomaticaBean.idProgramaEbja}"
+										styleClass="comboReglaModulo-ebja" required="true" requiredMessage="Seleccionar Oferta...">
+										<f:selectItem itemLabel="Seleccionar Oferta" />
+										<f:selectItems value="#{asignacionAutomaticaBean.listaProgramaEbja}"
+											var="var" itemLabel="#{var.nombre}"
+													  itemValue="#{var.id}"/>
+	                					<p:ajax execute="@this" update="frmForm" 
+	                							listener="#{asignacionAutomaticaBean.obtenerOferta()}"/>
+									</p:selectOneMenu>
+									<h:outputText value=" Zona: " />
+									<p:selectOneMenu id="combListaZona" value="#{asignacionAutomaticaBean.idZona}"
+										styleClass="comboReglaModulo-ebja" required="true" requiredMessage="Seleccionar Zona...">
+										<f:selectItem itemLabel="Seleccionar Zona" />
+										<f:selectItems value="#{asignacionAutomaticaBean.listaZona}"
+											var="var" itemLabel="#{var.nombreZona}"
+													  itemValue="#{var.id}"/>
+	                					<p:ajax execute="@this" update="frmForm" 
+	                							listener="#{asignacionAutomaticaBean.obtenerZona()}"/>
+									</p:selectOneMenu>
+								 </p:panelGrid>
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-reglas-ebja" rendered="#{asignacionAutomaticaBean.numInscrito > 0 or asignacionAutomaticaBean.numNoMatricula > 0}">
+								<p:fieldset legend="Resultados Estudiantes" style="width:100%; text-align:center">
+									<p:panelGrid columns="2" style="width: 100%; text-align:center" cellspacing="1"
+										border="1">
+										<h:outputText value=" Inscritos: " />
+										<h:outputText value="#{asignacionAutomaticaBean.numInscrito}" />
+										<h:outputText value=" Matriculados: " />
+										<h:outputText value="#{asignacionAutomaticaBean.numMatricula}" />
+										<h:outputText value=" NO Matriculados: " />
+										<h:outputText value="#{asignacionAutomaticaBean.numNoMatricula}" />
+									</p:panelGrid>
+								</p:fieldset>
+							</p:column>
+							
+						</p:row>
+					</p:panelGrid>
+					
+					<p:messages id="mensaje" style="width:100%; margin-top:3px;" />
+					
+					<p:panelGrid cellpadding="1" cellspacing="1" border="1" styleClass="panelBusqueda-ebja">
+						<p:row>
+							<p:column style="text-align:center">
+								<p:commandButton id="submitRegla1" value="Iniciar asignación automática" styleClass="botonBuscar-Estudiante-ebja"
+									actionListener="#{asignacionAutomaticaBean.buscarEstudiantesParaMatricula()}" icon="fa fa-search"
+									ajax="true" update="frmForm">
+								</p:commandButton>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<p:panelGrid id="pgProceso" styleClass="panelBusqueda-ebja">
+						<p:row>	
+							<p:column styleClass="panelBusqueda-primeraCol-ebja">
+								<p:panel>
+									<f:facet name="header">
+										<h:graphicImage value="/img/check.jpeg" />
+									</f:facet>
+									<center>
+										<p:commandButton id="cbProcesar" value="Procesar Asignación Automática (DB)" 
+											disabled="#{asignacionAutomaticaBean.disabledCbProcesar}" icon="fa fa-gears" 
+											actionListener="#{asignacionAutomaticaBean.procesarAsignacionAutomaticaFuncion()}"
+											ajax="true" update="frmForm" />
+									</center>
+								</p:panel>
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-ebja">
+								<p:panel style="text-align:center">
+									<f:facet name="header">
+										<h:outputText value="Estudiantes No Matriculados" />
+									</f:facet>
+									<center>
+										<h:commandLink value="" render="frmForm"
+											disabled="#{empty asignacionAutomaticaBean.listaEstudiantesNoMatricula}"
+								    		actionListener="#{asignacionAutomaticaBean.exportarExcel()}" target="_blank">
+											<h:graphicImage value="/img/excel.gif" 
+												alt="Estudiantes No Asignados"
+												title="Estudiantes No Matriculados" />
+								    	</h:commandLink>
+									</center>
+								</p:panel>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:panel>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

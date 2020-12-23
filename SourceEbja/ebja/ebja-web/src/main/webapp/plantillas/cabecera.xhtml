@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<body>
+	<ui:composition>
+		<h:form id="formCabecera">
+			<div class="banner">
+				<div class="logo"></div>
+				<div class="banner-escudo">
+				    <div class="escudo-ecuador"></div>
+					<div class="ecuador"></div>
+				</div>
+				<div class="usuario m-r-sm text-muted welcome-message"
+					align="right">
+					<h:outputText styleClass="texto-cabecera"
+						value="#{rolesRecursosControlador.nombreUsuarioLogueado} (#{rolesRecursosControlador.rolIniciado}) " />
+					<br />
+					<h:commandLink style="color: #676a6c !important"
+						styleClass="fa fa-user  m-r-sm text-muted welcome-message"
+						rendered="#{rolesRecursosControlador.roles.size() &#62; 1}">
+						<p:ajax  listener="#{rolesRecursosControlador.iniciarCargaRolesAplicacionMenu()}"></p:ajax>
+						<h:graphicImage value="../../img/usuariosIcono.png" />
+            		    Cambiar rol
+            		</h:commandLink>
+					<h:outputLink 
+						styleClass="fa fa-user  m-r-sm text-muted welcome-message"
+						style="float: inherit;margin-left: 5px;color: #676a6c !important"
+						value="${request.contextPath}/logout">
+						<h:graphicImage value="../../img/salirIcono.png" />Salir</h:outputLink>
+				</div>
+			</div>
+			
+			<p:dialog header="Roles del usuario" widgetVar="rolesDlg" modal="true"
+			width="450" closable="false"  height="230">
+			<h:form id="formDlgTerminosTree">
+				<div class="col-lg-12">
+
+					<p:repeat value="#{rolesRecursosControlador.roles}" var="rol">
+						<h:panelGrid columns="3" style="width:100%"
+							columnClasses="width201, width60, width202" border="0">
+							<!-- 
+							<h:graphicImage value="/img/#{rol.nombre}.png" alt="rol" width="80" 
+							rendered="#{not empty facesContext.application.resourceHandler.createResource(rol.urlImage)}"/>
+							 
+							<h:graphicImage value="/img/user_info.png" alt="rol" width="80" 
+							
+							rendered="#{empty facesContext.application.resourceHandler.createResource(rol.urlImage)}"/>
+							 -->
+							<p:outputPanel >
+								<h:panelGrid columns="2" cellpadding="5" columnClasses="width30,width70" style="width:100%" border="0">
+									<h:outputText value="Rol:" style="font-weight: bold"/>
+									<h:outputText value="#{rol.nombre}"  />
+									<h:outputText value="Descripción:" style="font-weight: bold"/>
+									<h:outputText value="#{rol.descripcion}"  />
+								</h:panelGrid>
+							</p:outputPanel>
+							<p:commandButton value="Acceder" action="#{rolesRecursosControlador.cargarRecursosPorRol(rol)}" oncomplete="PF('rolesDlg').hide()" update=":formMenu, :formCabecera"/>
+						</h:panelGrid>
+						<hr/>
+					</p:repeat>
+				</div>
+			</h:form>
+		</p:dialog>
+		</h:form>
+	</ui:composition>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantillas/contenedorBloqueo.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">
+        ADMINISTRACIÓN DEL SISTEMA - ASIGNATURA
+  	</ui:define>
+
+	<ui:define name="contenido">
+
+		<style>
+.contenido {
+	background: #fff;
+}
+</style>
+		<div>
+			<h:form id="frmForm">
+				<p:panel styleClass="contienePanelBusqueda-ebja">
+					<f:facet name="header">Búsqueda de Asignatura:</f:facet>
+					<p:panelGrid id="pnlBusqueda" cellpadding="10" cellspacing="1"
+						border="1" styleClass="panelBusqueda-ebja">
+						<p:row>
+							<p:column>
+								<div class="userIcon-asignatura-ebja"></div>
+							</p:column>
+							<p:column styleClass="panelBusqueda-primeraCol-reglas-ebja">
+								<h:outputText value=" Búsqueda de asignatura por: " />
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-ebja">
+								<p:selectOneRadio layout="pageDirection"
+									styleClass="radioButton-Busqueda-ebja"
+									value="#{asignaturaBean.busquedaTipo}">
+									<f:selectItem itemLabel="Área" itemValue="1" />
+									<f:selectItem itemLabel="Materia" itemValue="2" />
+								</p:selectOneRadio>
+							</p:column>
+							<p:column styleClass="panelBusqueda-terceraCol-ebja">
+								<p:inputText id="inpTxtingresarBuscar"
+									styleClass="inputText-ebja"
+									value="#{asignaturaBean.busquedaContenido}">
+									<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ\s]+$/i" />
+									</p:inputText>		
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="text-align:center" colspan="4">
+								<h:panelGroup style="display:block ">
+									<p:commandButton id="submit" value="Buscar"
+										actionListener="#{asignaturaBean.buscarAsignatura}"
+										styleClass="botonBuscar-ebja" ajax="true" update="@form">
+									</p:commandButton>
+								</h:panelGroup>
+							</p:column>
+						</p:row>
+
+					</p:panelGrid>
+					<br></br>
+					<p:messages id="messageAsignatura" style="width:100%; margin-top:3px;" />
+					<h:panelGrid id="pnlIngresoRegistro" columns="1" border="0">
+						<h:panelGroup style="display:block; text-align:center">
+							<p:commandButton value="Crear Asignatura"
+								actionListener="#{asignaturaBean.setearCrearAsignatura}"
+								styleClass="botonBuscar-ebja-a4j"
+								oncomplete="PF('popGuardarAsignatura').show();" ajax="true"
+								update=":#{p:component('formGuardarAsignatura')}" />
+						</h:panelGroup>
+						<p:dataTable id="tblAsignatura" var="asignatura"
+							value="#{asignaturaBean.listaAsignatura}"
+							scrollable="true"
+							styleClass="tabla-asignatura-ebja" paginator="true" rows="10"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+						    <p:column headerText="Nemónico" style="width:200px;">
+								<h:outputText value="#{asignatura.nemonico}" />
+							</p:column>
+							<p:column headerText="Área" style="width:200px;">
+								<h:outputText value="#{asignatura.area.nombre}" />
+							</p:column>
+							<p:column headerText="Materia" style="width:200px;">
+								<h:outputText value="#{asignatura.materia.nombre}" />
+							</p:column>
+							<p:column headerText="Estado" styleClass="tabla-Regla-Estado-ebja" style="text-align:center;">
+								<h:outputText value="#{asignatura.estado == '1' ? 'ACTIVO' : 'INACTIVO' }" />
+							</p:column>
+							<p:column  headerText="Editar" style="width:200px;">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{asignaturaBean.asignaturaSeleccionadoEditar(asignatura)}"
+										oncomplete="PF('popGuardarAsignatura').show();" ajax="true"
+										update=":#{p:component('formGuardarAsignatura')},:#{p:component('cmbMateria')},:#{p:component('cmbArea')}">
+										<h:graphicImage value="../../img/edit.png" />
+									</p:commandLink>
+								</div>
+							</p:column>							
+							<p:column styleClass="tabla-borrar-ebja" headerText="Activar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{asignaturaBean.asignaturaSeleccionadoActivar(asignatura)}"
+										oncomplete="PF('popConfirmarActivarAsignatura').show();"
+										ajax="true">
+										<h:graphicImage value="../../img/visto.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+							<p:column styleClass="tabla-borrar-ebja" headerText="Inactivar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{asignaturaBean.asignaturaSeleccionadoBorrar(asignatura)}"
+										oncomplete="PF('popConfirmarInactivarAsignatura').show();"
+										ajax="true">
+										<h:graphicImage value="../../img/delete.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+							<f:facet name="paginatorBottomRight">
+								<p:commandButton type="button" icon="fa fa-sync" />
+							</f:facet>
+						</p:dataTable>
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+			<h:form id="formGuardarAsignatura">
+				<p:dialog header="Guardar asignatura"
+					widgetVar="popGuardarAsignatura" resizable="false" autosized="false" width="300"
+					height="170">
+					<div>
+						<h:panelGrid id="pnlNuevoRegistroAsignatura" columns="2"
+							cellpadding="5" cellspacing="1" border="0"
+							styleClass="popUpCreacionAcuerdo-ebja"
+							columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja"
+							rendered="true">
+							<h:outputText value="Nemónico " />
+							<p:inputText id="input-text-nombre" styleClass="comboReglaFaseAsignatura-ebja"
+								value="#{asignaturaBean.nemonico}" required="true"
+								requiredMessage="El campo 'Nemónico' está vacío" maxlength="50">
+								<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ_-\s]+$/i" preventPaste="false" />
+							</p:inputText>
+							<h:outputText value=" Área: " />													
+							<p:selectOneMenu id="cmbArea"
+								value="#{asignaturaBean.idArea}"
+								styleClass="comboReglaFaseAsignatura-ebja ">
+								<f:selectItem itemLabel="Seleccionar Área" />
+								<f:selectItems value="#{asignaturaBean.listaArea}"
+									var="varArea" itemLabel="#{varArea.nombre}"
+									itemValue="#{varArea.id}">
+								</f:selectItems>
+							</p:selectOneMenu>
+							<h:outputText value=" Materia: " />
+							<p:selectOneMenu id="cmbMateria"
+								value="#{asignaturaBean.idMateria}"
+								styleClass="comboReglaFaseAsignatura-ebja ">
+								<f:selectItem itemLabel="Seleccionar Materia" />
+								<f:selectItems value="#{asignaturaBean.listaMateria}"
+									var="varMateria" itemLabel="#{varMateria.nombre}"
+									itemValue="#{varMateria.id}">
+								</f:selectItems>
+							</p:selectOneMenu>
+						</h:panelGrid>
+					</div>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton id="guardarRegistroAsignatura" value="Guardar"
+							styleClass="popUpBoton-ebja" ajax="true"
+							actionListener="#{asignaturaBean.ejecutarCrearOEditarRegistro}"
+							oncomplete="PF('popGuardarAsignatura').hide();"
+							update=":#{p:component('messageAsignatura')},:#{p:component('tblAsignatura')}" />
+						<p:commandButton id="cancelarRegistroAsignatura" value="Cancelar"
+							styleClass="popUpBoton-ebja"
+							oncomplete="PF('popGuardarAsignatura').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+			
+			<h:form>
+				<p:dialog header="Inactivar Registro"
+					widgetVar="popConfirmarInactivarAsignatura" autosized="false"
+					width="250" height="100">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="eliminar-archivo-ebja"></div>
+						<h:outputLabel value="Está seguro que desea Inactivar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true"
+							actionListener="#{asignaturaBean.borrarAsignatura}"
+							oncomplete="PF('popConfirmarInactivarAsignatura').hide();"
+							update=":#{p:component('tblAsignatura')},:#{p:component('messageAsignatura')}" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true"
+							oncomplete="PF('popConfirmarInactivarAsignatura').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+			<h:form>
+				<p:dialog header="Activar Registro"
+					widgetVar="popConfirmarActivarAsignatura" autosized="false"
+					width="250" height="100">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="eliminar-archivo-ebja"></div>
+						<h:outputLabel value="Está seguro que desea Activar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true"
+							actionListener="#{asignaturaBean.activarAsignatura}"
+							oncomplete="PF('popConfirmarActivarAsignatura').hide();"
+							update=":#{p:component('tblAsignatura')},:#{p:component('messageAsignatura')}" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true" oncomplete="PF('popConfirmarActivarAsignatura').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

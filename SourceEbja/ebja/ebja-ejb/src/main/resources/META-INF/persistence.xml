@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence 
+						http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="zeusPU" transaction-type="JTA">
+		<jta-data-source>java:jboss/datasources/zeusDS</jta-data-source>
+		<class>ec.gob.educacion.ebja.modelo.Acuerdo</class>
+		<class>ec.gob.educacion.ebja.modelo.Asignatura</class>
+		<class>ec.gob.educacion.ebja.modelo.CatalogoEbja</class>
+		<class>ec.gob.educacion.ebja.modelo.CursoParalelo</class>
+		<class>ec.gob.educacion.ebja.modelo.DatoFamiliar</class>
+		<class>ec.gob.educacion.ebja.modelo.DetalleReglaNegocio</class>
+		<class>ec.gob.educacion.ebja.modelo.DetalleTraslado</class>
+		<class>ec.gob.educacion.ebja.modelo.Discapacidad</class>
+		<class>ec.gob.educacion.ebja.modelo.DocenteCurso</class>
+		<class>ec.gob.educacion.ebja.modelo.Estudiante</class>
+		<class>ec.gob.educacion.ebja.modelo.Fase</class>
+		<class>ec.gob.educacion.ebja.modelo.Formulario</class>
+		<class>ec.gob.educacion.ebja.modelo.GrupoFasePrograma</class>
+		<class>ec.gob.educacion.ebja.modelo.Inscripcion</class>
+		<class>ec.gob.educacion.ebja.modelo.Malla</class>
+		<class>ec.gob.educacion.ebja.modelo.MallaDocente</class>
+		<class>ec.gob.educacion.ebja.modelo.Matricula</class>
+		<class>ec.gob.educacion.ebja.modelo.Mensaje</class>
+		<class>ec.gob.educacion.ebja.modelo.Modalidad</class>
+		<class>ec.gob.educacion.ebja.modelo.ModeloAsistencia</class>
+		<class>ec.gob.educacion.ebja.modelo.ModeloEvaluacion</class>
+		<class>ec.gob.educacion.ebja.modelo.Nota</class>
+		<class>ec.gob.educacion.ebja.modelo.PlantillaEstudiante</class>
+		<class>ec.gob.educacion.ebja.modelo.PlantillaNota</class>
+		<class>ec.gob.educacion.ebja.modelo.ProgramaEbja</class>
+		<class>ec.gob.educacion.ebja.modelo.ProgramaEducativo</class>
+		<class>ec.gob.educacion.ebja.modelo.ProgramaGrado</class>
+		<class>ec.gob.educacion.ebja.modelo.ProgramaInstitucion</class>
+		<class>ec.gob.educacion.ebja.modelo.RegistroEstudiante</class>
+		<class>ec.gob.educacion.ebja.modelo.ReglaNegocio</class>
+		<class>ec.gob.educacion.ebja.modelo.Representante</class>
+		<class>ec.gob.educacion.ebja.modelo.Requisito</class>
+		<class>ec.gob.educacion.ebja.modelo.TipoCatalogoEbja</class>
+		<class>ec.gob.educacion.ebja.modelo.TipoNota</class>
+		<class>ec.gob.educacion.ebja.modelo.TipoPrograma</class>
+		<class>ec.gob.educacion.ebja.modelo.Ubicacion</class>
+		<properties>
+             <property name="hibernate.show_sql" value="true"/>
+             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
+             <property name="org.hibernate.envers.auditTableSuffix" value="_AUD" />
+		</properties>
+	</persistence-unit>
+
+	<persistence-unit name="asignacionesPU" transaction-type="JTA">
+		<jta-data-source>java:jboss/datasources/asignacion-cuposDS</jta-data-source>
+		<properties>
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.dialect" 	value="org.hibernate.dialect.Oracle10gDialect" />
+		</properties>
+	</persistence-unit>
+
+</persistence>

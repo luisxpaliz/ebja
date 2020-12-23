@@ -1,0 +1,1849 @@
+/* ESTILOS CORRESPONDIENTES A LA CABECERA */
+.banner {
+	height: 120px;
+	padding: 10px;
+	margin-bottom: 25px;
+}
+
+.banner-escudo {
+	width: 354px;
+	height: 100px;
+	float: right;
+}
+
+.escudo-ecuador {
+	background-image: url('../img/escudo-ecu.png');
+	background-size: 158px;
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 166px;
+	height: 100px;
+	float: left;
+}
+
+
+
+.ecuador {
+	background-image: url('../img/ecuadoramalavida_logo.png');
+	background-size: 118px;
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 166px;
+	height: 100px;
+	float: right;
+}
+
+.logo {
+	background-image: url('../img/logo.png');
+	background-size: 280px;
+	background-position: right center;
+	background-repeat: no-repeat;
+	width: 280px;
+	height: 100%;
+	float: left;
+}
+
+.usuario {
+	/*float: right;*/
+	left: 279px;
+	position: relative;
+	top: 104px;
+}
+
+.ajax-status {
+	float: right;
+	right: 0;
+	position: relative;
+	top: -36px;
+	color: #4A75B5;
+}
+
+/* ESTILOS CORRESPONDIENTES AL MENU */
+.menu-vertical {
+	padding: 10px;
+	float: left;
+}
+
+
+
+/* ESTILOS CORRESPONDIENTES AL PIE DE PAGINA */
+.footer {
+	border-top: solid 1px #A8A8A8;
+	text-align: center;
+	padding-top: 5px;
+	color: #616161
+}
+
+/* ESTILOS DE TODA LA PAGINA */
+body {
+	font-size: 11px;
+	font-family: Arial, Verdana, sans-serif;
+	background: #F0F0F0;
+}
+
+.contenedor {
+	margin: 0 auto;
+	width: 98%;
+	height: 95%;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+	border: 1px solid #A8A8A8;
+	/*padding: 10px;*/
+	background: #FFFFFF;
+}
+
+.contenedor-horizontal {
+	overflow: auto;
+	min-height: 250px;
+	border-top: solid 1px #A8A8A8;
+}
+
+.contenedor-horizontal-nuevo {
+	overflow: auto;
+	min-height: 300px;
+	border-top: solid 1px #A8A8A8;
+}
+
+.contenedor-horizontal-externo {
+	background: #FFF;
+	overflow: auto;
+	min-height: 250px;
+	border-top: solid 1px #A8A8A8;
+	padding-top: 10px;
+	padding-bottom: 25px;
+	padding-left: 10px;
+}
+
+.contenido {
+	background: #F3F3F4;
+	margin-left: 150px;
+	overflow: visible;
+}
+
+.padding-contenido {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+.titulo {
+	font-size: 17px;
+	font-family: Arial, Verdana, sans-serif;
+	font-weight: bold;
+}
+
+.prueba {
+	background-image: url("../css/images/rich.png");
+	background-color: #D6E6FB;
+	background-position: left top;
+	border-bottom: 1px solid #C0C0C0;
+	border-right: 1px solid #C0C0C0;
+	color: #0B356C;
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	padding: 4px;
+	text-align: center;
+}
+
+.pruebaRojo {
+	background-color: #FCDCDC;
+	background-position: left top;
+	border-bottom: 1px solid #C0C0C0;
+	border-right: 1px solid #C0C0C0;
+	color: #0B356C;
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	padding: 4px;
+	text-align: center;
+}
+
+.columna {
+	border-bottom: 1px solid #C0C0C0;
+	border-right: 1px solid #C0C0C0;
+	border-left: 1px solid #C0C0C0;
+	color: #000000;
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 11px;
+	padding: 4px;
+	background-color: #F7FDFC;
+}
+
+.columna:hover {
+	background-color: #FFFFE0;
+}
+
+
+.acuerdoTablaButtonEdit {
+	background-image: url("../img/edit.png");
+}
+
+
+
+.image-upload>input {
+	display: none;
+}
+
+.image-upload img {
+	width: 30px;
+	cursor: pointer;
+}
+
+
+.rf-fu-lst {
+	height: 50px !important;
+}
+
+.width30 {
+	width: 30%;
+	text-align: right;
+}
+
+.width70 {
+	width: 70%;
+}
+
+.width60{
+
+	width: 60%;
+	text-align: center;
+}
+
+.width201{
+
+	width: 20%;
+	text-align: center;
+	padding-right: 10px;
+	
+}
+.width202{
+
+	width: 20%;
+	text-align: center;
+	padding-left: 10px;
+	
+}
+
+.width80 {
+	width: 80%;
+}
+
+.width28 {
+	width: 28%;
+	text-align: right;
+}
+
+.width72 {
+	width: 72%;
+}
+
+.errors {
+	border: 1px dotted #BB0000;
+	color: #BB0000;
+	padding: 15px 50px 15px;
+}
+
+.info {
+	background-color: #F0F8FF;
+	font-weight: bold;
+	border: 1px dotted #3874A6;
+	color: #3874A6;
+	padding: 15px;
+}
+
+.danger {
+	background-color: rgb(255, 238, 221);
+	font-weight: bold;
+	border: 1px dotted #BB0000;
+	color: #BB0000;
+	padding: 15px;
+}
+
+.text-danger {
+	font-weight: bold !important;
+	color: #BB0000 !important;
+}
+
+.text-info {
+	font-weight: bold !important;
+	color: #3874A6 !important;
+}
+
+.width30-upload-file {
+	width: 30%;
+	text-align: right;
+	padding-right: 15px;
+	font-weight: bold !important;
+}
+
+.width20-upload-file {
+	width: 20%;
+	text-align: right;
+	padding-right: 15px;
+	font-weight: bold !important;
+}
+
+.width20 {
+	width: 20%;
+}
+
+.alert-sucess {
+	color: #3c763d;
+	background-color: #dff0d8;
+	padding: 15px !important;
+	margin-bottom: 20px;
+	border: 1px solid #d6e9c6;
+	border-radius: 4px;
+}
+
+.alert-info {
+	color: #31708f;
+	background-color: #ffc5b9;
+	padding: 15px !important;
+	margin-bottom: 20px;
+	border: 1px solid #bce8f1;
+	border-radius: 4px;
+}
+
+.alert-infoMensajeEstado {
+	color: #7f2f1e;
+	background-color: #ff9f8a;
+	padding: 15px !important;
+	margin-bottom: 20px;
+	border: 1px solid #bce8f1;
+	border-radius: 4px;
+}
+
+.alert-danger {
+	color: #a94442;
+	background-color: #f2dede;
+	padding: 15px !important;
+	margin-bottom: 20px;
+	border: 1px solid #ebccd1;
+	border-radius: 4px;
+}
+
+.alert-warning {
+	color: #8a6d3b;
+	background-color: #fcf8e3;
+	padding: 15px !important;
+	margin-bottom: 20px;
+	border: 1px solid #faebcc;
+	border-radius: 4px;
+}
+
+.width30 {
+	width: 30%;
+	text-align: right;
+}
+
+.width40 {
+	width: 40%;
+	text-align: right;
+}
+
+.width20 {
+	width: 20%;
+	text-align: right;
+}
+
+.no-table-header .rich-table-thead {
+	display: none;
+}
+
+.checkMatriz {
+	border-bottom: 1px solid #C0C0C0;
+	border-left: 1px solid #C0C0C0;
+	padding: 5px;
+	margin-bottom: 9px;
+}
+
+.vertical-align-top {
+	vertical-align: top;
+}
+
+.saveComponent {
+	font-weight: bold;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	padding: 5px;
+}
+
+.info-notification {
+	color: #31708f;
+	background-color: #d9edf7;
+	padding: 15px !important;
+	margin-bottom: 20px;
+	border: 1px solid #bce8f1;
+	border-radius: 4px;
+	font-size: 13px !important;
+}
+
+.vertical-align-top-33 {
+	vertical-align: top;
+	width: 33% !important;
+}
+
+.vertical-align-top-34 {
+	vertical-align: top;
+	width: 34% !important;
+}
+
+.incompleta-informacion {
+	background-color: rgb(255, 238, 221);
+	color: #BB0000;
+}
+
+.ui-menu {
+	width: auto;
+	margin-right: 24px;
+}
+
+.menubar {
+	  background-color: whitesmoke;
+}
+
+
+.width-first-column-asignacion {
+	width: 20%;
+	text-align: right;
+	padding-right: 10px;
+	font-weight: bold;
+	vertical-align: top;
+}
+
+.width-second-column-asignacion {
+	width: 80%;
+}
+
+.ui-widget {
+	font-size: 12px;
+}
+
+.ui-widget-header {
+	text-shadow: none;
+}
+
+.ui-state-default {
+	text-shadow: none;
+}
+
+.width-first-column-confirmacion-asignacion {
+	width: 40%;
+	text-align: right;
+	padding-right: 10px;
+	font-weight: bold;
+}
+
+.width-second-column-confirmacion-asignacion {
+	width: 60%;
+}
+
+.tablaValidacionHoras td {
+	vertical-align: top;
+}
+
+.ui-timepicker-table td a {
+	padding: 0.2em 1.3em 0.2em 0.5em !important;
+}
+
+.pTablaAsignacionesMateriasDiscriminacion .ui-datatable-footer {
+	text-align: left;
+}
+
+.panelDisponibilidad .ui-panel-content {
+	padding: 0;
+}
+
+.ui-menu.ui-menu-dynamic {
+	position: absolute;
+	display: none;
+	z-index: 100000;
+	visibility: hidden !important;
+}
+
+.fieldset-niveles-empty {
+	background-color: #E9ECEF;
+	height: 30px;
+	border: 1px solid rgba(0, 0, 0, .15) !important;
+}
+
+.fieldset-niveles-full {
+	border-color: #E7EAEC !important;
+}
+
+
+.eliminar-archivo-ebja {
+	background-image: url('../img/eliminarArchivo.png');
+	background-size: 50px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 50px;
+	height: 50px;
+	float: left;
+}
+
+/***************************************************************************************************/
+/************************************SISTEMA EBJA***************************************************/
+/***************************************************************************************************/
+
+
+/**************************************GLOBALES*****************************************************/
+/***************************PANEL DE BUSQUEDA DE 4 OBJETOS******************************************/
+
+.ebja_global_pnlBusqueda4objetos_001{
+	margin: 0 auto;
+}
+
+.ebja_global_pnlBusqueda4objetos_002{
+	width: 100%;
+}
+
+.ebja_global_1stColBusqueda4objetos_003{
+	width: 25%;
+	text-align:center;
+}
+
+.ebja_global_2ndColBusqueda4objetos_004{
+	width: 25%;
+}
+
+.ebja_global_rdbtnBusqueda4objetos_005{
+	width:100%;
+	text-align: left;
+}
+
+.ebja_global_3rdColBusqueda4objetos_006{
+	width: 50%;
+}
+
+.ebja_global_inpTxtBusqueda4objetos_007{
+	width: 95%;
+	text-align: left;
+}
+
+.ebja_global_btn4objetos_008 {
+	width: 25%;
+	margin-top: 1%;
+	margin-bottom: 1%;
+}
+
+.ebja_global_msgbtn4objetos009{
+   width:100%; 
+   margin-top:3px;	
+}
+
+.ebja_global_btn4objetos_010{
+	width: 25%;
+	margin-top: 1%;
+	margin-bottom: 1%;
+}
+
+
+/***************************BOTONES GLOBALES ACTIVAR E INACTIVAR REGISTROS****************************/
+
+.ebja_global_classIcono_001 {
+	background-image: url('../img/eliminarArchivo.png');
+	background-size: 50px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 50px;
+	height: 50px;
+	float: left;
+}
+
+.ebja_global_txtConfirmaBorrarArchivo_002 {
+	padding-left: 15%;
+	width: 80%;
+}
+
+.ebja_global_pnlGrdInactivo_003 {
+	margin: 0 auto;
+	margin-top: 4%;
+}
+
+.ebja_global_btnInactivoAceptar_004 {
+	width: 90%;
+	margin-left: 10%;
+}
+
+.ebja_global_btnInactivoCancelar_005 {
+	width: 90%;
+	margin-left: 10%;
+}
+
+.ebja_global_pnlGrd_col1st_GuardarRegistro_006 {
+	width: 50%;
+}
+
+.ebja_global_pnlGrd_col2nd_CancelarRegistro_007 {
+	width: 50%;
+}
+
+.ebja_global_btnGuardarRegistro_008 {
+	width: 90%;
+	margin-left: 10%;
+}
+
+.ebja_global_btnCancelarRegistro_009 {
+	width: 90%;
+	margin-left: 10%;
+}
+
+.ebja_global_pnlGrd_col1st_InactivarRegistro_010 {
+	width: 20%;
+}
+
+.ebja_global_pnlGrd_col2nd_InactivarRegistro_011 {
+	width: 80%;
+}
+
+
+
+/***************************************************************************************************/
+/********************************-PANTALLA ACUERDOS - adminAlfabAcuRel.xhtml************************/
+
+/*proyecto_pantalla_componente_funcion_numeroDeEstiloDentroPagina*/
+
+
+.ebja_acuerdo_tblAcuerdo_001 {
+	width: 100%;
+}
+
+.ebja_acuerdo_tblAcuerdo_1stCol_002 {
+	width: 20%;
+}
+
+.ebja_acuerdo_tblAcuerdo_2ndCol_003 {
+	width: 40%;
+}
+
+.ebja_acuerdo_tblAcuerdo_3rdCol_004 {
+	width: 10%;
+}
+
+.ebja_acuerdo_tblAcuerdo_4thColEditar_005 {
+	width: 10%;
+}
+
+.ebja_acuerdo_tblAcuerdo_5thColActivar_006 {
+	width: 10%;
+}
+
+.ebja_acuerdo_tblAcuerdo_6thColInactivar_007 {
+	width: 10%;
+}
+
+.ebja_acuerdo_popUpCreacionAcuerdo_008 {
+	width: 98%;
+}
+
+.ebja_acuerdo_popUpCreacionAcuerdo_008 td td {
+	width: 98%;
+}
+
+
+.ebja_acuerdo_inpTxtCreacionAcuerdo_009{
+	width: 95%;
+	text-align: left;
+}
+
+.ebja_acuerdo_inpTxtCreacionAcuerdo_010{
+	width: 95%;
+	text-align: left;
+}
+
+.ebja_acuerdo_pnlGrdCreacionAcuerdo_011 {
+	margin: 0 auto;
+	margin-top: 4%;
+}
+
+.ebja_acuerdo_pnlGrdCreacionAcuerdo_011 td td {
+	width: 98%;
+}
+
+
+
+
+
+/***************************************************************************************************/
+/******************-PANTALLA OFERTAS EDUCATIVAS - aperturaCierrePrograma.xhtml**********************/
+/*proyecto_pantalla_componente_funcion_numeroDeEstiloDentroPagina*/
+
+.ebja_oferta_pnlOferta_001 {
+	width: 100%;
+}
+.ebja_oferta_tblOferta_002 {
+	width: 210%;
+}
+
+.ebja_oferta_tblOferta_1stCol_003 {
+	width: 15%;
+}
+.ebja_oferta_tblOferta_2ndCol_004 {
+	width: 19%;
+}
+
+.ebja_oferta_tblOferta_3rdCol_005 {
+	width: 19%;
+}
+
+.ebja_oferta_tblOferta_4thCol_006 {
+	width: 19%;
+}
+.ebja_oferta_tblOferta_5thCol_007 {
+	width: 19%;
+}
+
+.ebja_oferta_tblOferta_6thCol_008 {
+	width: 14%;
+}
+
+.ebja_oferta_tblOferta_7thCol_009 {
+	width: 10%;
+}
+.ebja_oferta_tblOferta_8thCol_010 {
+	width: 10%;
+}
+.ebja_oferta_tblOferta_9thCol_011 {
+	width: 10%;
+}
+.ebja_oferta_tblOferta_10thCol_012 {
+	width: 13%;
+}
+.ebja_oferta_tblOferta_11thCol_013 {
+	width: 13%;
+}
+.ebja_oferta_tblOferta_12thCol_014 {
+	width: 12%;
+}
+.ebja_oferta_tblOferta_13thCol_015 {
+	width: 10%;
+}
+.ebja_oferta_tblOferta_14thCol_016 {
+	width: 10%;
+}
+
+.ebja_oferta_tblOferta_15thCol_017 {
+	width: 10%;
+}
+
+.ebja_oferta_pnlGrdOfertaModulo_018  {
+	width: 60%;
+}
+
+.ebja_oferta_pnlGrdOfertaModulo_018 td td {
+	width: 98%;
+}
+
+.ebja_oferta_pnlGrdCreacionOferta_1stCol_019 {
+	width: 20%;
+}
+.ebja_oferta_pnlGrdCreacionOferta_2ndCol_020 {
+	width: 80%;
+}
+
+.ebja_oferta_inpTxtCreacionOferta_codigo_021 {
+	width: 180px !important;
+	max-width: 180px !important;
+	min-width:  180px !important;
+	text-align: left;
+	autoWidth: false;
+}
+.ebja_oferta_inpTxtCreacionOferta_nombre_022 {
+	width: 180px !important;
+	max-width: 180px !important;
+	min-width:  180px !important;
+	text-align: left;
+	autoWidth: false;
+}
+.ebja_oferta_inpTxtCreacionOferta_edadMin_023 {
+	width: 180px !important;
+	max-width: 180px !important;
+	min-width:  180px !important;
+	text-align: left;
+	autoWidth: false;
+}
+.ebja_oferta_inpTxtCreacionOferta_edadMin_023 {
+	width: 180px !important;
+	max-width: 180px !important;
+	min-width:  180px !important;
+	text-align: left;
+	autoWidth: false;
+}
+.ebja_oferta_inpTxtCreacionOferta_rezMin_024 {
+	width: 180px !important;
+	max-width: 180px !important;
+	min-width:  180px !important;
+	text-align: left;
+	autoWidth: false;
+}
+
+.ebja_oferta_calCreacionOferta_inicio_025 {
+	width: 180px !important;
+	max-width: 180px !important;
+	min-width:  180px !important;
+	text-align: left;
+	autoWidth: false;
+	
+}
+
+.ebja_oferta_calCreacionOferta_inicioClases_026 {
+	width: 180px !important;
+	max-width: 180px !important;
+	min-width:  180px !important;
+	text-align: left;
+	autoWidth: false;
+	
+}
+
+.ebja_oferta_calCreacionOferta_fin_027 {
+	width: 180px !important;
+	max-width: 180px !important;
+	min-width:  180px !important;
+	text-align: left;
+	autoWidth: false;
+	
+}
+
+.ebja_oferta_cmbCreacionOferta_acuerdo_028 {
+	width: 380px !important;
+	max-width: 380px !important;
+	min-width:  380px !important;
+	text-align: center;
+	autoWidth: false;
+	
+}
+
+.ebja_oferta_cmbCreacionOferta_tipoPrograma_029 {
+	width: 180px !important;
+	max-width: 180px !important;
+	min-width:  180px !important;
+	text-align: left;
+	autoWidth: false;
+	
+}
+
+.ebja_oferta_cmbCreacionOferta_tipoPrograma_029 {
+	width: 180px !important;
+	max-width: 180px !important;
+	min-width:  180px !important;
+	text-align: left;
+	autoWidth: false;
+	
+}
+
+.ebja_oferta_cmbCreacionOferta_modalidad_030 {
+	width: 180px !important;
+	max-width: 180px !important;
+	min-width:  180px !important;
+	text-align: left;
+	autoWidth: false;
+	
+}
+
+.ebja_oferta_cmbCreacionOferta_cobExtrajeros_031 {
+	width: 180px !important;
+	max-width: 180px !important;
+	min-width:  180px !important;
+	text-align: left;
+	autoWidth: false;
+	
+}
+
+.ebja_oferta_btnAnadirAcuerdo_032 {
+	width: 180px !important;
+	max-width: 180px !important;
+	min-width:  180px !important;
+	text-align: center;
+	autoWidth: false;
+}
+
+.ebja_ofera_pnlGrd_col1st_GuardarAcuerdo_033 {
+	width: 90%;
+}
+
+.ebja_oferta_tblOfertaAcuerdo_034 {
+	width: 90%;
+}
+
+.ebja_oferta_tblOfertaAcuerdo_col1st_035 {
+	width: 10%;
+}
+
+.ebja_oferta_tblOfertaAcuerdo_col2nd_036 {
+	width: 70%;
+}
+
+.ebja_oferta_pnlGrdOfertaModuloAcuerdo_037  {
+	width: 90%;
+}
+
+.ebja_oferta_msgAcuerdo_038{
+   width:100%; 
+   margin-top:3px;	
+}
+
+.ebja_oferta_tblOfertaAcuerdo_col3rd_039 {
+	width: 30%;
+}
+
+.ebja_oferta_acuerdo_pnlGrdBtn_col1st_CancelarRegistro_040 {
+	width: 32%;
+}
+
+.ebja_oferta_acuerdo_pnlGrdBtn_col2nd_CancelarRegistro_041 {
+	width: 32%;
+}
+
+.ebja_oferta_acuerdo_pnlGrdBtn_col3rd_CancelarRegistro_042 {
+	width: 32%;
+}
+
+/***************************************************************************************************/
+
+.menu-vertical-ebja {
+	padding: 10px;
+	width: 170px;
+	float: left;
+}
+
+
+.radioButton-ebja td {
+	text-align: right;
+}
+
+.radioButton-ebja td input {
+	float: right;
+	width: 35px;
+}
+
+.inputText-ebja {
+	width: 95%;
+	text-align: left;
+}
+
+.inputTextUpLoad-ebja {
+	width: 20%;
+	text-align: center;
+}
+
+.panelBusqueda-ebja {
+	width: 100%;
+}
+
+.panelCreacionAcuerdo-ebja {
+	width: 60%;
+	margin-left: 20%;
+}
+
+.popUpCreacionAcuerdo-ebja td td {
+	width: 98%;
+}
+
+.popUpCreacionAcuerdoBotones-ebja td td {
+	width: 98%;
+	
+}
+.popUpCreacionAcuerdoBotones-ebja {
+	margin: 0 auto;
+	margin-top: 4%;
+}
+
+.popUpCreacionModulo-ebja {
+	width: 98%;
+}
+
+.panelBusqueda-primeraCol-ebja {
+	width: 25%;
+	text-align:center;
+}
+
+.panelBusqueda-segundaCol-ebja {
+	width: 25%;
+}
+
+.panelBusqueda-terceraCol-ebja {
+	width: 50%;
+}
+
+.popUpBusqueda-primeraCol-ebja {
+	width: 20%;
+}
+
+.popUpBusqueda-segundaCol-ebja {
+	width: 80%;
+}
+
+.popUpBusqueda-botones-ebja {
+	width: 50%;
+}
+
+.popUpPDF-primeraCol-ebja {
+	width: 70%;
+}
+
+.popUpPDF-segundaCol-ebja {
+	width: 30%;
+}
+.popUpPDF-primeraCol-ebja {
+	width: 20%;
+}
+
+.popUpPDF-segundaCol-ebja {
+	width: 40%;
+}
+
+.popUpBusquedaModulo-primeraCol-ebja {
+	width: 20%;
+}
+
+.popUpBusquedaModulo-segundaCol-ebja {
+	width: 80%;
+}
+
+.popUpBusquedaModulo-primeraCol-ebja {
+	width: 15%;
+}
+
+.popUpBusquedaModulo-segundaCol-ebja {
+	width: 35%;
+}
+
+.popUpBusquedaModulo-terceraCol-ebja {
+	width: 15%;
+}
+
+.popUpBusquedaModulo-cuartaCol-ebja {
+	width: 35%;
+}
+
+.botonBuscar-ebja {
+	width: 25%;
+	margin-top: 1%;
+	margin-bottom: 1%;
+}
+
+.botonBuscar-ebja-a4j {
+	width: 25%;
+	margin-top: 1%;
+	margin-bottom: 1%;
+}
+
+.popUpBoton-ebja {
+	width: 90%;
+	margin-left: 10%;
+}
+
+.popUpBoton-ebja-eliminar-archivo-popup {
+	width: 25%;
+	margin-left: 15%;
+	margin-top: 2%;
+}
+
+.popUpBoton-ebja-cancelar-archivo-popup {
+	width: 25%;
+	margin-left: 15%;
+	margin-top: 2%;
+}
+
+.contienePanelBusqueda-ebja*** {
+	margin: 0 auto;
+}
+
+.panelCreacionAcuerdo-ebja {
+	width: 60%;
+	padding-left: 200%;
+}
+
+.tabla-Acuerdo-ebja {
+	width: 100%;
+}
+
+.tabla-Oferta-ebja {
+	width: 210%;
+}
+
+.tabla-OfertaScroll-ebja {
+	width: 100%;
+}
+
+
+.tabla-Codigo-ebja {
+	width: 20%;
+}
+
+.tabla-Nombre-ebja {
+	width: 40%;
+}
+
+.tabla-Estado-ebja {
+	width: 10%;
+}
+
+.tabla-editar-ebja {
+	width: 10%;
+}
+
+.tabla-borrar-ebja {
+	width: 10%;
+}
+
+.tabla-N-modulo-ebja {
+	width: 5%;
+}
+
+.tabla-codigo-modulo-ebja {
+	width: 15%;
+}
+
+.tabla-Nombre-modulo-ebja {
+	width: 15%;
+}
+
+.tabla-Nombre-Oferta-ebja {
+	width: 19%;
+}
+.tabla-Cobertura-modulo-ebja {
+	width: 14%;
+}
+
+.tabla-Modalidad-modulo-ebja {
+	width: 16%;
+}
+
+.tabla-FechaIniFin-modulo-ebja {
+	width: 13%;
+}
+.tabla-Nombre-estado-ebja {
+	width: 12%;
+}
+
+.tabla-Nombre-Edad-Rezago-ebja {
+	width: 10%;
+}
+
+.tabla-Estado-modulo-ebja {
+	width: 10%;
+}
+
+.tabla-editar-modulo-ebja {
+	width: 10%;
+}
+
+.tabla-borrar-modulo-ebja {
+	width: 10%;
+}
+
+.tabla-inactivar-modulo-ebja {
+	width: 13%;
+}
+
+.texto-confirmar-borrar-archivo-ebja {
+	padding-left: 15%;
+	width: 80%;
+}
+
+.pop-up-elegir-registro-pdf-ebja div {
+	background-image: url("../css/images/file_pdf.png");
+	width: 100%;
+	height: 100%;
+}
+
+
+/* ****************************** */
+
+/* Estilos para la pantalla EBJA MODULO*/
+
+.inputModuloNuevoNemonico-ebja {
+	width: 180px !important;
+	max-width: 180px !important;
+	min-width:  180px !important;
+	text-align: left;
+	autoWidth: false;
+}
+ 
+.calendarModuloNuevoNemonico-ebja {
+	width: 180px !important;
+	max-width: 180px !important;
+	min-width:  180px !important;
+	text-align: left;
+	autoWidth: false;
+	
+}
+
+.comboModuloNuevoNemonico-ebja {
+	
+	width: 250px !important;
+	max-width: 250px !important;
+	min-width:  250px !important;
+	text-align: left;
+	autoWidth: false;
+}
+
+
+
+/* ****************************** */
+
+
+/* Estilos para la pantalla EBJA REGLA*/
+.combo-ebja {
+	margin-bottom:1%;
+	text-align: left;
+    margin-top:1%;
+}
+
+
+.comboReglaFase-ebja {
+	width: 180px !important;
+	max-width: 180px !important;
+	min-width:  180px !important;
+	text-align: left;
+	autoWidth: false;
+}
+
+.comboReglaFaseAsignatura-ebja {
+	width: 180px !important;
+	max-width: 180px !important;
+	min-width:  180px !important;
+	text-align: left;
+	autoWidth: false;
+	margin-left: 10px;
+}
+
+.textReglaModulo-ebja {
+	width: 90%;
+	text-align: left;
+}
+
+.botonBuscar-Estudiante-ebja {
+	width: 25%;
+	margin-top: 0.5%;
+	margin-bottom: 0.5%;
+}
+
+.calendarFase-ebja {
+	width: 100%;
+	text-align: left;
+}
+
+.popUpCreacionReglaBotones-ebja {
+	width: 98%;
+}
+.popUpCreacionReglaBotones-ebja td td {
+	width: 98%;
+	margin-left: 20%
+}
+
+.tabla-Regla-ebja {
+	width: 100%;
+}
+
+.tabla-Nombre-regla-ebja {
+	width: 15%;
+}
+
+.panelBusqueda-terceraCol-reglas-ebja {
+	width: 79%;
+}
+
+.panelBusqueda-terceraCol-reglas-ebjaDatos {
+	width: 79%;
+}
+
+.panelBusqueda-primeraCol-reglas-ebja {
+	width: 25%;
+	text-align:center;
+}
+
+
+.tabla-Regla-Fase-ebja {
+	width: 40%;
+}
+
+.tabla-Regla-Estado-ebja {
+	width: 10%;
+}
+
+.tabla-editar-regla-ebja {
+	width: 8%;
+}
+
+.tabla-borrar-regla-ebja {
+	width: 8%;
+}
+
+.popUpBusqueda-primeraCol-regla-ebja {
+	width: 20%;
+}
+
+.popUpBusqueda-segundaCol-regla-ebja {
+	width: 80%;
+}
+
+.comboReglaModulo-ebja {
+	width: 180px !important;
+	max-width: 180px !important;
+	min-width:  180px !important;
+	text-align: left;
+	autoWidth: false;
+}
+
+.comboReglaModulo-ebjaSeleccion {
+	width: 180px !important;
+	max-width: 180px !important;
+	min-width:  180px !important;
+	text-align: left;
+	autoWidth: false;
+	margin-left: 20px
+}
+
+.comboReglaModulo-ebjaEspecial {
+	width: 180px !important;
+	max-width: 180px !important;
+	min-width:  180px !important;
+	text-align: left;
+	autoWidth: false;
+	margin-top: 25px;
+	
+}
+
+.comboReglaModuloBusqueda-ebja {
+	margin-bottom:1%;
+    margin-top:1%;
+    width: 590px !important;
+	max-width: 590px !important;
+	min-width:  590px !important;
+	text-align: left;
+	autoWidth: false;
+}
+
+
+.tabla-Nombre-fase-regla-ebja {
+	width: 20%;
+}
+
+.tabla-Nombre-regla-fechaFin-ebja {
+	width: 13%;
+}
+
+.tabla-Nombre-regla-fechaIni-ebja {
+	width: 13%;
+}
+
+.tabla-Regla-Modulo-ebja {
+	width: 20%;
+}
+
+
+.popUpCreacionRegla-ebja td td td td {
+	width: 98%;
+}
+
+.popUpBusqueda-segundaCol-regla-ebja {
+	width: 80%;
+}
+
+.popUpBusqueda-primeraCol-regla-ebja {
+	width: 20%;
+}
+
+.popUpBusqueda-botones-regla-ebja {
+	width: 50%;
+}
+/* ****************************** */
+/* Estilos para la pantalla EBJA ESTUDIANTE*/
+
+
+/**********Búsqueda****************/
+
+.cmbButton-Estudiante-ebja {
+	margin-bottom:1%;
+	width: 80%;
+	margin-top: 1%;
+}
+
+
+.panelBusqueda-primeraCol-Estudiante-ebja {
+	width: 25%;
+}
+
+.panelBusqueda-segundaCol-Estudiante-ebja {
+	width: 25%;
+}
+
+.panelBusqueda-terceraCol-Estudiante-ebja {
+	width: 50%;
+}
+
+.inputText-Estudiante-ebja {
+	width: 100%;
+	text-align: left;
+}
+
+.botonBuscar-Estudiante-ebja {
+	margin-bottom:0.5%;
+	width: 25%;
+	margin-top: 0.5%;
+}
+
+
+
+.userId-Estudiante-ebja {
+	background-image: url('../img/userId.png');
+	background-size: 90px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 90px;
+	height: 90px;
+	float: left;
+	margin-left: 10%;
+	margin-bottom: 3%;
+}
+
+.userIdAddInfo-Estudiante-ebja {
+	background-image: url('../img/addInfoUser.png');
+	background-size: 90px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 100px;
+	height: 100px;
+	float: left;
+}
+
+.userConfirmacionForm-Estudiante-ebja {
+	background-image: url('../img/confirmacionForm.png');
+	background-size: 90px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 100px;
+	height: 100px;
+	float: left;
+}
+
+.userIdMap-Estudiante-ebja {
+	background-image: url('../img/iconmap.png');
+	background-size: 90px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 100px;
+	height: 100px;
+	float: left;
+}
+
+.userIdMap-IconEstudiante-ebja {
+	background-image: url('../img/iconEstudiante.png');
+	background-size: 90px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 100px;
+	height: 100px;
+	float: left;
+}
+
+.userIdMap-Modulo-ebja {
+	background-image: url('../img/iconModulo.png');
+	background-size: 90px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 90px;
+	height: 90px;
+	float: left;
+}
+
+.userIdMap-Reglas-ebja {
+	background-image: url('../img/iconReglas.png');
+	background-size: 90px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 90px;
+	height: 90px;
+	float: left;
+}
+
+.userIdMap-Catalogo-ebja {
+	background-image: url('../img/iconCatalogo.png');
+	background-size: 90px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 90px;
+	height: 90px;
+	float: left;
+	
+}
+.userIcon-asignatura-ebja {
+	background-image: url('../img/iconAsignatura.png');
+	background-size: 90px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 90px;
+	height: 90px;
+	float: left;
+}
+
+.userIcon-Acuerdo-ebja {
+	background-image: url('../img/acuerdoIcon.png');
+	background-size: 90px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 90px;
+	height: 90px;
+	float: left;
+}
+
+.userIcon-ModeloEvaluacion-ebja {
+	background-image: url('../img/iconModeloEval.png');
+	background-size: 90px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 90px;
+	height: 90px;
+	float: left;
+}
+
+.userIcon-ModeloAsistencia-ebja {
+	background-image: url('../img/iconModeloAsistencia.png');
+	background-size: 85px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 96px;
+	height: 90px;
+	float: left;
+	margin-left: 10%;
+	margin-bottom: 3%;
+}
+
+.userIcon-Estudiante-AyudaSocial-ebja {
+	background-image: url('../img/iconAyudaSocial.png');
+	background-size: 90px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 100px;
+	height: 100px;
+	float: left;
+}
+
+.userIcon-Estudiante-Mail-ebja {
+	background-image: url('../img/iconMail.png');
+	background-size: 90px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 100px;
+	height: 100px;
+	float: left;
+}
+
+.userIcon-Estudiante-AnioCursado-ebja {
+	background-image: url('../img/iconAnioCursado.png');
+	background-size: 90px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 100px;
+	height: 100px;
+	float: left;
+}
+
+.userIcon-Seleccion-Instituciones-ebja {
+	background-image: url('../img/iconInstituciones.png');
+	background-size: 90px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 100px;
+	height: 100px;
+	float: left;
+}
+
+.userIcon-Asignacion-Paralelo-ebja {
+	background-image: url('../img/iconParalelo.png');
+	background-size: 90px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 100px;
+	height: 100px;
+	float: left;
+}
+
+.userIcon-Seleccion-Docentes-ebja {
+	background-image: url('../img/iconDocentes.png');
+	background-size: 90px;
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 100px;
+	height: 100px;
+	float: left;
+	margin-left: 20%
+}
+
+/*Panel A*/
+
+.panelAEstudianteCol1 {
+	width: 32%;
+}
+
+.panelAEstudianteCol2 {
+	width: 68%;
+}
+
+.userPanelA-Estudiante-ebja {
+	width: 57%;
+}
+
+/*Panel B*/
+.panelBcmbButton-Estudiante-ebja {
+	width: 90%;
+}
+
+.panelBEstudianteColIcon {
+	width: 8%;
+}
+
+.panelBEstudianteCol1 {
+	width: 16%;
+}
+.panelBEstudianteCol2 {
+	width: 25%;
+}
+
+.panelBEstudianteCol1Geografica {
+	width: 16%;
+}
+.panelBEstudianteCol2Geografica {
+	width: 40%;
+}
+
+.panelBEstudianteCol1InfoAdicional {
+	width: 16%;
+}
+.panelBEstudianteCol2InfoAdicional {
+	width: 40%;
+}
+
+.panelBEstudianteCol1Contacto {
+	width: 20%;
+}
+.panelBEstudianteCol2Contacto {
+	width: 30%;
+}
+.panelBEstudianteCol3Contacto {
+	width: 50%;
+}
+
+
+.panelBEstudianteCol21 {
+	width: 15%;
+}
+
+.panelBEstudianteCol3 {
+	width: 16%;
+}
+
+.panelBEstudianteCol1Cue {
+	width: 20%;
+}
+.panelBEstudianteCol2Cue {
+	width: 30%;
+}
+
+.panelBEstudianteSocialCol {
+	width: 32%;
+}
+
+.radioButton-Estudiante-ebja td{
+	width:50px;
+}
+
+.radioButton-Busqueda-ebja{
+	width:100%;
+	text-align: left;
+}
+
+.radioButton-EstudianteCue-ebja td{
+	width:30px;
+}
+
+
+
+.radioButton-Estudiante-ebja td label{
+	margin-top:8px;
+	margin-left: 5px;
+}
+
+
+/* *******Estilos pantalla Evaluacion*********************** */
+
+.tabla-Eval-coltipo1-ebja {
+	width: 3%;
+}
+.tabla-Eval-Acciones-ebja {
+	width: 3%;
+}
+.tabla-Evaluacion-ebja {
+	width: 270%;
+}
+
+.tabla-EvalPacial-ColTipo1-ebja {
+	width: 15%;
+}
+/* ********************************************************** */
+/***************mensajes**********************************/
+
+.userIcon-Mensaje-ebja {
+	background-image: url('../img/mensajeIcon.png');
+	background-size: 90px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 100px;
+	height: 100px;
+	float: left;
+}
+
+
+.tabla-Mensaje-ebja {
+	width: 100%;
+}
+
+.popUpCreacionMensaje-ebja td td {
+	width: 98%;
+}
+
+.popUpCreacionMensaje-ebja td td {
+	width: 98%;
+}
+
+
+.popUpCreacionMensajeBotones-ebja td td {
+	width: 98%;
+	
+}
+
+.popUpCreacionMensajeBotones-ebja {
+	margin: 0 auto;
+	margin-top: 4%;
+}
+
+.comboMensajeProgramaFormulario-ebja {
+	width: 300px !important;
+	max-width: 300px !important;
+	min-width:  300px !important;
+	text-align: left;
+	autoWidth: false;
+}
+/*****************GRADO****************************/
+
+.userIcon-Grado-ebja {
+	background-image: url('../img/iconGrado.png');
+	background-size: 90px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 100px;
+	height: 100px;
+	float: left;
+}
+
+.panelBusqueda-primeraCol-grado-ebja {
+	width: 90%;
+	text-align:center;
+}
+
+.botonBuscarGrado-ebja {
+	width: 85%;
+	margin-top: 1%;
+	margin-bottom: 1%;
+}
+
+.comboReglaGradoBusqueda-ebja {
+	margin-bottom:1%;
+    margin-top:1%;
+    width: 590px !important;
+	max-width: 590px !important;
+	min-width:  590px !important;
+	text-align: left;
+	autoWidth: false;
+}
+
+
+
+
+
+
+
+
+
+
+
+/***************ASISTENCIA*****************************/
+
+.panelBusqueda-primeraCol-asistencia-ebja {
+	width: 40%;
+	text-align:center;
+}
+
+.panelBusqueda-segundaCol-asistencia-ebja {
+	width: 70%;
+}
+
+.comboModuloNuevoNemonico-Asistencia-ebja {
+	width: 100%;
+	text-align: left;
+}
+
+
+/*Pantalla Acuerdo Ebja*/
+
+.contienePanelBusquedaAcuerdoEbja {
+	margin: 0 auto;
+}
+
+.panelBusquedaAcuerdoEbja {
+	width: 100%;
+}
+
+
+/********************NOTAS************************/
+
+.ebja_notas_tblbusqueda_001{
+	text-align: left;
+	width: 100%;
+}
+
+.ebja_notas_tblLabel_002{
+	text-align: left;
+	width: 20%;
+}
+.ebja_notas_tblNombre_003{
+	text-align: left;
+	width: 80%;
+	
+}
+
+.ebja_notas_tblNombreCol004 {
+	width: 25%;
+	text-align:left;
+}
+
+.ebja_notas_tblDescripcionCol005 {
+	width: 70%;
+	text-align:left;
+}
+
+.ebja_notas_lblNombreAlumno006 {
+	width: 30%;
+	text-align:left;
+}
+.ebja_notas_inpNombreAlumno007 {
+	width: 70%;
+	text-align:left;
+	 margin-left: 30px;
+}
+
+.ebja_notas_tblbusquedaAlumno_008{
+	text-align: left;
+	width: 100%;
+	
+}
+
+
+
+
+/**************************************************/

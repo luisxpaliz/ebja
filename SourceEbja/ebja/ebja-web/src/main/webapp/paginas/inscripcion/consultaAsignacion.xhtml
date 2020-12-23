@@ -1,0 +1,147 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/plantillas/contenedorExterno.xhtml">
+
+	<ui:define name="titulo"></ui:define>
+
+	<ui:define name="contenido">
+		<style>
+			.uppercase { text-transform: uppercase; }
+			.width40 { width: 40%; }
+			.preformatted { white-space: pre; }
+		</style>
+		<script type="text/javascript">
+			var formKeypress = function(event) {
+		    	if (event.keyCode === 13) {
+		      		document.getElementById('frmForm:clBuscar').click();
+		      		return false;
+		    	}
+		    	return true;
+		  	};
+    	</script>
+
+		<fieldset
+			style="width: 100%; text-align: left; border-color: rgba(255, 255, 255, 0);">
+			<h:form id="frmForm" onkeypress="return formKeypress(event);">
+				<div style="width: 100%" align="center">
+					<p:panel style="width:90%; border: none; background-color: rgba(255, 255, 255, 0);">
+						<div style="width: 50%" align="center">
+							<p:panel>
+								<f:facet name="header">Consultar Certificados de Asignación (EBJA)</f:facet>
+
+								<p:fieldset legend="Par&#225;metros de busqueda" style="width:80%">
+								<p:panelGrid columns="2" style="width: 100%">
+									<p:outputLabel value="Consultar por" />
+									<p:selectOneRadio required="true"
+										value="#{consultaAsignacionBean.opcionValor}">
+										<f:selectItem
+											itemLabel="Identificaci&#243;n &#160;&#160;&#160;&#160;"
+											itemValue="1" />
+										<f:selectItem itemLabel="Apellidos/Nombres (Completos)"
+											itemValue="2" />
+										<p:ajax event="change" update="itTextoBuscar itTextoImagen giCaptcha" 
+											listener="#{consultaAsignacionBean.init()}"/>
+									</p:selectOneRadio>
+									
+									<p:outputLabel value="" />
+									<p:inputText id="itTextoBuscar" style="width:100%" class="uppercase"
+										value="#{consultaAsignacionBean.textoBuscar}" 
+										maxlength="40" required="true" requiredMessage="Ingrese dato solicitado." >
+									</p:inputText>
+								</p:panelGrid>
+								</p:fieldset>
+								
+								<p:messages id="mensaje"  style="width:80%; margin-top:3px;"/>
+								
+								<p:fieldset legend="Validar Captcha" style="width:80%">
+									<p:panelGrid columns="3">
+										<p:graphicImage id="giCaptcha" style="width: 100%" align="center"
+											value="#{facesContext.externalContext.requestContextPath}/../Captcha.jpg"/>
+										<h:commandLink immediate="true" value=""
+											listener="#{consultaAsignacionBean.resetearTextoImagen()}" 
+											render="frmForm itTextoImagen">
+											<img width="22px;" title="Cambiar imagen"
+								            	src="#{facesContext.externalContext.request.contextPath}/img/boton-actualizar.png">
+								       		</img>	
+										</h:commandLink>
+										<h:panelGroup>
+											<p:inputText id="itTextoImagen" styleClass="input-registro"
+												value="#{consultaAsignacionBean.textoImagen}" 
+												required="true" requiredMessage="Ingrese texto de la imagen.">
+											</p:inputText>
+											<p:watermark for="itTextoImagen" value="Texto de la imagen..." id="watermark" />
+										</h:panelGroup>
+									</p:panelGrid>
+									<br />
+									<p:commandButton id="cbBuscar" value="Buscar" icon="fa fa-search"
+										actionListener="#{consultaAsignacionBean.buscar()}" 
+										update="frmForm frmConsultaInscripcion"/>
+								</p:fieldset>
+							</p:panel>
+						</div>
+					</p:panel>
+				</div>
+			</h:form>
+		</fieldset>
+		
+		<h:form id="frmConsultaInscripcion">
+			<p:dialog header="Consultar Asignación Aspirante"
+				widgetVar="dConsultaAsignacion" resizable="false" autosized="false" width="360" height="360">
+				<p:panelGrid id="pgDatosAsignacion" columns="2" cellpadding="5"
+					cellspacing="1" border="0" styleClass="ebja_oferta_pnlGrdOfertaModulo_018"
+					columnClasses="ebja_oferta_pnlGrdCreacionOferta_1stCol_019,ebja_oferta_pnlGrdCreacionOferta_2ndCol_020"
+					rendered="true">
+					<p:outputLabel value="Identificación: " />
+					<p:outputLabel styleClass="ebja_oferta_inpTxtCreacionOferta_codigo_021"
+						value="#{consultaAsignacionBean.matricula.estudiante.registroEstudiante.numeroIdentificacion}">
+					</p:outputLabel>
+					<p:outputLabel value="Apellidos/Nombres: " />
+					<p:outputLabel styleClass="ebja_oferta_inpTxtCreacionOferta_nombre_022"
+						value="#{consultaAsignacionBean.matricula.estudiante.registroEstudiante.apellidosNombres}">
+					</p:outputLabel>
+					<p:outputLabel value="Oferta Educativa: " />
+					<p:outputLabel styleClass="ebja_oferta_inpTxtCreacionOferta_nombre_022"
+						value="#{consultaAsignacionBean.matricula.estudiante.registroEstudiante.inscripcion.programaEbja.nombre}">
+					</p:outputLabel>
+					<p:outputLabel value="Inicio Clases: " />
+					<p:outputLabel styleClass="ebja_oferta_inpTxtCreacionOferta_nombre_022"
+						value="#{consultaAsignacionBean.matricula.estudiante.registroEstudiante.inscripcion.programaEbja.fechaInicioClases}">
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</p:outputLabel>
+					<p:outputLabel value="Inscripción: " />
+					<p:outputLabel styleClass="ebja_oferta_inpTxtCreacionOferta_nombre_022"
+						value="#{consultaAsignacionBean.matricula.estudiante.registroEstudiante.inscripcion.id}">
+					</p:outputLabel>
+
+					<p:outputLabel value="Fecha: " />
+					<p:outputLabel styleClass="ebja_oferta_inpTxtCreacionOferta_nombre_022"
+						value="#{consultaAsignacionBean.matricula.estudiante.registroEstudiante.inscripcion.fechaCreacion}">
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</p:outputLabel>
+				</p:panelGrid>
+				
+				<p:panelGrid border="0" columns="2"
+					styleClass="popUpCreacionAcuerdoBotones-ebja"
+					columnClasses="ebja_global_pnlGrd_col1st_GuardarRegistro_006,ebja_global_pnlGrd_col2nd_CancelarRegistro_007">
+					
+					<h:commandLink id="clVerCertificado" value="Ver Certificado" render="frmForm"
+					    actionListener="#{consultaAsignacionBean.verCertificado()}" target="_blank">
+						<h:graphicImage value="/img/pdf_icono.png" 
+										alt="Ver Certificado"
+										title="Ver Certificado" />
+					</h:commandLink>
+
+					<p:commandButton id="cancelarRegistroModulo" value="Cancelar"
+						styleClass="ebja_global_btnCancelarRegistro_009" update="frmForm"
+						actionListener="#{consultaAsignacionBean.init()}"
+						oncomplete="PF('dConsultaAsignacion').hide();" />
+				</p:panelGrid>
+
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,377 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantillas/contenedorBloqueo.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">
+        Traslado Estudiante a otra Institución Educativa 
+  	</ui:define>
+
+	<ui:define name="contenido">
+		<style>
+			.contenido { background: #fff; }
+		</style>
+		<div>
+			<h:form id="frmForm">
+				<p:panel styleClass="contienePanelBusqueda-ebja">
+					<f:facet name="header">Búsqueda de Estudiante:</f:facet>
+					<p:panelGrid id="pnlBusquedaEstudiante" cellpadding="10" cellspacing="1" border="1" styleClass="panelBusqueda-ebja">
+						<p:row>
+							<p:column>
+								<div class="userIdMap-IconEstudiante-ebja"></div>
+							</p:column>
+							<p:column styleClass="panelBusqueda-primeraCol-Estudiante-ebja">
+								<h:outputText value=" Búsqueda de Estudiante por: " />
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-Estudiante-ebja">
+								<p:outputLabel value="Identificación: "/>
+								<br></br>
+								<br></br>
+								<p:outputLabel value="Apellidos y Nombres: "/>
+							</p:column>
+							<p:column styleClass="panelBusqueda-terceraCol-Estudiante-ebja"> 
+								<p:inputText id="itNumeroIdentificacion" styleClass="inputText-Estudiante-ebja"
+									readonly="#{trasladoBean.readonlyNumeroIdentificacion}"
+									value="#{trasladoBean.numeroIdentificacion}" onkeyup="javascript:this.value=this.value.toUpperCase()">
+								</p:inputText>
+								<br></br>
+								<br></br>
+								<p:inputText id="itApellidosNombres" styleClass="inputText-Estudiante-ebja"
+									readonly="#{trasladoBean.readonlyApellidosNombres}"
+									value="#{trasladoBean.apellidosNombres}" onkeyup="javascript:this.value=this.value.toUpperCase()">
+									<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ\s]+$/i" />
+								</p:inputText>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+
+					<p:panelGrid cellpadding="10" cellspacing="1" border="1" styleClass="panelBusqueda-ebja">
+						<p:row>	
+							<p:column styleClass="panelBusqueda-segundaCol-Estudiante-ebja" style="text-align:center">
+								<p:commandButton id="cbBuscarEstudiante" value="Buscar Estudiante"
+									disabled="#{trasladoBean.disabledCbBuscarEstudiante}"
+									actionListener="#{trasladoBean.buscarEstudiante()}"
+									icon="fa fa-search" ajax="true" update="frmForm">
+								</p:commandButton>
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-Estudiante-ebja" style="text-align:center">
+								<p:commandButton id="cbInicializarObjetos" value="Otro Estudiante"
+									disabled="#{!trasladoBean.disabledCbBuscarEstudiante}"
+									actionListener="#{trasladoBean.inicializarObjetos()}"
+									icon="fa fa-refresh" ajax="true" update="frmForm">
+								</p:commandButton>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					
+					<p:messages id="mensaje" style="width:100%; margin-top:3px;" />
+					<p:growl id="growl" showDetail="true" sticky="true" />
+
+					<p:panel id="EstudiantePanelA" visible="#{trasladoBean.habPanelA}">
+						<f:facet name="header">A. Información del Estudiante a Trasladar:</f:facet>
+						<p:panelGrid>
+							<p:row>
+								<p:column rowspan="6">
+									<div class="userId-Estudiante-ebja"></div>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="panelBEstudianteCol1">
+									<h:outputText value=" Institución: " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2">
+									<h:outputText
+										value="#{trasladoBean.matricula.programaInstitucion.institucEstablec.idInstitucion.descripcion}"
+										style="font-weight:bold;" />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol1">
+									<h:outputText value=" Oferta: " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2">
+									<h:outputText
+										value="#{trasladoBean.matricula.estudiante.inscripcion.programaEbja.nombre}"
+										style="font-weight:bold;" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="panelBEstudianteCol1">
+									<h:outputText value=" Inscripción / Matricula: " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2">
+									<h:outputText
+										value="#{trasladoBean.matricula.estudiante.inscripcion.id} / #{trasladoBean.matricula.id}"
+										style="font-weight:bold;" />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol1">
+									<h:outputText value=" Paralelo: " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2">
+									<h:outputText
+										value="#{trasladoBean.matricula.cursoParalelo.paralelo.descripcion}"
+										style="font-weight:bold;" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="panelBEstudianteCol1">
+									<h:outputText value=" Identificación: " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2">
+									<h:outputText
+										value="#{trasladoBean.matricula.estudiante.registroEstudiante.catalogoTipoIdentificacion.descripcion} / #{trasladoBean.matricula.estudiante.registroEstudiante.numeroIdentificacion}"
+										style="font-weight:bold;" />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol1">
+									<h:outputText value=" Apellidos y Nombres: " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2">
+									<h:outputText
+										value="#{trasladoBean.matricula.estudiante.registroEstudiante.apellidosNombres}"
+										style="font-weight:bold;" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="panelBEstudianteCol1">
+									<h:outputText value=" Celular: " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2">
+									<h:outputText
+										value="#{trasladoBean.matricula.estudiante.registroEstudiante.telefono}" />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol1">
+									<h:outputText value=" Correo electrónico: " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2">
+									<h:outputText
+										value="#{trasladoBean.matricula.estudiante.registroEstudiante.correoElectronico}" />
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</p:panel>
+
+					<p:panel id="EstudiantePanelB" visible="#{trasladoBean.habPanelB}">
+							<f:facet name="header">B. Información de Ubicación de la Institución a Trasladar:</f:facet>
+							<p:panelGrid>
+								<p:row>
+									<p:column rowspan="6">
+										<div class="userIdMap-Estudiante-ebja"></div>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="panelBEstudianteCol1">
+										<h:outputText value="Posee Código Único Eléctrico de la planilla de luz? "/>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2">
+										<p:panel style="text-align: right; width:66%">
+											<p:selectOneRadio layout="lineDirection" styleClass="radioButton-EstudianteCue-ebja"
+												disabled="#{trasladoBean.protejerObjetos}"
+												value="#{trasladoBean.tieneCUE}">
+												<f:selectItem itemLabel="Sí" itemValue="1" />
+												<f:selectItem itemLabel="No" itemValue="0" />
+					                			<p:ajax execute="@this" update="frmForm cmbProvincia"
+					                               	    listener="#{trasladoBean.mostrarPanelCUE()}"/>
+											</p:selectOneRadio>
+										</p:panel>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol1" rendered="#{trasladoBean.visibleUbicacionCUE}">
+										<p:outputLabel value="CUE: "/>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2" rendered="#{trasladoBean.visibleUbicacionCUE}">
+										<p:panelGrid columns="2" style="width:90%">
+											<p:inputText id="itCodigoCue" maxlength="10" style="width:100%"
+												required="true" requiredMessage="Ingrese el código CUE" validatorMessage="Código CUE no válido..."
+							                   	readonly="#{trasladoBean.protejerObjetos}" 
+												value="#{trasladoBean.cueBuscar}">
+												<f:validateLength minimum="8" maximum="10" />
+											</p:inputText>
+											<p:commandButton id="cbUbicacionCUE" style="width:100%"
+												value="Buscar" update="frmForm"
+												disabled="#{trasladoBean.protejerObjetos}"
+												action="#{trasladoBean.buscarUbicacionCUE()}" icon="fa fa-search"/>
+										</p:panelGrid>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="panelBEstudianteCol1">
+										<h:outputText for="cmbProvincia" value=" Provincia: " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2">
+				                    	<p:selectOneMenu id="cmbProvincia" layout="pageDirection" styleClass="comboModuloNuevoNemonico-ebja" autoWidth="false"
+ 											readonly="#{trasladoBean.protejerObjetosDA}" validatorMessage="Código Provincia no válido..." 
+				                            value="#{trasladoBean.provincia.id}" >
+				                            <f:selectItem itemLabel=" seleccione la Provincia " noSelectionOption="true" />
+											<f:selectItems value="#{trasladoBean.listaProvincia}" 
+			                               		           var="item" itemLabel="#{item.descripcion}" 
+				                                       	              itemValue="#{item.id}"/>
+				                			<p:ajax execute="@this" update="frmForm"
+				                               	    listener="#{trasladoBean.obtenerProvincia()}"/>
+				                        </p:selectOneMenu>
+		    							<p:message for="cmbProvincia" id="msjProvincia"/>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol1">
+										<p:outputLabel value="Zona: * "/>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2">
+				                        <p:selectOneMenu id="cmbZona" layout="pageDirection" styleClass="comboModuloNuevoNemonico-ebja" autoWidth="false"
+				                        	required="true" requiredMessage="Campo obligatorio" readonly="true" 
+				                            value="#{trasladoBean.zona.id}" >
+				                            <f:selectItem itemLabel=" seleccione la Zona " noSelectionOption="true" />
+											<f:selectItems value="#{trasladoBean.listaZona}" 
+			                               		           var="item" itemLabel="#{item.nombreZona}" 
+				                                       	              itemValue="#{item.id}"/>
+				                			<p:ajax execute="@this" update="frmForm"/>
+				                        </p:selectOneMenu>
+			    						<p:message for="cmbZona" id="msjZona"/>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="panelBEstudianteCol1">
+										<p:outputLabel for="cmbCanton" value="Cantón: "/>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2">
+					                        <p:selectOneMenu id="cmbCanton" layout="pageDirection" styleClass="comboModuloNuevoNemonico-ebja" autoWidth="false"
+					                        	required="true" requiredMessage="Campo obligatorio"
+					                          	readonly="#{trasladoBean.protejerObjetosDA}" 
+					                            value="#{trasladoBean.canton.id}" >
+					                            <f:selectItem itemLabel=" seleccione el Cant&#243;n " noSelectionOption="true" />
+												<f:selectItems value="#{trasladoBean.listaCanton}" 
+				                               		           var="item" itemLabel="#{item.descripcion}" 
+					                                       	              itemValue="#{item.id}"/>
+					                			<p:ajax execute="@this" update="frmForm"
+					                               	    listener="#{trasladoBean.obtenerCanton()}"/>
+					                        </p:selectOneMenu>
+				    						<p:message for="cmbCanton" id="msjCanton"/>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol1">
+										<p:outputLabel value="Distrito: * "/>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2">
+					                	<p:selectOneMenu id="cmbDistrito" layout="pageDirection" styleClass="comboModuloNuevoNemonico-ebja" autoWidth="false"
+					                       	required="true" requiredMessage="Campo obligatorio" readonly="true" 
+					                        value="#{trasladoBean.distrito.id}" >
+					                        <f:selectItem itemLabel=" seleccione el Distrito " noSelectionOption="true" />
+											<f:selectItems value="#{trasladoBean.listaDistrito}" 
+				                            	           var="item" itemLabel="#{item.nombreDistrito}" 
+					                                   	              itemValue="#{item.id}"/>
+					                		<p:ajax execute="@this" update="frmForm" />
+					               		</p:selectOneMenu>
+				    					<p:message for="cmbDistrito" id="msjDistrito"/>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="panelBEstudianteCol1">
+										<p:outputLabel for="cmbParroquia" value="Parroquia: "/>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2">
+					                	<p:selectOneMenu id="cmbParroquia" layout="pageDirection" styleClass="comboModuloNuevoNemonico-ebja" autoWidth="false"
+					                       	required="true" requiredMessage="Campo obligatorio"
+					                       	readonly="#{trasladoBean.protejerObjetosDA}" 
+					                        value="#{trasladoBean.parroquia.id}" >
+					                        <f:selectItem itemLabel=" seleccione la Parroquia " noSelectionOption="true" />
+											<f:selectItems value="#{trasladoBean.listaParroquia}" 
+				                            	           var="item" itemLabel="#{item.descripcion}" 
+					                                  	              itemValue="#{item.id}"/>
+					                		<p:ajax execute="@this" update="frmForm"
+					                           	    listener="#{trasladoBean.obtenerParroquia()}"/>
+					                  	</p:selectOneMenu>
+				    					<p:message for="cmbParroquia" id="msjParroquia"/>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol1">
+										<p:outputLabel value="Circuito: * "/>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2">
+					                    <p:selectOneMenu id="cmbCircuito" layout="pageDirection" styleClass="comboModuloNuevoNemonico-ebja" autoWidth="false"  
+					                       	required="true" requiredMessage="Campo obligatorio" readonly="true" 
+					                        value="#{trasladoBean.circuito.id}" >
+					                        <f:selectItem itemLabel=" seleccione el Circuito " noSelectionOption="true" />
+											<f:selectItems value="#{trasladoBean.listaCircuito}" 
+				                           		           var="item" itemLabel="#{item.codigoSenpladesCircuito}" 
+					                                   	              itemValue="#{item.id}"/>
+					                		<p:ajax execute="@this" update="frmForm" />
+					                    </p:selectOneMenu>
+				    					<p:message for="cmbCircuito" id="msjCircuito"/>
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						</p:panel>
+
+						<p:panel id="EstudiantePanelC" visible="#{trasladoBean.habPanelC}">
+							<f:facet name="header">C. Instituciones relacionadas con la ubicación seleccionada:</f:facet>
+							<p:dataTable id="tblProgramaInstitucion" var="reg" rowIndexVar="indice" paginatorPosition="bottom"
+								value="#{trasladoBean.listaProgramaInstitucion}" scrollable="true"
+								scrollHeight="150" paginator="true" rows="10" rowsPerPageTemplate="5,10,15"
+								paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								emptyMessage="No existe registros" filteredValue="#{trasladoBean.listaProgramaInstitucionFilter}" >
+	                            
+	                            <p:column headerText="Nro." style="width:40px; text-align:center" >
+	                                <f:facet name="header">Nro.</f:facet>
+	                                #{indice + 1} 
+	                            </p:column>
+								<p:column headerText="Zona"	style="width:50px; text-align:center" >
+									<h:outputText value="#{reg.institucEstablec.idCircuitoParroquia.idCircuito.idDistrito.idZona.codigoSenpladesZona}" />
+								</p:column>
+								<p:column headerText="Circuito"	style="width:100px" >
+									<h:outputText value="#{reg.institucEstablec.idCircuitoParroquia.idCircuito.codigoSenpladesCircuito}" />
+								</p:column>
+								<p:column headerText="Parroquia" style="width:80px" >
+									<h:outputText value="#{reg.institucEstablec.idCircuitoParroquia.idParroquia.codigoParroquia}" />
+								</p:column>
+								
+								<p:column headerText="Institución" style="width:280px" >
+									<h:outputText value="#{reg.institucEstablec.idInstitucion.descripcion}" />
+								</p:column>
+								<p:column filterBy="#{reg.institucEstablec.idInstitucion.amie}" headerText="Amie" style="width:130px; text-align:center" >
+						        	<h:outputText value="#{reg.institucEstablec.idInstitucion.amie}" />
+						        </p:column>							
+								<p:column headerText="Total Aforo" style="width:60px; text-align:center" >
+									<h:outputText value="#{reg.totalAforo}" />
+								</p:column>
+								<p:column headerText="Total Bancas" style="width:60px; text-align:center" >
+									<h:outputText value="#{reg.totalBanca}" />
+								</p:column>
+								<p:column headerText="Cupo Disponible" style="width:90px; text-align:center" >
+									<h:outputText value="#{reg.cupoDisponible}" />
+								</p:column>
+	                            <p:column style="width:80px; text-align:center" >
+	                                <f:facet name="header">Procesar</f:facet>
+	                                <p:selectBooleanCheckbox id="sbcProcesar" value="#{reg.estadoProceso}" 
+	                                	disabled="#{trasladoBean.disabledSbcProcesar}">
+	                                    <p:ajax execute="@this" update="frmForm"
+	                                    		listener="#{trasladoBean.verificarTraslado(reg, indice)}"/>
+	                                </p:selectBooleanCheckbox>
+	                            </p:column>
+								
+								<f:facet name="paginatorBottomRight">
+									<p:commandButton type="button" icon="fa fa-sync" />
+								</f:facet>
+							</p:dataTable>
+					</p:panel>
+						
+				</p:panel>
+			</h:form>
+		</div>
+
+		<h:form>
+			<p:dialog header="Alerta en Procesar" widgetVar="popConfirmarProceso" autosized="false" width="350" height="100">
+				<h:panelGrid border="0" columns="2" columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+					<div class="eliminar-archivo-ebja"></div>
+					<h:outputLabel value="Esta seguro de trasladar al Estudiante a la Institución? "
+						styleClass="texto-confirmar-borrar-archivo-ebja" />
+				</h:panelGrid>
+				<h:panelGrid columns="2" styleClass="popUpCreacionAcuerdoBotones-ebja"
+					columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja" border="0">
+					<p:commandButton value="Continuar" styleClass="popUpBoton-ebja"
+						ajax="true" actionListener="#{trasladoBean.procesarContinuar()}"
+						oncomplete="PF('popConfirmarProceso').hide();"
+						update="frmForm" />
+					<p:commandButton value="Cancelar" styleClass="popUpBoton-ebja"
+						ajax="true" actionListener="#{trasladoBean.procesarCancelar()}" 
+						oncomplete="PF('popConfirmarProceso').hide();" 
+						update="frmForm" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>		
+		
+	</ui:define>
+</ui:composition>

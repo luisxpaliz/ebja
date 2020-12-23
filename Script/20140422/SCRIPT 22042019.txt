@@ -1,0 +1,88 @@
+/***** SE AÑADE EL CAMPO GRADO A LA TABLA MALLA **********/
+
+ALTER TABLE ebja.malla ADD COLUMN id_grado INTEGER NOT NULL
+
+ALTER TABLE ebja.malla ADD COLUMN nemonico VARCHAR(60) NOT NULL  
+
+
+/****** SE AÑADE TABLA TRASLADOS PARA LA PANTALLA TRASLADOS *********/
+
+CREATE SEQUENCE ebja.detalle_traslado_id_seq;
+
+ALTER SEQUENCE ebja.detalle_traslado_id_seq
+    OWNER TO carmenta;
+
+CREATE TABLE ebja.detalle_traslado
+(
+  id integer NOT NULL DEFAULT nextval('ebja.detalle_traslado_id_seq'::regclass),
+  id_matricula   integer     NOT NULL,
+  id_matricula_curso_paralelo     integer,
+  id_matricula_programa_institucion     integer,
+  id_matricula_tipo_proceso_origen      integer,
+  suministro_luz    character varying(50),
+  dpa_parroquia     character varying(6),
+  id_usuario_creacion integer NOT NULL,
+  fecha_creacion timestamp without time zone NOT NULL,
+  ip_usuario character varying(30) COLLATE pg_catalog."default" NOT NULL,
+  estado character(1) COLLATE pg_catalog."default" NOT NULL,
+  CONSTRAINT pk_detalle_traslado PRIMARY KEY (id),
+  CONSTRAINT fk_matricula FOREIGN KEY (id_matricula)
+        REFERENCES ebja.matricula(id) MATCH SIMPLE
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT
+
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+//*************** SE AÑADE TABLA TRASLADOS PARA AUDITORIA PARA LA PANTALLA TRASLADOS **********************/
+                
+CREATE TABLE ebja_audit.detalle_traslado_log(
+log_id serial primary key not null,
+audit_ts timestamptz not null default now(),
+operation char(8)not null,
+username varchar(50) not null default "current_user"(),
+before jsonb, 
+after jsonb
+) TABLESPACE audit_tablespace;
+ALTER TABLE ebja_audit.detalle_traslado_log
+    OWNER to carmenta;
+GRANT ALL ON TABLE ebja_audit.detalle_traslado_log TO carmenta;
+GRANT SELECT ON TABLE ebja_audit.detalle_traslado_log TO rol_lectura;
+
+//****************SE AÑADE TRIGGER PARA LA TABLA TRASLADO AUDITORIA ***********************************/
+
+CREATE TRIGGER detalle_traslado_audit
+BEFORE INSERT OR UPDATE OR DELETE
+ON ebja.detalle_traslado
+FOR EACH ROW
+EXECUTE PROCEDURE public.table_log_trig('ebja_audit','detalle_traslado_log');
+                
+
+/************ SE AÑADE CAMPO A PROGRAMA EBJA ********************/
+
+ALTER TABLE ebja.programa_ebja ADD COLUMN fecha_inicio_clases timestamp(6) 
+
+ALTER TABLE ebja.programa_ebja 
+    ALTER COLUMN fecha_inicio_clases SET NOT NULL     
+                
+
+/**************************BORRAR PROGRAMA ACUERDO COLUMNAS****************/
+
+ALTER TABLE "ebja"."programa_acuerdo" DROP COLUMN "id_usuario_creacion"
+ALTER TABLE "ebja"."programa_acuerdo" DROP COLUMN "fecha_creacion"
+ALTER TABLE "ebja"."programa_acuerdo" DROP COLUMN "ip_usuario"
+ALTER TABLE "ebja"."programa_acuerdo" DROP COLUMN "estado"
+
+/*************************************************************************/
+
+
+/*************************AÑADIR NEMONICO ASIGNATURA ******************/
+
+
+ALTER TABLE "ebja"."asignatura" ADD COLUMN "nemonico" varchar(60)
+
+
+/****************************************************************************

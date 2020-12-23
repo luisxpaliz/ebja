@@ -1,0 +1,1552 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/plantillas/contenedorBloqueo.xhtml">
+
+	<ui:define name="titulo">#{inscripcionBean.tituloPagina}</ui:define>
+	<ui:define name="contenido">
+		<style>
+.contenido {
+	background: #fff;
+}
+
+.claseParaBotonLink {
+	background-color: #4A75B5;
+	background-image: url("../img/buttonBackgroundImage.png");
+	background-position: left top;
+	background-repeat: repeat-x;
+	border-color: #C0C0C0;
+	border-width: 1px;
+	color: #FFFFFF;
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 11px;
+	padding-top: 2px;
+	padding-bottom: 3px;
+	padding-right: 14px;
+	padding-left: 14px;
+	text-decoration: none;
+}
+
+a.claseParaBotonLink:hover {
+	background-image: url("../img/buttonHoverBackgroundImage.png");
+	background-position: left bottom;
+	background-repeat: repeat-x;
+	color: #FFFFFF;
+}
+</style>
+		<script type="text/javascript">
+		function limpiarFormulario() {
+		    document.getElementById("frmForm").reset();
+		  }
+		
+            function validar(item) {
+            	//ideForm = identificador de la forma que contiene los atributos a procesar. (jbrito-20150908)
+            	
+                var ideForm = item.id.substring(0, item.id.length - 10); //El valor 10 = # caracteres del nombre atributo ej: quimestre1
+                var val1 = parseFloat(document.getElementById(ideForm + "porcentaje").value);
+                if (val1 + "" == "NaN") val1 = 0;
+               // document.getElementById("frmForm:script").innerHTML = val1;
+				//Validar que el valor ingresado no sea mayor que 10. (jbrito-20151016)
+                if (val1 > 100) {
+                	val1 = 0; 
+                	alert("El valor de porcentaje ingresado es mayor que 100"); 
+                	document.getElementById(ideForm + "porcentaje").value = null; 
+                }
+            }
+
+            function NumCheck(e, field) {
+                //alert(field.value)
+                key = e.keyCode ? e.keyCode : e.which
+                if (key == 9) return true;
+                if (key == 8) return true;
+                if (key > 47 &amp;&amp; key &lt; 58) {
+                    if (field.value == "") return true
+                    regexp = /[0-9]{2}(\.\d{2,2}){0,1}$/
+                    return !(regexp.test(field.value))
+                }
+                if (key == 46) {
+                    if (field.value == "") return false
+                    regexp = /^[0-9]+$/
+                    return regexp.test(field.value)
+                }
+                
+                //alert(field.value)
+                return false
+            }
+            
+            function check(e) {
+                tecla = (document.all) ? e.keyCode : e.which;
+
+                //Tecla de retroceso para borrar, siempre la permite
+                if (tecla == 8) {
+                    return true;
+                }
+
+                // Patron de entrada, en este caso solo acepta numeros y letras
+                patron = /[A-Za-z0-9 ]/;
+                tecla_final = String.fromCharCode(tecla);
+                return patron.test(tecla_final);
+            } 		
+	  	</script>
+
+		<div>
+			<h:form id="frmForm">
+				<p:panel id="pgRequisitosPrevios"
+					styleClass="contienePanelBusqueda-ebja">
+					<f:facet name="header">Requisitos previos del aspirante:</f:facet>
+					<p:panelGrid id="pnlBusquedaInstituciones" cellpadding="10"
+						cellspacing="1" border="1" styleClass="panelBusqueda-ebja">
+						<p:row>
+							<p:column>
+								<div class="userIcon-ModeloAsistencia-ebja"></div>
+								
+							</p:column>
+							<p:column>
+								<p:outputLabel value="Información preliminar:"
+									style="font-weight:bold"></p:outputLabel>
+									
+							</p:column>
+							<p:column styleClass="panelBusqueda-terceraCol-reglas-ebja">
+								<p:panelGrid columns="2" styleClass="panelBusqueda-ebja">
+									<p:outputLabel
+										value="1. ¿Aspirante tiene 15 a&#241;os o m&#225;s?"
+										style="font-weight:bold" />
+									<p:selectOneRadio
+										value="#{inscripcionBean.tieneQuinceAniosOMas}"
+										style="font-weight:bold"
+										disabled="#{inscripcionBean.disabledQuinceAniosOMas}"
+										valueChangeListener="#{inscripcionBean.aceptarQuinceAniosOMas}">
+										<p:ajax event="click" update="frmForm" />
+										<f:selectItem itemLabel="&#32;Aceptar" itemValue="1" />
+									</p:selectOneRadio>
+
+									<p:outputLabel
+										value="2. ¿Aspirante tiene 3 a&#241;os o m&#225;s de rezago educativo, dentro o fuera del sistema educativo?"
+										style="font-weight:bold" />
+									<p:selectOneRadio
+										value="#{inscripcionBean.tieneRezagoEducativo}"
+										style="font-weight:bold"
+										disabled="#{inscripcionBean.disabledRezagoEducativo}"
+										valueChangeListener="#{inscripcionBean.aceptarRezagoEducativo}">
+										<p:ajax event="click" update="frmForm" />
+										<f:selectItem itemLabel="&#32;Aceptar" itemValue="1" />
+									</p:selectOneRadio>
+
+									<p:outputLabel
+										value="3. ¿Aspirante cumple documentaci&#243;n requerida para el registro de la inscripci&#243;n?"
+										style="font-weight:bold" />
+									<p:selectOneRadio
+										value="#{inscripcionBean.cumpleDocumentacion}"
+										style="font-weight:bold"
+										disabled="#{inscripcionBean.disabledCumpleDocumentacion}"
+										valueChangeListener="#{inscripcionBean.aceptarCumpleDocumentacion}">
+										<p:ajax event="click"
+											update="frmForm, :#{p:component('messageInicio')}" />
+										<f:selectItem itemLabel="&#32;Aceptar" itemValue="1" />
+									</p:selectOneRadio>
+
+								</p:panelGrid>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:panel>
+
+				<p:messages id="messageInicio" style="width:100%; margin-top:3px;" />
+
+				<h:panelGroup id="pgIdentificacionAspirante"
+					rendered="#{inscripcionBean.visiblePanelA}">
+					<!-- <p:panel>  -->
+					<p:panel id="panelA" styleClass="contienePanelBusqueda-ebja">
+						<f:facet name="header">A. IDENTIFICACI&#211;N GENERAL DEL ASPIRANTE:</f:facet>
+						<p:panelGrid cellpadding="10" cellspacing="1" border="1"
+							styleClass="panelBusqueda-ebja">
+							<p:row>
+								<p:column>
+									<div class="userId-Estudiante-ebja"></div>
+								</p:column>
+								<p:column>
+									<p:outputLabel value="Datos Identificación:"></p:outputLabel>
+								</p:column>
+								<p:column styleClass="panelBusqueda-terceraCol-reglas-ebjaDatos">
+									<p:panelGrid id="pgIdentificacion" columns="2"
+										styleClass="panelBusqueda-ebja">
+										<p:outputLabel for="cmbTipoDocumento" value="Tipo Documento: " />
+										<h:panelGroup>
+											<p:selectOneMenu id="cmbTipoDocumento" required="true"
+												requiredMessage="seleccione Tipo Documento"
+												disabled="#{inscripcionBean.disabledTipoDocumento}"
+												value="#{inscripcionBean.registroEstudiante.catalogoTipoIdentificacion.id}">
+												<f:selectItem itemLabel=" seleccione Tipo Documento"
+													noSelectionOption="true" itemDisabled="true" />
+												<f:selectItems value="#{inscripcionBean.listaTipoDocumento}"
+													var="tdo" itemLabel="#{tdo.descripcion}"
+													itemValue="#{tdo.id}" />
+												<p:ajax execute="@this" update="panelA apellidosNombres"
+													listener="#{inscripcionBean.obtenerTipoDocumento}" />
+											</p:selectOneMenu>
+										</h:panelGroup>
+
+										<p:outputLabel for="numeroIdentificacion"
+											value="N&#250;mero de Identificaci&#243;n: "
+											rendered="#{inscripcionBean.visibleNumeroIdentificacion}" />
+										<h:panelGroup
+											rendered="#{inscripcionBean.visibleNumeroIdentificacion}"
+											style="width:50%">
+											<p:panelGrid columns="2">
+												<p:inputText id="numeroIdentificacion" maxlength="15"
+													autocomplete="on" required="true"
+													requiredMessage="Ingrese Número Identificación"
+													validatorMessage="N&#250;mero de Identificaci&#243;n no v&#225;lido..."
+													readonly="#{inscripcionBean.readonlyNumeroIdentificacion}"
+													value="#{inscripcionBean.cedulaBuscar}">
+													<f:validateLength minimum="0" maximum="15" />
+												</p:inputText>
+												<p:commandButton id="cbBuscarIdentificacion"
+													update="frmForm "
+													rendered="#{!inscripcionBean.disabledIdentificacionAspirante}"
+													action="#{inscripcionBean.buscarIdentificacionAspirante()}"
+													value="Buscar Identificaci&#243;n Aspirante"
+													icon="fa fa-search" />
+
+											</p:panelGrid>
+										</h:panelGroup>
+
+										<p:outputLabel for="apellidosNombres"
+											value="Apellidos y Nombres: " />
+										<h:panelGroup>
+											<p:inputText id="apellidosNombres" required="true"
+												requiredMessage="Ingrese Apellidos Nombres"
+												autocomplete="off"
+												readonly="#{inscripcionBean.readonlyApellidosNombres}"
+												style="width:390px" maxlength="150"
+												onkeyup="javascript:this.value=this.value.toUpperCase()"
+												value="#{inscripcionBean.registroEstudiante.apellidosNombres}"
+												onkeypress="return check(event)" />
+										</h:panelGroup>
+
+										<p:outputLabel for="fechaNacimiento"
+											value="Fecha de Nacimiento: " />
+										<h:panelGroup>
+											<p:panelGrid columns="3">
+												<p:calendar id="fechaNacimiento"
+													styleClass="calendarModuloNuevoNemonico-ebja"
+													required="true"
+													disabled="inscripcionBean.disabledFechaNacimiento"
+													requiredMessage="Ingrese Fecha de Nacimiento"
+													navigator="true"
+													value="#{inscripcionBean.registroEstudiante.fechaNacimiento}"
+													showOn="button"
+													readonlyInput="#{inscripcionBean.readonlyFechaNacimiento}"
+													maxlength="10"
+													mindate="#{inscripcionBean.registroEstudiante.fechaNacimiento}"
+													pattern="yyyy-MM-dd" />
+												<p:outputLabel id="olFormatoFecha" value="AAAA-MM-DD "
+													rendered="#{!inscripcionBean.visibleEdadAspirante}" />
+												<p:outputLabel id="olEdadAspirante"
+													value="Edad: #{inscripcionBean.edadAspirante} A&#241;os"
+													rendered="#{inscripcionBean.visibleEdadAspirante}" />
+											</p:panelGrid>
+										</h:panelGroup>
+
+										<p:outputLabel value="" />
+										<p:commandButton id="cbDatosIdentificacion"
+											styleClass="botonBuscar-Estudiante-ebja" value="Continuar"
+											update="frmForm"
+											disabled="#{inscripcionBean.disabledIngresarIdentificacion}"
+											action="#{inscripcionBean.ingresarIdentificacionAspirante()}"
+											icon="fa fa-rotate-right" />
+									</p:panelGrid>
+									<!-- <p:messages id="messagePanelA" style="width:100%; margin-top:3px;" /> -->
+									<p:panelGrid
+										rendered="#{inscripcionBean.textosalidaPanelA ne ''}">
+										<div class="alert-info" style="text-align: left;">
+											<p:outputLabel id="msgIdentificacionGeneral"
+												value="#{inscripcionBean.textosalidaPanelA}" />
+										</div>
+									</p:panelGrid>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</p:panel>
+
+					<p:panel id="panelB" rendered="#{inscripcionBean.visiblePanelB}">
+						<f:facet name="header">B. INFORMACI&#211;N ADICIONAL DEL ASPIRANTE:</f:facet>
+						<p:focus context="panelB" />
+						<p:panelGrid id="pgDatosAdicionales">
+							<p:row>
+								<p:column rowspan="6">
+									<div class="userIdAddInfo-Estudiante-ebja"></div>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="panelBEstudianteCol1InfoAdicional">
+									<h:outputText value="Género: * " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2InfoAdicional">
+									<h:panelGroup>
+										<p:selectOneMenu id="cmbGenero" layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja" required="true"
+											requiredMessage="seleccione G&#233;nero"
+											readonly="#{inscripcionBean.disabledGenero}"
+											value="#{inscripcionBean.registroEstudiante.catalogoGenero.id}">
+											<f:selectItem itemLabel=" seleccione G&#233;nero "
+												noSelectionOption="true" itemDisabled="true" />
+											<f:selectItems value="#{inscripcionBean.listaGenero}"
+												var="gen" itemLabel="#{gen.nombre}" itemValue="#{gen.id}" />
+											<p:ajax execute="@this" update="frmForm"
+												listener="#{inscripcionBean.obtenerGenero()}" />
+										</p:selectOneMenu>
+									</h:panelGroup>
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol1InfoAdicional">
+									<h:outputText value="Estado Civil: * " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2InfoAdicional">
+									<h:panelGroup>
+										<p:selectOneMenu id="cmbEstadoCivil" layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja" required="true"
+											requiredMessage="seleccione Estado Civil"
+											readonly="#{inscripcionBean.disabledEstadoCivil}"
+											value="#{inscripcionBean.registroEstudiante.catalogoEstadoCivil.id}">
+											<f:selectItem itemLabel=" seleccione Estado Civil "
+												noSelectionOption="true" itemDisabled="true" />
+											<f:selectItems value="#{inscripcionBean.listaEstadoCivil}"
+												var="esc" itemLabel="#{esc.nombre}" itemValue="#{esc.id}" />
+											<p:ajax execute="@this" update="frmForm" />
+										</p:selectOneMenu>
+									</h:panelGroup>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="panelBEstudianteCol1InfoAdicional">
+									<h:outputText value="Actividad Económica: * " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2InfoAdicional">
+									<h:panelGroup>
+										<p:selectOneMenu id="cmbActividadEconomica"
+											layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja" required="true"
+											requiredMessage="seleccione Actividad Econ&#243;mica"
+											autoWidth="false"
+											readonly="#{inscripcionBean.disabledActividadEconomica}"
+											value="#{inscripcionBean.registroEstudiante.catalogoActividadEconomica.id}">
+											<f:selectItem
+												itemLabel=" seleccione Actividad Econ&#243;mica "
+												noSelectionOption="true" itemDisabled="true" />
+											<f:selectItems
+												value="#{inscripcionBean.listaActividadEconomica}" var="ace"
+												itemLabel="#{ace.nombre}" itemValue="#{ace.id}" />
+											<p:ajax execute="@this" update="frmForm" />
+										</p:selectOneMenu>
+									</h:panelGroup>
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol1InfoAdicional">
+									<h:outputText value="Situación Laboral: * " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2InfoAdicional">
+									<h:panelGroup>
+										<p:selectOneMenu id="cmbSituacionLaboral"
+											layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja" required="true"
+											requiredMessage="seleccione Situaci&#243;n Laboral"
+											readonly="#{inscripcionBean.disabledSituacionLaboral}"
+											value="#{inscripcionBean.registroEstudiante.catalogoSituacionLaboral.id}">
+											<f:selectItem itemLabel=" seleccione Situaci&#243;n Laboral "
+												noSelectionOption="true" itemDisabled="true" />
+											<f:selectItems
+												value="#{inscripcionBean.listaSituacionLaboral}" var="sil"
+												itemLabel="#{sil.nombre}" itemValue="#{sil.id}" />
+											<p:ajax execute="@this" update="frmForm" />
+										</p:selectOneMenu>
+									</h:panelGroup>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="panelBEstudianteCol1InfoAdicional">
+									<h:outputText value="Autodefinición Étnica: * " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2InfoAdicional">
+									<h:panelGroup>
+										<p:selectOneMenu id="cmbEtnia" layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja" required="true"
+											requiredMessage="seleccione Etnia"
+											readonly="#{inscripcionBean.disabledEtnia}"
+											value="#{inscripcionBean.registroEstudiante.etnia.id}">
+											<f:selectItem itemLabel=" seleccione Etnia "
+												noSelectionOption="true" itemDisabled="true" />
+											<f:selectItems value="#{inscripcionBean.listaEtnia}"
+												var="reg" itemLabel="#{reg.nombre}" itemValue="#{reg.id}" />
+											<p:ajax execute="@this" update="panelB"
+												listener="#{inscripcionBean.obtenerNacionalidadIndigena()}" />
+										</p:selectOneMenu>
+									</h:panelGroup>
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol1InfoAdicional"
+									rendered="#{inscripcionBean.visiblePgNacionalidadIndigena}">
+									<h:outputText value="Nacionalidad Indígena: * " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2InfoAdicional"
+									rendered="#{inscripcionBean.visiblePgNacionalidadIndigena}">
+									<h:panelGroup>
+										<p:selectOneMenu id="cmbNacionalidadIndigena"
+											layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja" required="true"
+											requiredMessage="seleccione Nacionalidad Indígena"
+											autoWidth="false"
+											readonly="#{inscripcionBean.disabledNacionalidadIndigena}"
+											value="#{inscripcionBean.registroEstudiante.catalogoNacionalidad.id}">
+											<f:selectItem itemLabel=" seleccione Nacionalidad Indígena "
+												noSelectionOption="true" itemDisabled="true" />
+											<f:selectItems
+												value="#{inscripcionBean.listaNacionalidadIndigena}"
+												var="nai" itemLabel="#{nai.nombre}" itemValue="#{nai.id}" />
+											<p:ajax execute="@this" update="frmForm" />
+										</p:selectOneMenu>
+									</h:panelGroup>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="panelBEstudianteCol1InfoAdicional">
+									<h:outputText value="Nacionalidad: * " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2InfoAdicional">
+									<h:panelGroup>
+										<p:selectOneMenu id="cmbNacionalidad"
+											rendered="#{!inscripcionBean.visibleNacionalidad}"
+											layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja"
+											autoWidth="false" required="true"
+											requiredMessage="seleccione Nacionalidad"
+											readonly="#{inscripcionBean.disabledNacionalidad}"
+											value="#{inscripcionBean.registroEstudiante.nacionalidadEcuatoriana}">
+											<f:selectItem itemLabel=" seleccione Nacionalidad "
+												noSelectionOption="true" itemDisabled="true" />
+											<f:selectItem itemValue="1" itemLabel="ECUATORIANA" />
+											<f:selectItem itemValue="0" itemLabel="EXTRANJERO" />
+											<p:ajax execute="@this" update="frmForm"
+												listener="#{inscripcionBean.obtenerPais()}" />
+										</p:selectOneMenu>
+										<p:inputText id="itDesNacionalidad" style="width:200px;"
+											disabled="true"
+											rendered="#{inscripcionBean.visibleNacionalidad}"
+											value="#{inscripcionBean.nacionalidad.desNacionalidad}" />
+									</h:panelGroup>
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol1InfoAdicional"
+									rendered="#{inscripcionBean.visiblePgParentesco}">
+									<h:outputText value="País: * " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2InfoAdicional"
+									rendered="#{inscripcionBean.visiblePgParentesco}">
+									<h:panelGroup>
+										<p:selectOneMenu id="cmbPais1" layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja" required="true"
+											requiredMessage="seleccione País" autoWidth="false"
+											readonly="#{inscripcionBean.disabledParentesco}"
+											value="#{inscripcionBean.registroEstudiante.pais.id}">
+											<f:selectItem itemLabel=" seleccione País "
+												noSelectionOption="true" itemDisabled="true" />
+											<f:selectItems value="#{inscripcionBean.listaPais}" var="pai"
+												itemLabel="#{pai.nombre}" itemValue="#{pai.id}" />
+											<p:ajax execute="@this" update="frmForm" />
+										</p:selectOneMenu>
+									</h:panelGroup>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+
+						<p:panelGrid>
+							<p:row>
+								<p:column rowspan="1">
+									<div class="userIcon-Estudiante-AyudaSocial-ebja"></div>
+								</p:column>
+								<p:column styleClass="panelBEstudianteSocialCol">
+									<p:fieldset legend="Datos Familiares * "
+										style=" text-align: center; width:100%">
+										<p:panelGrid id="pgTieneHijos">
+											<p:row>
+												<p:column>
+													<h:outputText value="¿Tiene Hijos?" />
+												</p:column>
+												<p:column>
+													<p:selectOneRadio id="sorDatosFamiliares"
+														styleClass="radioButton-Estudiante-ebja" required="true"
+														requiredMessage="seleccione Datos Familiares"
+														disabled="#{inscripcionBean.disabledDatosFamiliares}"
+														value="#{inscripcionBean.registroEstudiante.tieneHijo}">
+														<f:selectItem itemLabel="Sí" itemValue="1" />
+														<f:selectItem itemLabel="No" itemValue="0" />
+														<p:ajax event="change" update="frmForm"
+															listener="#{inscripcionBean.obtenerDatosFamiliares()}"></p:ajax>
+													</p:selectOneRadio>
+												</p:column>
+											</p:row>
+										</p:panelGrid>
+
+										<p:row
+											rendered="#{inscripcionBean.registroEstudiante.tieneHijo eq '1'}">
+											<p:column>
+												<p:dataTable id="edtTieneHijos" var="registro"
+													rowIndexVar="indice"
+													rendered="#{inscripcionBean.registroEstudiante.tieneHijo eq '1'}"
+													value="#{inscripcionBean.listaDatosFamiliares}">
+													<p:column headerText="Descripci&#243;n" style="width:60px;">
+														<f:facet name="header">Descripci&#243;n</f:facet>
+								                                #{registro.nombre} 
+							                                </p:column>
+													<p:column headerText="Si - No"
+														style="width:30px; text-align:center">
+														<f:facet name="header">Si - No</f:facet>
+														<center>
+															<h:selectOneRadio id="sorTieneHijos"
+																value="#{registro.idUsuarioCreacion}"
+																disabled="#{inscripcionBean.disabledDatosFamiliares}">
+																<f:selectItem itemValue="1" itemLabel="" />
+																<f:selectItem itemValue="0" itemLabel="" />
+																<p:ajax execute="@this" update="frmForm"
+																	listener="#{inscripcionBean.obtenerDatosFamiliares1(registro)}" />
+															</h:selectOneRadio>
+														</center>
+													</p:column>
+												</p:dataTable>
+											</p:column>
+										</p:row>
+									</p:fieldset>
+								</p:column>
+								<p:column styleClass="panelBEstudianteSocialCol">
+									<p:fieldset legend="Discapacidad (VALIDADA MSP/CONADIS) *"
+										style="text-align: center; width:100%">
+										<p:panelGrid id="pgTieneDiscapacidad">
+											<p:row>
+												<p:column>
+													<h:outputText value="¿Tiene Discapacidad?" />
+												</p:column>
+												<p:column>
+													<p:selectOneRadio id="sorDiscapacidad"
+														styleClass="radioButton-Estudiante-ebja" required="true"
+														requiredMessage="seleccione Datos Discapacidad"
+														disabled="#{inscripcionBean.disabledDiscapacidad}"
+														value="#{inscripcionBean.registroEstudiante.tieneDiscapacidad}">
+														<f:selectItem itemLabel="Sí" itemValue="1" />
+														<f:selectItem itemLabel="No" itemValue="0" />
+														<p:ajax execute="@this" update="frmForm"
+															listener="#{inscripcionBean.obtenerDiscapacidad()}" />
+													</p:selectOneRadio>
+												</p:column>
+											</p:row>
+										</p:panelGrid>
+										<p:row
+											rendered="#{inscripcionBean.registroEstudiante.tieneDiscapacidad eq '1'}">
+											<p:column>
+												<p:dataTable id="edtTieneDiscapacidad" var="registro"
+													rowIndexVar="indice"
+													rendered="#{inscripcionBean.registroEstudiante.tieneDiscapacidad eq '1'}"
+													value="#{inscripcionBean.listaDiscapacidad}">
+													<p:column headerText="Descripci&#243;n" style="width:40px;">
+														<f:facet name="header">Descripci&#243;n</f:facet>
+							                                    #{registro.catalogoDiscapacidad.nombre} 
+							                                </p:column>
+													<p:column headerText="Si - No"
+														style="width:30px; text-align:center">
+														<f:facet name="header">Si - No</f:facet>
+														<center>
+															<h:selectOneRadio id="sorTieneDiscapacidad"
+																disabled="#{inscripcionBean.disabledDiscapacidad}"
+																value="#{registro.idUsuarioCreacion}">
+																<f:selectItem itemValue="1" itemLabel=""
+																	noSelectionOption="false" />
+																<f:selectItem itemValue="0" itemLabel="" />
+																<p:ajax execute="@this" update="frmForm" />
+															</h:selectOneRadio>
+														</center>
+													</p:column>
+													<p:column headerText="Porcentaje"
+														style="width:30px; text-align:center">
+														<f:facet name="header">Porcentaje</f:facet>
+														<p:inputText id="porcentaje" size="2"
+															style="text-align:center;"
+															value="#{registro.porcentaje}"
+															readonly="#{registro.idUsuarioCreacion eq '0' or registro.idUsuarioCreacion eq null}"
+															onkeypress="return NumCheck(event, this)"
+															onkeyup="validar(this)">
+															<f:validateLength maximum="5" />
+															<p:ajax event="change" immediate="true" />
+														</p:inputText>
+													</p:column>
+												</p:dataTable>
+
+											</p:column>
+										</p:row>
+									</p:fieldset>
+								</p:column>
+								<p:column styleClass="panelBEstudianteSocialCol">
+									<p:fieldset
+										legend="Beneficiario MIES (Bono Desarrollo Humano) *"
+										style="text-align: center; width:90%">
+										<p:panelGrid id="pgBono">
+											<p:row>
+												<p:column>
+													<h:outputText value="¿Recibe bono de desarrollo humano?" />
+												</p:column>
+												<p:column>
+													<p:selectOneRadio id="sorBono"
+														styleClass="radioButton-Estudiante-ebja" required="true"
+														requiredMessage="seleccione Datos de Bono"
+														disabled="#{inscripcionBean.disabledBono}"
+														value="#{inscripcionBean.registroEstudiante.recibeBono}">
+														<f:selectItem itemLabel="Sí" itemValue="1" />
+														<f:selectItem itemLabel="No" itemValue="0" />
+														<p:ajax execute="@this"
+															listener="#{inscripcionBean.obtenerBono()}" />
+													</p:selectOneRadio>
+												</p:column>
+											</p:row>
+										</p:panelGrid>
+									</p:fieldset>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+						<p:panelGrid cellpadding="10" cellspacing="1" border="1"
+							styleClass="panelBusqueda-ebja">
+
+							<p:row>
+								<p:column rowspan="3">
+									<div class="userIcon-Estudiante-Mail-ebja"></div>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="panelBEstudianteCol1Contacto">
+									<p:outputLabel for="itTelefono" value="Teléfono Celular: " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2Contacto">
+									<p:inputText id="itTelefono" style="width:90px;"
+										autocomplete="off" required="true"
+										requiredMessage="Ingrese Teléfono Celular"
+										readonly="#{inscripcionBean.disabledTelefono}"
+										value="#{inscripcionBean.registroEstudiante.telefono}"
+										onkeypress="return soloNumeros(event)" maxlength="10">
+										<f:ajax render="clientOnServerSide" execute="@this" />
+									</p:inputText>
+									<p:outputLabel value=" - Ejm: 0988889999 " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol1Contacto">
+									<p:outputLabel value="Teléfono Convencional: " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol3Contacto">
+									<p:inputText id="itTelefono1" style="width:90px;"
+										autocomplete="off"
+										readonly="#{inscripcionBean.disabledTelefono}"
+										value="#{inscripcionBean.registroEstudiante.telefonoConvencional}"
+										onkeypress="return soloNumeros(event)" maxlength="9">
+										<f:ajax render="clientOnServerSide" execute="@this" />
+									</p:inputText>
+									<p:outputLabel value=" - Ejm: 022999999 " />
+									<p:message for="itTelefono1" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="panelBEstudianteCol1Contacto">
+									<p:outputLabel value="Correo Electrónico: " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2Contacto">
+									<p:inputText id="itEmail" style="width:200px;"
+										autocomplete="off" readonly="#{inscripcionBean.disabledEmail}"
+										maxlength="120"
+										onkeyup="javascript:this.value=this.value.toLowerCase()"
+										required="#{inscripcionBean.requiredEmail}"
+										value="#{inscripcionBean.registroEstudiante.correoElectronico}"
+										validatorMessage="Correo electr&#243;nico inv&#225;lido">
+										<f:ajax render="clientOnServerSide" execute="@this" />
+										<f:validateRegex
+											pattern="(^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+([;.](([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+)*$)?" />
+										<p:ajax execute="@this" event="blur" />
+									</p:inputText>
+									<p:outputLabel value="Ejm: juan.perez@hotmail.com " />
+									<p:message for="itEmail" />
+
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol1Contacto">
+									<p:outputLabel value="Rezago Educativo: *" />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol3Contacto" colspan="3">
+									<p:selectOneMenu id="cmbRezagoEducativo"
+										styleClass="comboModuloNuevoNemonico-ebja" autoWidth="false"
+										required="true" requiredMessage="seleccione Rezago Educativo"
+										readonly="#{inscripcionBean.disabledRezagoEducativo1}"
+										value="#{inscripcionBean.inscripcion.catalogoRezago.id}">
+										<f:selectItem itemLabel=" seleccione Rezago Educativo "
+											noSelectionOption="true" itemDisabled="true" />
+										<f:selectItems value="#{inscripcionBean.listaRezagoEducativo}"
+											var="ree" itemLabel="#{ree.nombre}" itemValue="#{ree.id}" />
+										<p:ajax execute="@this" update="frmForm" />
+									</p:selectOneMenu>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+
+						<p:panelGrid id="pgDatosOferta" cellpadding="10" cellspacing="1"
+							border="1" styleClass="panelBusqueda-ebja">
+							<p:row>
+								<p:column rowspan="3" styleClass="panelBEstudianteColIcon">
+									<div class="userIcon-Estudiante-AnioCursado-ebja"></div>
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol3">
+									<p:fieldset legend="Certificado"
+										style=" text-align: center; width:100%">
+										<p:panelGrid id="pgPresentaCertificado1">
+											<p:row>
+												<p:column>
+													<p:outputLabel value="¿Presenta Certificado?" />
+												</p:column>
+											</p:row>
+											<p:row>
+												<p:column>
+													<p:selectOneRadio id="sorPresentaCertificado1"
+														styleClass="radioButton-Estudiante-ebja" required="true"
+														requiredMessage="Debe seleccionar si presenta o no certificado."
+														disabled="#{inscripcionBean.disabledDocumentoHabilitante}"
+														value="#{inscripcionBean.inscripcion.presentaCertificado}">
+														<f:selectItem itemValue="1" itemLabel="Si" />
+														<f:selectItem itemValue="0" itemLabel="No" />
+														<p:ajax execute="@this"
+															update="frmForm:pgDatosOferta frmForm:pgBotones frmForm:cmbProyecto frmForm:cmbFaseProyectoInscripcion frmForm:cmbFaseProyecto frmForm:cmbOfertaAprobada frmForm:cmbGradoAprobado frmForm:cmbOfertaEducativaInscripcion frmForm:cmbGradoInscripcion"
+															listener="#{inscripcionBean.validarPresentaCertificadoView()}" />
+													</p:selectOneRadio>
+												</p:column>
+											</p:row>
+										</p:panelGrid>
+									</p:fieldset>
+									<p:fieldset legend="Servicio Educativo"
+										style=" text-align: center; width:100%">
+										<p:panelGrid style=" text-align: center; width:100%">
+											<p:row>
+												<p:column>
+													<p:selectOneMenu id="cmbProyecto"
+														styleClass="comboModuloNuevoNemonico-ebja" required="true"
+														requiredMessage="seleccione proyecto"
+														readonly="#{inscripcionBean.disabledUltimoAnioAprobado}"
+														value="#{inscripcionBean.proyectoSelecionado}">
+														<f:selectItem itemLabel=" Seleccione Proyecto "
+															noSelectionOption="false" itemDisabled="false" />
+														<f:selectItems
+															value="#{inscripcionBean.listaProgramasEducativos}"
+															var="reg" itemLabel="#{reg.nombrePrograma}"
+															itemValue="#{reg.idProgramaEducativo}" />
+														<p:ajax execute="@this"
+															update="frmForm:cmbFaseProyectoInscripcion frmForm:cmbFaseProyecto frmForm:cmbOfertaAprobada frmForm:cmbGradoAprobado frmForm:cmbOfertaEducativaInscripcion frmForm:cmbGradoInscripcion"
+															listener="#{inscripcionBean.obtenerFasesProyectosUltimoAprobado()}" />
+													</p:selectOneMenu>
+												</p:column>
+											</p:row>
+										</p:panelGrid>
+									</p:fieldset>
+								</p:column>
+
+								<p:column id="cRegistroEstudiante"
+									styleClass="panelBEstudianteCol2" colspan="2">
+									<p:fieldset legend="Periodo / Oferta / Grado"
+										style=" text-align: center; width:100%">
+
+										<p:panelGrid style=" text-align: center; width:100%">
+											<p:row>
+												<p:column>
+													<p:outputLabel value="Último Sistema Educativo:" />
+													<p:selectOneMenu id="cmbFaseProyectoInscripcion"
+														styleClass="comboModuloNuevoNemonico-ebja" required="true"
+														requiredMessage="seleccione fase"
+														readonly="#{inscripcionBean.disabledUltimoAnioAprobado}"
+														value="#{inscripcionBean.faseProgramaSeleccionado}">
+														<f:selectItem itemLabel=" Seleccione Periodo "
+															noSelectionOption="false" itemDisabled="false" />
+														<f:selectItems
+															value="#{inscripcionBean.listaGradoFaseProgramaUltimaAprobado}"
+															var="reg" itemLabel="#{reg.nombre}"
+															itemValue="#{reg.idGrupoFaseNotas}" />
+														<p:ajax execute="@this"
+															update="frmForm:cmbFaseProyecto frmForm:cmbOfertaAprobada frmForm:cmbGradoAprobado frmForm:cmbOfertaEducativaInscripcion frmForm:cmbGradoInscripcion"
+															listener="#{inscripcionBean.obtenerOfertaAprobada()}" />
+													</p:selectOneMenu>
+
+												</p:column>
+												<p:column>
+													<p:outputLabel value="Última Oferta Aprobada:" />
+													<p:selectOneMenu id="cmbOfertaAprobada"
+														styleClass="comboModuloNuevoNemonico-ebja" required="true"
+														requiredMessage="seleccione &#250;ltimo A&#241;o Aprobado"
+														readonly="#{inscripcionBean.disabledUltimoAnioAprobado}"
+														value="#{inscripcionBean.programaOfertaSeleccionado}">
+														<f:selectItem itemLabel=" Seleccione Oferta Aprobada " />
+														<f:selectItems
+															value="#{inscripcionBean.listaProgramaEbjaAprobado}"
+															noSelectionOption="false" itemDisabled="false" var="reg"
+															itemLabel="#{reg.nombre}" itemValue="#{reg.nemonico}" />
+														<p:ajax execute="@this"
+															update="frmForm:cmbFaseProyecto frmForm:cmbGradoAprobado frmForm:cmbOfertaEducativaInscripcion frmForm:cmbGradoInscripcion"
+															listener="#{inscripcionBean.obtenerGrado()}" />
+													</p:selectOneMenu>
+												</p:column>
+												<p:column>
+													<p:outputLabel value="Último Grado Aprobado:" />
+													<p:selectOneMenu id="cmbGradoAprobado"
+														styleClass="comboModuloNuevoNemonico-ebja" required="true"
+														requiredMessage="seleccione &#250;ltimo A&#241;o Aprobado"
+														readonly="#{inscripcionBean.disabledGradoOfertaAprobadoCmb}"
+														value="#{inscripcionBean.gradoOfertaSeleccionado}">
+														<f:selectItem itemLabel=" Seleccione Grado Aprobado "
+															noSelectionOption="false" itemDisabled="false" />
+														<f:selectItems value="#{inscripcionBean.listaGrado}"
+															var="reg" itemLabel="#{reg.nemonico}"
+															itemValue="#{reg.id}" />
+														<p:ajax execute="@this"
+															update="frmForm:cmbFaseProyecto frmForm:cmbOfertaEducativaInscripcion frmForm:cmbGradoInscripcion"
+															listener="#{inscripcionBean.obtenerFasesProyectos()}" />
+													</p:selectOneMenu>
+												</p:column>
+											</p:row>
+										</p:panelGrid>
+
+										<p:panelGrid style=" text-align: center; width:100%">
+											<p:row>
+												<p:column>
+													<p:outputLabel value="Periodo Inscripción:" />
+													<p:selectOneMenu id="cmbFaseProyecto"
+														styleClass="comboModuloNuevoNemonico-ebja" required="true"
+														requiredMessage="seleccione fase"
+														readonly="#{inscripcionBean.disabledUltimoAnioAprobado}"
+														value="#{inscripcionBean.faseProgramaSeleccionadoUltimo}">
+														<f:selectItem itemLabel=" Seleccione Periodo "
+															noSelectionOption="false" itemDisabled="false" />
+														<f:selectItems
+															value="#{inscripcionBean.listaGradoFasePrograma}"
+															var="reg" itemLabel="#{reg.nombre}"
+															itemValue="#{reg.idGrupoFaseNotas}" />
+														<p:ajax execute="@this"
+															update="frmForm:cmbOfertaEducativaInscripcion frmForm:cmbGradoInscripcion"
+															listener="#{inscripcionBean.buscarOfertaGrado()}" />
+													</p:selectOneMenu>
+												</p:column>
+												<p:column>
+													<p:outputLabel value="Oferta Inscripción:" />
+													<p:selectOneMenu id="cmbOfertaEducativaInscripcion"
+														styleClass="comboModuloNuevoNemonico-ebja"
+														autoWidth="false" required="true"
+														requiredMessage="seleccione Oferta" disabled="true"
+														readonly="#{inscripcionBean.disabledRegistroEstudiante}"
+														value="#{inscripcionBean.programaOfertaInscripcion}">
+														<f:selectItem itemLabel=" Seleccione Oferta "
+															noSelectionOption="false" itemDisabled="false" />
+														<f:selectItems
+															value="#{inscripcionBean.listaProgramaEbjaInscripcion}"
+															var="reg" itemLabel="#{reg.nombre}"
+															itemValue="#{reg.nemonico}" />
+														<p:ajax execute="@this"
+															update="frmForm:cmbGradoInscripcion"
+															listener="#{inscripcionBean.obtenerGradoInscripcion()}" />
+													</p:selectOneMenu>
+												</p:column>
+												<p:column>
+													<p:outputLabel value="Grado Inscripción:" />
+													<p:selectOneMenu id="cmbGradoInscripcion"
+														styleClass="comboModuloNuevoNemonico-ebja"
+														autoWidth="false" required="true"
+														requiredMessage="Seleccione Grado " disabled="true"
+														readonly="#{inscripcionBean.disabledGradoOfertaAprobadoCmb}"
+														value="#{inscripcionBean.gradoOfertaSeleccionadoInscripcion}">
+														<f:selectItem itemLabel=" Seleccione Grado "
+															noSelectionOption="true" />
+														<f:selectItems
+															value="#{inscripcionBean.listaGradoInscripcion}"
+															var="regGr" itemLabel="#{regGr.nemonico}"
+															itemValue="#{regGr.id}" />
+														<p:ajax update="frmForm:cmbGradoInscripcion" />
+													</p:selectOneMenu>
+												</p:column>
+											</p:row>
+										</p:panelGrid>
+										<p:commandButton id="btnAceptarOferta" disabled="inscripcionBean.disabledBtnAceptarOferta"
+											styleClass="botonBuscar-Estudiante-ebja" value="Continuar"
+											icon="fa fa-rotate-right">
+											<p:ajax execute="@this"
+												update="frmForm:pgDatosOferta frmForm:pgBotones frmForm:cDocumentoPresentado frmForm:pgMensaje"
+												listener="#{inscripcionBean.obtenerProgramaEbjaView}" />
+										</p:commandButton>
+									</p:fieldset>
+								</p:column>
+
+
+							</p:row>
+							<p:row>
+
+								<p:column id="cCaracteristicasOE"
+									styleClass="panelBEstudianteCol2"
+									rendered="#{inscripcionBean.visibleCaracteristicasOE}">
+									<p:fieldset legend="Características Oferta Educativa"
+										style=" text-align: center; width:100%">
+										<p:panelGrid columns="3"
+											style=" text-align: center; width:100%">
+											<p:outputLabel value="Edad mínima: " />
+											<p:outputLabel
+												value="#{inscripcionBean.inscripcion.programaGrado.programaEbja.edadMinima}"
+												disabled="true" style="text-align:center; width:56px" />
+											<p:outputLabel value=" A&#241;os " />
+											<p:outputLabel value="Rezago Educativo: " />
+											<p:outputLabel
+												value="#{inscripcionBean.inscripcion.programaGrado.programaEbja.rezagoMinimo}"
+												disabled="true" style="text-align:center; width:56px" />
+											<p:outputLabel value=" A&#241;os " />
+											<p:outputLabel value="Fecha Inicio: " />
+											<p:outputLabel
+												value="#{inscripcionBean.inscripcion.programaGrado.programaEbja.fechaInicio}"
+												style="text-align:left">
+												<f:convertDateTime pattern="dd/MM/yyyy" />
+											</p:outputLabel>
+											<p:outputLabel value="" />
+											<p:outputLabel value="Fecha Fin: " />
+											<p:outputLabel
+												value="#{inscripcionBean.inscripcion.programaGrado.programaEbja.fechaFin}"
+												style="text-align:left">
+												<f:convertDateTime pattern="dd/MM/yyyy" />
+											</p:outputLabel>
+											<p:outputLabel value="" />
+											<p:outputLabel value="Cobertura: " />
+											<p:outputLabel value="#{inscripcionBean.cobertura}" />
+											<p:outputLabel value="" />
+										</p:panelGrid>
+									</p:fieldset>
+								</p:column>
+
+
+								<p:column id="cCaracteristicasFI"
+									styleClass="panelBEstudianteCol21"
+									rendered="#{inscripcionBean.visibleCaracteristicasOE}">
+									<p:fieldset legend="Características Fase Inscripción"
+										style=" text-align: center; width:90%">
+										<p:panelGrid columns="2"
+											style=" text-align: center; width:100%">
+											<p:outputLabel value="Fecha Inicio: " />
+											<p:outputLabel
+												value="#{inscripcionBean.reglaNegocio.fechaInicio}"
+												style="text-align:left">
+												<f:convertDateTime pattern="dd/MM/yyyy" />
+											</p:outputLabel>
+											<p:outputLabel value="Fecha Fin: " />
+											<p:outputLabel
+												value="#{inscripcionBean.reglaNegocio.fechaFin}"
+												style="text-align:left">
+												<f:convertDateTime pattern="dd/MM/yyyy" />
+											</p:outputLabel>
+										</p:panelGrid>
+									</p:fieldset>
+								</p:column>
+								<p:column id="cDocumentoPresentado"
+									styleClass="panelBEstudianteCol2"
+									rendered="#{inscripcionBean.visiblePgDocumentoPresentado}">
+									<p:fieldset legend="Documento Presentado"
+										style=" text-align: center; width:100%">
+										<p:panelGrid>
+											<p:row>
+												<p:column>
+													<h:selectOneMenu id="cmbDocumentoPresentado"
+														styleClass="comboModuloNuevoNemonico-ebja" required="true"
+														requiredMessage="seleccione Documento Presentado" disabled="#{inscripcionBean.disabledCmbDocumentoPresentado}"
+														readonly="#{inscripcionBean.disabledDocumentoMotivoI}"
+														value="#{inscripcionBean.registroEstudiante.catalogoDocumento.id}">
+														<f:selectItem
+															itemLabel=" seleccione Documento Presentado "
+															noSelectionOption="true" itemDisabled="true" />
+														<f:selectItems
+															value="#{inscripcionBean.listaDocumentoPresentado}"
+															var="dp" itemLabel="#{dp.nombre}" itemValue="#{dp.id}" />
+														<p:ajax execute="@this"
+															update="frmForm:pgBotones frmForm:pgDatosOferta"
+															listener="#{inscripcionBean.activarCargarDocumentoPDF()}" />
+													</h:selectOneMenu>
+												</p:column>
+											</p:row>
+										</p:panelGrid>
+									</p:fieldset>
+									<br />
+									<p:panelGrid>
+										<div class="alert-info" style="text-align: left;">
+											<p:outputLabel
+												value="  Certificado/s de años aprobados: Para bachillerato es indispensable el certificado de promoción de 8vo,9no,10mo (EGB)." />
+											<p:outputLabel
+												value="  Título Artesanal del 2002 en adelante: Equivalencia a 10mo EGB." />
+											<p:outputLabel
+												value="  Título Artesanal anterior al 2002: Debe rendir examen de ubicación." />
+											<p:outputLabel
+												value="* Es responsabilidad del funcionario que registra la inscripción verificar que el aspirante cuente con la documentación completa."
+												style="font-weight:bold" />
+										</div>
+									</p:panelGrid>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column id="cMotivoNoPresentaDocumento"
+									styleClass="panelBEstudianteCol2"
+									rendered="#{inscripcionBean.visiblePgDocumentoMotivo}">
+									<p:fieldset legend="Motivo No Presenta Documento"
+										style=" text-align: center; width:100%">
+										<p:panelGrid>
+											<p:row>
+												<p:column>
+													<h:selectOneMenu id="cmbDocumentoMotivo"
+														styleClass="comboModuloNuevoNemonico-ebja" required="true"
+														requiredMessage="Seleccione Documento Motivo"
+														disabled="#{inscripcionBean.disabledCmbDocumentoMotivo}"
+														readonly="#{inscripcionBean.disabledDocumentoPresentado}"
+														value="#{inscripcionBean.registroEstudiante.catalogoDocumento.id}">
+														<f:selectItem
+															itemLabel=" seleccione Documento Presentado "
+															noSelectionOption="true" itemDisabled="true" />
+														<f:selectItems
+															value="#{inscripcionBean.listaDocumentoMotivo}" var="dp"
+															itemLabel="#{dp.nombre}" itemValue="#{dp.id}" />
+														<p:ajax execute="@this"
+															update="frmForm:pgBotones frmForm:pgDatosOferta"
+															listener="#{inscripcionBean.validarNoPresentaCertificado()}" />
+													</h:selectOneMenu>
+
+												</p:column>
+											</p:row>
+										</p:panelGrid>
+									</p:fieldset>
+								</p:column>
+								<p:column id="cSubirDocumento" styleClass="panelBEstudianteCol2"
+									rendered="#{inscripcionBean.visiblePgCargarPDF}">
+									<p:fieldset
+										legend="Subir Documento (Formato PDF - Tamaño máximo del archivo de 2MB) *"
+										style=" text-align: center; width:100%">
+										<p:panelGrid>
+											<p:row>
+												<p:column>
+													<p:fileUpload id="fuDocumentoPDF"
+														style="width:100%; height:100px;"
+														allowTypes="/(pdf|PDF)$/" label="Buscar"
+														uploadLabel="Guardar" cancelLabel="Cancelar"
+														required="true" requiredMessage="Campo obligatorio"
+														disabled="#{inscripcionBean.disabledPgCargarPDF}"
+														fileUploadListener="#{inscripcionBean.cargarArchivo}"
+														mode="advanced" fileLimit="1" update="frmForm:pgBotones">
+													</p:fileUpload>
+													<p:message for="fuDocumentoPDF" id="msjDocumentoPDF"
+														style="color: red;" />
+												</p:column>
+											</p:row>
+										</p:panelGrid>
+									</p:fieldset>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+						<br />
+						<h:panelGrid id="pgBotones" columns="1" border="0" cellpadding="0"
+							cellspacing="0" width="100%">
+							<p:panelGrid id="pgMensajeContinuar"
+								rendered="#{inscripcionBean.mensajeContinuar ne ''}">
+								<div class="alert-info" style="text-align: left;">
+									<p:outputLabel id="olMensajeContinuar" render="frmForm"
+										value="#{inscripcionBean.mensajeContinuar}" />
+								</div>
+							</p:panelGrid>
+
+							<p:commandButton id="cbContinuar"
+								styleClass="botonBuscar-Estudiante-ebja" value="Continuar"
+								update="frmForm" icon="fa fa-rotate-right"
+								disabled="#{inscripcionBean.disabledIngresarDatosAdicionales}"
+								action="#{inscripcionBean.validarDatosAdicionales()}" />
+
+							<br>
+							<p:panelGrid id="panelMensajePendiente"
+								rendered="#{inscripcionBean.procesarInscripcionPendiente}">
+								<div class="alert-infoMensajeEstado" style="text-align: left;">
+									<p:outputLabel id="mensajeEstadoPendiente"
+										style="text-align:left;"
+										rendered="#{inscripcionBean.procesarInscripcionPendiente}"
+										value="El estado del estudiante se encuentra pendiente, ya que no cuenta con la documentación requerida." />
+								</div>
+							</p:panelGrid>
+							<p:messages id="messageFinal" style="width:100%; margin-top:3px;" />
+							</br>
+							
+
+							<p:commandButton id="cbContinuar212"
+								styleClass="botonBuscar-Estudiante-ebja" value="Validar"
+								update="frmForm" rendered="false" disabled=""
+								action="#{inscripcionBean.validarCorreo()}" />
+							<p:outputLabel value="" />
+							
+							<p:panelGrid id="pgMensaje"
+								rendered="#{inscripcionBean.textosalida ne ''}">
+								<div class="alert-info" style="text-align: left;">
+									<p:outputLabel id="msgIngresarDatosAdicionales"
+										render="frmForm" value="#{inscripcionBean.textosalida}" />
+								</div>
+							</p:panelGrid>
+							<p:commandButton id="cbFinalizar" styleClass="botonBuscar-Estudiante-ebja"
+								value="Finalizar" update="frmForm" icon="fa fa-rotate-right"
+								rendered="#{inscripcionBean.procesarInscripcionPendiente}"
+								action="#{inscripcionBean.validarDatosAdicionales()}" />
+								
+						</h:panelGrid>
+					</p:panel>
+
+					<p:panel id="panelC" rendered="#{inscripcionBean.visiblePanelC}">
+						<f:facet name="header">C. INFORMACI&#211;N DE LA UBICACI&#211;N GEOGR&#193;FICA DEL ASPIRANTE:</f:facet>
+						<p:panelGrid id="pgLugarReubicacionSinCUE" columns="2">
+							<h:panelGroup>
+								<p:outputLabel for="cmbPais" value="País: " />
+								<p:selectOneMenu id="cmbPais" required="true"
+									requiredMessage="seleccione Pa&#237;s"
+									disabled="#{inscripcionBean.disabledCmbPais}"
+									value="#{inscripcionBean.ubicacion.pais.id}">
+									<f:selectItem itemLabel=" seleccione Pa&#237;s "
+										noSelectionOption="true" />
+									<f:selectItems value="#{inscripcionBean.listaPaisUbicacion}"
+										var="item" itemLabel="#{item.nombre}" itemValue="#{item.id}" />
+									<p:ajax execute="@this" update="panelC"
+										listener="#{inscripcionBean.obtenerEstadoZona()}" />
+								</p:selectOneMenu>
+							</h:panelGroup>
+
+							<p:panelGrid id="pgTieneCUE" columns="2"
+								rendered="#{inscripcionBean.visibleZona}">
+								<p:outputLabel
+									value="Posee Código Único Eléctrico de la planilla de luz (CUE) ? : " />
+								<p:selectOneRadio id="sorPanelCUE" layout="lineDirection"
+									styleClass="radioButton-Estudiante-ebja"
+									disabled="#{inscripcionBean.visiblePanelCUE}" required="true"
+									requiredMessage="Escoje su opción..."
+									value="#{inscripcionBean.tieneCUE}">
+									<f:selectItem itemLabel="Si" itemValue="1" />
+									<f:selectItem itemLabel="No" itemValue="0" />
+									<p:ajax execute="@this" update="panelC pgUbicacionGeografica"
+										listener="#{inscripcionBean.mostrarPanelCUE()}" />
+								</p:selectOneRadio>
+
+								<h:panelGrid columns="2"
+									rendered="#{inscripcionBean.visibleUbicacionCUE}"
+									style="text-align: center; width:100%">
+									<p:outputLabel value="CUE: " />
+									<p:inputText id="itCodigoCue" maxlength="10" required="true"
+										requiredMessage="Ingrese el código CUE"
+										validatorMessage="Código CUE no válido..."
+										readonly="#{inscripcionBean.readonlyUbicacionCUE}"
+										value="#{inscripcionBean.cueBuscar}">
+										<f:validateLength minimum="8" maximum="10" />
+									</p:inputText>
+								</h:panelGrid>
+
+								<h:panelGrid rendered="#{inscripcionBean.visibleUbicacionCUE}"
+									style="text-align: center; width:100%">
+									<p:commandButton id="cbUbicacionCUE"
+										value="Ubicación Aspirante" update="panelC"
+										icon="fa fa-search"
+										disabled="#{inscripcionBean.visiblePanelCUE}"
+										action="#{inscripcionBean.buscarUbicacionCUE()}" />
+								</h:panelGrid>
+							</p:panelGrid>
+						</p:panelGrid>
+
+						<p:panel id="pEstado" rendered="#{inscripcionBean.visibleEstado}">
+							<p:panelGrid id="pgEstado">
+								<p:row>
+									<p:column rowspan="8">
+										<div class="userIdMap-Estudiante-ebja"></div>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="panelBEstudianteCol1Cue">
+										<p:outputLabel for="itCalle" value="Dirección: " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2Cue">
+										<p:inputTextarea id="itCalle" style="width:300px;"
+											autocomplete="off" maxlength="1024"
+											readonly="#{inscripcionBean.disabledItCalle}" required="true"
+											requiredMessage="ingrese la Dirección"
+											onkeyup="javascript:this.value=this.value.toUpperCase()"
+											value="#{inscripcionBean.ubicacion.callePrincipal}">
+										</p:inputTextarea>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol1Cue">
+										<p:outputLabel for="itCodigoPostal" value="Código Postal: " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2Cue">
+										<p:inputText id="itCodigoPostal" style="width:100px;"
+											autocomplete="off"
+											readonly="#{inscripcionBean.disabledItCodigoPostal}"
+											required="true" requiredMessage="ingrese el Código Postal"
+											onkeyup="javascript:this.value=this.value.toUpperCase()"
+											value="#{inscripcionBean.ubicacion.codigoPostal}">
+											<f:validateLength minimum="4" maximum="15"></f:validateLength>
+											<p:ajax event="click" immediate="true"
+												update="pgUbicacionGeografica"
+												listener="#{inscripcionBean.habilitarBotonUbicacionGeografica()}" />
+										</p:inputText>
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						</p:panel>
+
+						<p:panel id="pZonaDetalle"
+							rendered="#{inscripcionBean.visibleZonaDetalle}">
+							<p:panelGrid id="pgZona">
+								<p:row>
+									<p:column rowspan="8">
+										<div class="userIdMap-Estudiante-ebja"></div>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="panelBEstudianteCol1Geografica">
+										<p:outputLabel for="cmbProvincia" value="Provincia: " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2Geografica">
+										<h:panelGroup>
+											<p:selectOneMenu id="cmbProvincia"
+												styleClass="comboModuloNuevoNemonico-ebja" autoWidth="false"
+												required="true" requiredMessage="seleccione Provincia"
+												readonly="#{inscripcionBean.disabledCmbProvincia}"
+												value="#{inscripcionBean.provincia.id}">
+												<f:selectItem itemLabel=" seleccione Provincia "
+													noSelectionOption="true" />
+												<f:selectItems value="#{inscripcionBean.listaProvincia}"
+													var="item" itemLabel="#{item.descripcion}"
+													itemValue="#{item.id}" />
+												<p:ajax execute="@this" update="panelC"
+													listener="#{inscripcionBean.obtenerProvincia()}" />
+											</p:selectOneMenu>
+										</h:panelGroup>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol1Geografica">
+										<p:outputLabel value="Zona: * " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2Geografica">
+										<h:panelGroup>
+										
+											<p:inputText id="itZona" style="width:200px;"
+												autocomplete="off"
+												readonly="true" required="true" 
+												value="#{inscripcionBean.zona.nombreZona}">
+												<p:ajax execute="@this" update="panelC"
+														listener="#{inscripcionBean.obtenerZona()}" />
+												</p:inputText>
+												<!--p:selectOneMenu id="cmbZona"
+													styleClass="comboModuloNuevoNemonico-ebja"
+													autoWidth="false" required="true"
+													requiredMessage="seleccione Zona" readonly="true"
+													value="#{inscripcionBean.zona.id}" disabled="true">
+													<f:selectItem itemLabel=" seleccione Zona "
+														noSelectionOption="true" />
+													<f:selectItems value="#{inscripcionBean.listaZona}"
+														var="item" itemLabel="#{item.nombreZona}"
+														itemValue="#{item.id}" />
+													<p:ajax execute="@this" update="panelC"
+														listener="#{inscripcionBean.obtenerZona()}" />
+												</p:selectOneMenu> -->
+												
+										</h:panelGroup>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="panelBEstudianteCol1Geografica">
+										<p:outputLabel for="cmbCanton" value="Cantón: " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2Geografica">
+										<h:panelGroup>
+											<p:selectOneMenu id="cmbCanton"
+												styleClass="comboModuloNuevoNemonico-ebja" autoWidth="false"
+												required="true" requiredMessage="seleccione Cant&#243;n"
+												readonly="#{inscripcionBean.disabledCmbCanton}"
+												value="#{inscripcionBean.canton.id}">
+												<f:selectItem itemLabel=" seleccione Cant&#243;n "
+													noSelectionOption="true" />
+												<f:selectItems value="#{inscripcionBean.listaCanton}"
+													var="item" itemLabel="#{item.descripcion}"
+													itemValue="#{item.id}" />
+												<p:ajax execute="@this" update="panelC"
+													listener="#{inscripcionBean.obtenerCanton()}" />
+											</p:selectOneMenu>
+										</h:panelGroup>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol1Geografica">
+										<p:outputLabel value="Distrito: * " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2Geografica">
+										<h:panelGroup>
+										
+										<p:inputText id="itDistrito" style="width:200px;"
+												autocomplete="off"
+												readonly="true" required="true" 
+												value="#{inscripcionBean.distrito.nombreDistrito}">
+												<p:ajax execute="@this" update="panelC" />
+														
+											<!--  p:selectOneMenu id="cmbDistrito"
+												styleClass="comboModuloNuevoNemonico-ebja" autoWidth="false"
+												required="true" requiredMessage="seleccione Distrito"
+												readonly="true" value="#{inscripcionBean.distrito.id}"
+												disabled="true">
+												<f:selectItem itemLabel=" seleccione Distrito "
+													noSelectionOption="true" />
+												<f:selectItems value="#{inscripcionBean.listaDistrito}"
+													var="item" itemLabel="#{item.nombreDistrito}"
+													itemValue="#{item.id}" />
+												<p:ajax execute="@this" update="panelC" />
+											</p:selectOneMenu> -->
+											</p:inputText>
+										</h:panelGroup>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="panelBEstudianteCol1Geografica">
+										<p:outputLabel for="cmbParroquia" value="Parroquia: " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2Geografica">
+										<h:panelGroup>
+											<p:selectOneMenu id="cmbParroquia"
+												styleClass="comboModuloNuevoNemonico-ebja" autoWidth="false"
+												required="true" requiredMessage="seleccione Parroquia"
+												readonly="#{inscripcionBean.disabledCmbParroquia}"
+												value="#{inscripcionBean.parroquia.id}">
+												<f:selectItem itemLabel=" seleccione Parroquia "
+													noSelectionOption="true" />
+												<f:selectItems value="#{inscripcionBean.listaParroquia}"
+													var="item" itemLabel="#{item.descripcion}"
+													itemValue="#{item.id}" />
+												<p:ajax execute="@this" update="panelC"
+													listener="#{inscripcionBean.obtenerParroquia()}" />
+											</p:selectOneMenu>
+										</h:panelGroup>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol1Geografica">
+										<p:outputLabel value="Circuito: * " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2Geografica">
+										<h:panelGroup>
+										
+										<p:inputText id="itCircuito" style="width:200px;"
+												autocomplete="off"
+												readonly="true" required="true" 
+												value="#{inscripcionBean.circuito.codigoSenpladesCircuito}">
+												<p:ajax execute="@this" update="panelC" />
+										
+											<!--  p:selectOneMenu id="cmbCircuito"
+												styleClass="comboModuloNuevoNemonico-ebja" autoWidth="false"
+												required="true" requiredMessage="seleccione Circuito"
+												readonly="true" value="#{inscripcionBean.circuito.id}"
+												disabled="true">
+												<f:selectItem itemLabel=" seleccione Circuito "
+													noSelectionOption="true" />
+												<f:selectItems value="#{inscripcionBean.listaCircuito}"
+													var="item" itemLabel="#{item.codigoSenpladesCircuito}"
+													itemValue="#{item.id}" />
+												<p:ajax execute="@this" update="panelC" />
+											</p:selectOneMenu>-->
+											</p:inputText>
+										</h:panelGroup>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="panelBEstudianteCol1Geografica">
+										<p:outputLabel for="itDireccion" value="Dirección: " />
+									</p:column>
+									<p:column>
+										<h:panelGroup>
+											<p:inputTextarea id="itDireccion" style="width:220px;"
+												autocomplete="off" maxlength="1024" required="true"
+												requiredMessage="ingrese Dirección"
+												readonly="#{inscripcionBean.disabledItDireccion}"
+												onkeyup="javascript:this.value=this.value.toUpperCase()"
+												value="#{inscripcionBean.ubicacion.callePrincipal}">
+												<p:ajax event="click" immediate="true"
+													update="pgUbicacionGeografica"
+													listener="#{inscripcionBean.habilitarBotonUbicacionGeografica()}" />
+											</p:inputTextarea>
+										</h:panelGroup>
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						</p:panel>
+						<br />
+						<h:panelGrid id="pgUbicacionGeografica" columns="1" border="0"
+							cellpadding="0" cellspacing="0" width="100%">
+							<p:commandButton id="cbUbicacionGeografica"
+								styleClass="botonBuscar-Estudiante-ebja" value="Continuar"
+								update="frmForm pgResponsabilidadInformacion"
+								icon="fa fa-rotate-right"
+								action="#{inscripcionBean.aceptarUbicacionGeografica()}"
+								disabled="#{inscripcionBean.disabledUbicacionGeografica}" />
+						</h:panelGrid>
+					</p:panel>
+					<p:panel id="panelD" rendered="#{inscripcionBean.visiblePanelD}">
+						<f:facet name="header">
+							<p:outputLabel value="D. INFORMACI&#211;N DE REGISTRO:" />
+						</f:facet>
+						<p:panelGrid>
+							<p:row>
+								<p:column>
+									<div class="userConfirmacionForm-Estudiante-ebja"></div>
+								</p:column>
+								<p:column>
+									<p:panelGrid id="pgResponsabilidadInformacion" columns="2">
+										<p:outputLabel
+											value="  APELLIDOS Y NOMBRES DE LA PERSONA/FUNCIONARIO QUE LEVANTA LA FICHA DE INSCRIPCI&#211;N: " />
+										<p:outputLabel
+											value="#{inscripcionBean.inscripcion.apellidosNombresUsuario}" />
+
+										<p:outputLabel
+											value="  N&#218;MERO DEL DOCUMENTO DE IDENTIFICACI&#211;N PERSONA/FUNCIONARIO QUE LEVANTA LA FICHA DE INSCRIPCI&#211;N: " />
+										<p:outputLabel
+											value="#{inscripcionBean.inscripcion.numeroIdentificacionUsuario}" />
+
+										<h:panelGroup>
+											<center>
+											
+												<p:commandButton
+													action="#{inscripcionBean.aceptarInformacionRegistro}"
+													update="pgVerFormulario"
+													icon="fa fa-gears" value="Finalizar"
+													styleClass="botonBuscar-Estudiante-ebja"
+													disabled="#{inscripcionBean.disabledInformacionRegistro}"
+													oncomplete="PF('dConfirmarGuardarInscripcion').show();">
+													</p:commandButton>
+													<p:ajax event="click" update="frmForm frmForm:fechaNacimiento" listener="#{inscripcionBean.bloquearCamposFinalizar()}"/>
+											
+											</center>
+										</h:panelGroup>
+
+										<p:panelGrid id="pgVerFormulario"
+											rendered="#{inscripcionBean.visibleClVerFormulario}">
+											<center>
+												<f:facet name="header">
+													<p:outputLabel>Imprimir Certificado</p:outputLabel>
+												</f:facet>
+												<h:commandLink value="" render="frmForm"
+													disabled="#{!inscripcionBean.visibleClVerFormulario}"
+													actionListener="#{inscripcionBean.verCertificado()}"
+													target="_blank">
+													<h:graphicImage value="/img/pdf_icono.png"
+														alt="Ver Certificado" title="Ver Certificado" />
+												</h:commandLink>
+											</center>
+										</p:panelGrid>
+									</p:panelGrid>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+						<br />
+						<h:panelGroup rendered="#{inscripcionBean.renderedMensajeGuardar}">
+							<div class="alert-sucess" style="text-align: left;">
+								Su solicitud ha sido guardada satisfactoriamente con el <b>
+									N&#250;mero: #{inscripcionBean.inscripcion.id} </b>, por favor tome
+								nota del n&#250;mero de inscripci&#243;n generado por el sistema
+								y permanezca pendiente de los cronogramas publicados en la
+								p&#225;gina del Ministerio de Educaci&#243;n.
+							</div>
+						</h:panelGroup>
+						<h:panelGroup
+							rendered="#{inscripcionBean.textoFormularioSatisfactorio ne ''}">
+							<div class="alert-danger" style="text-align: left;">
+								<p:outputLabel id="msgFinalizar" render="frmForm"
+									value="#{inscripcionBean.textoFormularioSatisfactorio}" />
+							</div>
+						</h:panelGroup>
+					</p:panel>
+					<!-- </p:panel> -->
+				</h:panelGroup>
+				<p:commandButton id="cbReiniciar"
+					value="Realizar una nueva inscripci&#243;n" immediate="true"
+					rendered="#{inscripcionBean.visibleCbReiniciar}"
+					styleClass="botonBuscar-Estudiante-ebja" update="frmForm"
+					icon="fa fa-refresh" onclick="limpiarFormulario()"
+					action="#{inscripcionBean.inicializarObjetos()}" />
+
+			</h:form>
+
+			<h:form id="frmGuardarInscripcion">
+				<p:dialog
+					header="Confirmaci&#243;n de la generaci&#243;n de la Inscripci&#243;n"
+					widgetVar="dConfirmarGuardarInscripcion" width="400" height="140">
+					<h:panelGrid border="0" columns="3"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="eliminar-archivo-ebja"></div>
+						<p:outputLabel value="¿Está seguro de guardar la inscripción?" />
+					</h:panelGrid>
+
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja">
+						<p:commandButton value="Guardar" execute="@this"
+							style="font-weight: bold; color: black"
+							actionListener="#{inscripcionBean.enviarInformacion()}"
+							update="frmForm:panelD"
+							oncomplete="PF('dConfirmarGuardarInscripcion').hide();"
+							icon="fa fa-save" />
+						<p:commandButton value="Cancelar" execute="@this"
+							style="font-weight: bold; color: black;"
+							action="#{inscripcionBean.inicializarObjetos()}"
+							update="frmForm:panelD"
+							oncomplete="PF('dConfirmarGuardarInscripcion').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+			<h:form id="frmVerificarInscripcion">
+				<p:dialog
+					header="Confirmaci&#243;n de la Inscripci&#243;n del aspirante"
+					widgetVar="dConfirmarVerificarInscripcion" width="400" height="145">
+					<h:panelGrid border="0" columns="3"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="eliminar-archivo-ebja"></div>
+						<h:panelGroup>
+							<h:outputLabel
+								value="El aspirante se encuentra en estado pendiente, verifique que cuenta con la documentación completa." />
+							<h:outputLabel value="¿Desea inscribir al aspirante?" />
+						</h:panelGroup>
+					</h:panelGrid>
+
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja">
+						<p:commandButton value="Continuar" execute="@this"
+							style="font-weight: bold; color: black"
+							actionListener="#{inscripcionBean.validarInscripcionPendienteContinuar()}"
+							update="frmForm"
+							oncomplete="PF('dConfirmarVerificarInscripcion').hide();"
+							icon="fa fa-rotate-right" />
+						<p:commandButton value="Cancelar" immediate="true"
+							update="frmForm" action="#{inscripcionBean.inicializarObjetos()}"
+							oncomplete="PF('dConfirmarVerificarInscripcion').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+			<h:form id="frmModificarInscripcion">
+				<p:dialog
+					header="Confirmaci&#243;n de Modificación de la Inscripci&#243;n del aspirante"
+					widgetVar="dConfirmarModificarInscripcion" width="400" height="145">
+					<h:panelGrid border="0" columns="3"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="eliminar-archivo-ebja"></div>
+						<h:panelGroup>
+							<h:outputLabel value="El aspirante se encuentra inscrito." />
+							<h:outputLabel value="¿Desea modificar los datos del aspirante?" />
+						</h:panelGroup>
+					</h:panelGrid>
+
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja">
+						<p:commandButton value="Continuar" execute="@this"
+							style="font-weight: bold; color: black"
+							actionListener="#{inscripcionBean.validarInscripcionPendienteContinuar()}"
+							update="frmForm"
+							oncomplete="PF('dConfirmarModificarInscripcion').hide();"
+							icon="fa fa-rotate-right" />
+						<p:commandButton value="Cancelar" immediate="true"
+							update="frmForm" action="#{inscripcionBean.inicializarObjetos()}"
+							oncomplete="PF('dConfirmarModificarInscripcion').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+		</div>
+	</ui:define>
+</ui:composition>

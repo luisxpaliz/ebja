@@ -1,0 +1,282 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantillas/contenedorBloqueo.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">
+        MALLA CURRICULAR 
+  	</ui:define>
+
+	<ui:define name="contenido">
+
+		<style>
+.contenido {
+	background: #fff;
+}
+</style>
+		<h:form id="frmForm">
+			<p:panel styleClass="contienePanelBusqueda-ebja">
+				<f:facet name="header">Búsqueda de Malla Curricular:</f:facet>
+				<p:panelGrid id="pnlBusqueda" cellpadding="10" cellspacing="1"
+					border="1" styleClass="panelBusqueda-ebja">
+					<p:row>
+						<p:column>
+							<div class="userIdMap-Modulo-ebja"></div>
+						</p:column>
+						<p:column styleClass="panelBusqueda-primeraCol-ebja">
+							<h:outputText value=" Búsqueda de Malla por: " />
+						</p:column>
+						<p:column styleClass="panelBusqueda-segundaCol-ebja">
+							<p:selectOneRadio layout="pageDirection"
+								styleClass="radioButton-Busqueda-ebja"
+								value="#{mallaBean.busquedaTipo}">
+								<f:selectItem itemLabel="Código" itemValue="1" />
+								<f:selectItem itemLabel="Descripción" itemValue="2" />
+							</p:selectOneRadio>
+						</p:column>
+						<p:column styleClass="panelBusqueda-terceraCol-ebja">
+							<p:inputText styleClass="inputText-ebja"
+								id="inputTxtModuloIngresarBuscar"
+								value="#{mallaBean.busquedaContenido}" maxlength="60">
+								<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ\s]+$/i" />
+							</p:inputText>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column style="text-align:center" colspan="4">
+							<h:panelGroup style="display:block ">
+								<p:commandButton id="submit" value="Buscar"
+									actionListener="#{mallaBean.buscarMalla}"
+									styleClass="botonBuscar-ebja" ajax="true" update="@form" />
+							</h:panelGroup>
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+				<br></br>
+				<p:messages id="messageMalla" style="width:100%; margin-top:3px;" />
+				<h:panelGrid id="pnlIngresoRegistro" columns="1" border="0" width="100%">
+					<h:panelGroup style="display:block; text-align:center">
+						<p:commandButton value="Crear Malla"
+							actionListener="#{mallaBean.setearCrearMalla}"
+							styleClass="botonBuscar-ebja-a4j"
+							oncomplete="PF('popGuardarMalla').show();" ajax="true"
+							update=":#{p:component('formGuardarMalla')},:#{p:component('combListAsignatura')},:#{p:component('combListPrograma')},:#{p:component('combListGrado')}" />
+					</h:panelGroup>
+					</h:panelGrid>
+					<p:panel styleClass="tabla-OfertaScroll-ebja" border="0">
+					  <p:dataTable id="tblMalla" var="malla"
+						value="#{mallaBean.listaMalla}"
+						scrollable="true"
+						scrollWidth="98%"
+						styleClass="tabla-Oferta-ebja" paginator="true" rows="10"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+
+						<p:column headerText="Código"
+							styleClass="tabla-codigo-modulo-ebja">
+							<h:outputText value="#{malla[0].nemonico}" />
+						</p:column>
+						<p:column headerText="Descripción"
+							styleClass="tabla-Nombre-Oferta-ebja">
+							<h:outputText value="#{malla[0].descripcion}" />
+						</p:column>
+						<p:column headerText="Programa"
+							styleClass="tabla-Nombre-Oferta-ebja">
+							<h:outputText value="#{malla[0].programaGrado.programaEbja.nombre}" />
+						</p:column>
+						<p:column headerText="Area"
+							styleClass="tabla-Nombre-Oferta-ebja">
+							<h:outputText value="#{malla[0].asignatura.area.nombre}" />
+						</p:column>
+						<p:column headerText="Materia"
+							styleClass="tabla-Nombre-Oferta-ebja">
+							<h:outputText value="#{malla[0].asignatura.materia.nombre}" />
+						</p:column>
+						<p:column headerText="Hora Clase"
+							styleClass="tabla-Modalidad-modulo-ebja">
+							<h:outputText value="#{malla[0].horasClase}" />
+						</p:column>
+						<p:column headerText="Grado"
+							styleClass="tabla-Cobertura-modulo-ebja">
+							<div style="text-align: center;">
+							<h:outputText value="#{malla[0].programaGrado.grado.descripcion}" />
+							</div>
+						</p:column>
+						<p:column headerText="Estado"
+							styleClass="tabla-Nombre-estado-ebja">
+							<h:outputText value="#{malla[1]}" />
+						</p:column>
+						<p:column styleClass="tabla-editar-modulo-ebja"
+							headerText="Editar">
+							<div style="text-align: center;">
+								<p:commandLink
+									actionListener="#{mallaBean.mallaSeleccionadaEditar(malla)}"
+									oncomplete="PF('popGuardarMalla').show();" ajax="true"
+									update=":#{p:component('formGuardarMalla')},:#{p:component('combListPrograma')},:#{p:component('combListAsignatura')},:#{p:component('combListGrado')}">
+									<h:graphicImage value="../../img/edit.png" />
+								</p:commandLink>
+							</div>
+						</p:column>
+						<p:column styleClass="tabla-borrar-modulo-ebja"
+							headerText="Activar">
+							<div style="text-align: center;">
+								<p:commandLink
+									actionListener="#{mallaBean.mallaSeleccionadoActivar(malla)}"
+									oncomplete="PF('popConfirmarActivarMalla').show();"
+									ajax="true">
+									<h:graphicImage value="../../img/visto.png" />
+								</p:commandLink>
+							</div>
+						</p:column>
+						<p:column styleClass="tabla-inactivar-modulo-ebja"
+							headerText="Inactivar">
+							<div style="text-align: center;">
+								<p:commandLink
+									actionListener="#{mallaBean.mallaSeleccionadoBorrar(malla)}"
+									oncomplete="PF('popConfirmarInactivarMalla').show();"
+									ajax="true">
+									<h:graphicImage value="../../img/delete.png" />
+								</p:commandLink>
+							</div>
+						</p:column>
+						<f:facet name="paginatorBottomRight">
+							<p:commandButton type="button" icon="fa fa-sync" />
+						</f:facet>
+					</p:dataTable>
+                    </p:panel>
+			</p:panel>
+
+		</h:form>
+		<h:form id="formGuardarMalla">
+			<p:dialog header="Guardar Oferta Seleccionada"
+				widgetVar="popGuardarMalla" resizable="false" autosized="false" width="300"
+				height="310">
+				<h:panelGrid id="pnlNuevoRegistroModulo" columns="2" cellpadding="5"
+					cellspacing="1" border="0" styleClass="popUpCreacionAcuerdo-ebja"
+					columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja"
+					rendered="true">
+					<h:outputText value=" Código: " />
+					<p:inputText styleClass="inputModuloNuevoNemonico-ebja"
+						value="#{mallaBean.nemonico}" required="true"
+						requiredMessage="El campo 'Código' está vacío" maxlength="40">
+						<p:keyFilter mask="alphanum" />
+					</p:inputText>
+					<h:outputText value=" Descripción " />
+					<p:inputText styleClass="inputModuloNuevoNemonico-ebja"
+						value="#{mallaBean.descripcion}" required="true"
+						requiredMessage="El campo 'Descripción' está vacío" maxlength="40">
+						<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ\s]+$/i"/>
+					</p:inputText>
+					<h:outputText value="Horas Clase " />
+					<p:inputText styleClass="inputModuloNuevoNemonico-ebja"
+						value="#{mallaBean.horasClase}" required="true"
+						requiredMessage="El campo 'Horas Clase' está vacío" maxlength="2">
+						<p:keyFilter mask="num" />
+					</p:inputText>
+					<h:outputText value=" Programa " />
+					<p:selectOneMenu id="combListPrograma"
+						value="#{mallaBean.programaSeleccionado}"
+						styleClass="comboModuloNuevoNemonico-ebja" required="true"
+						requiredMessage="Debe escojer un Programa para guardar el registro" >
+						<f:selectItem itemLabel="Seleccionar Programa" />
+						<f:selectItems
+							value="#{mallaBean.listaPrograma}"
+							var="varPrograma" itemLabel="#{varPrograma.nombre}"
+							itemValue="#{varPrograma.nemonico}"></f:selectItems>
+					   <p:ajax execute="@this" update="combListGrado" listener="#{mallaBean.cargarComboGrado}"/>
+					</p:selectOneMenu>
+					<h:outputText value=" Grado " />
+					<p:selectOneMenu id="combListGrado"
+						value="#{mallaBean.gradoSeleccionado}"
+						styleClass="comboModuloNuevoNemonico-ebja" required="true"
+						requiredMessage="Debe escojer un Grado para guardar el registro">
+						<f:selectItem itemLabel="Seleccionar Grado" />
+						<f:selectItems
+							value="#{mallaBean.listaGrado}"
+							var="varAsignatura" itemLabel="#{varAsignatura.descripcion}"
+							itemValue="#{varAsignatura.nemonico}"></f:selectItems>
+					</p:selectOneMenu>
+					<h:outputText value=" Asignatura " />
+					<p:selectOneMenu id="combListAsignatura"
+						value="#{mallaBean.asignaturaSeleccionada}"
+						styleClass="comboModuloNuevoNemonico-ebja" required="true"
+						requiredMessage="Debe escojer una Asignatura para guardar el registro">
+						<f:selectItem itemLabel="Seleccionar Asignatura" />
+						<f:selectItems
+							value="#{mallaBean.listaAsignatura}"
+							var="varAsignatura" itemLabel="#{varAsignatura.area.nombre} - #{varAsignatura.materia.nombre}"
+							itemValue="#{varAsignatura.nemonico}"></f:selectItems>
+					</p:selectOneMenu>
+					
+				</h:panelGrid>
+
+				<h:panelGrid border="0" columns="2"
+					styleClass="popUpCreacionAcuerdoBotones-ebja"
+					columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja">
+					<p:commandButton id="guardarRegistroMalla" value="Guardar"
+						styleClass="popUpBoton-ebja" ajax="true"
+						actionListener="#{mallaBean.ejecutarCrearOEditarRegistro}"
+						oncomplete="PF('popGuardarMalla').hide();"
+						update=":#{p:component('messageMalla')},:#{p:component('tblMalla')}" />
+					<p:commandButton id="cancelarRegistroModulo" value="Cancelar"
+						styleClass="popUpBoton-ebja"
+						oncomplete="PF('popGuardarMalla').hide();" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+
+
+		<h:form>
+			<p:dialog header="Inactivar Registro"
+				widgetVar="popConfirmarInactivarMalla" resizable="false" autosized="false"
+				width="250" height="120">
+				<h:panelGrid id="pnlConfirmarEliminarModulo" columns="2" border="0"
+					width="100%" height="100%"
+					columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+					<div class="eliminar-archivo-ebja"></div>
+					<h:outputLabel value="Está seguro que desea Inactivar Registro?"
+						styleClass="texto-confirmar-borrar-archivo-ebja" />
+				</h:panelGrid>
+				<h:panelGrid columns="2"
+					styleClass="popUpCreacionAcuerdoBotones-ebja"
+					columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+					border="0">
+					<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+						ajax="true"
+						actionListener="#{mallaBean.borrarMalla}"
+						oncomplete="PF('popConfirmarInactivarMalla').hide();"
+						update=":#{p:component('tblMalla')},#{p:component('messageMalla')}" />
+					<p:commandButton value="No" styleClass="popUpBoton-ebja"
+						ajax="true" oncomplete="PF('popConfirmarInactivarMalla').hide();" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+
+		<h:form>
+			<p:dialog header="Activar Registro"
+				widgetVar="popConfirmarActivarMalla" resizable="false" autosized="false" width="250"
+				height="120">
+				<h:panelGrid border="0" columns="2"
+					columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+					<div class="eliminar-archivo-ebja"></div>
+					<h:outputLabel value="Está seguro que desea Activar Registro?"
+						styleClass="texto-confirmar-borrar-archivo-ebja" />
+				</h:panelGrid>
+				<h:panelGrid columns="2"
+					styleClass="popUpCreacionAcuerdoBotones-ebja"
+					columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+					border="0">
+					<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+						ajax="true"
+						actionListener="#{mallaBean.activarMalla}"
+						oncomplete="PF('popConfirmarActivarMalla').hide();"
+						update=":#{p:component('tblMalla')}, #{p:component('messageMalla')}" />
+					<p:commandButton value="No" styleClass="popUpBoton-ebja"
+						ajax="true" oncomplete="PF('popConfirmarActivarMalla').hide();" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

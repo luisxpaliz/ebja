@@ -1,0 +1,242 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantillas/contenedorBloqueo.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">
+        ADMINISTRACIÓN DEL SISTEMA - ALFABETIZACIÓN - REGLAS DE NEGOCIO
+  	</ui:define>
+
+	<ui:define name="contenido">
+
+		<style>
+.contenido {
+	background: #fff;
+}
+</style>
+		<div>
+			<h:form id="frmForm">
+				<p:panel styleClass="contienePanelBusqueda-ebja">
+					<f:facet name="header">Búsqueda de Reglas por Oferta:</f:facet>
+					<p:panelGrid id="pnlBusquedaReglas" cellpadding="10"
+						cellspacing="1" border="1" styleClass="panelBusqueda-ebja">
+						<p:row>
+							<p:column>
+								<div class="userIdMap-Reglas-ebja"></div>
+							</p:column>
+							<p:column styleClass="panelBusqueda-primeraCol-ebja">
+								<h:outputText value=" Seleccione un Oferta: " />
+							</p:column>
+							<p:column styleClass="panelBusqueda-terceraCol-reglas-ebja">
+								<p:selectOneMenu id="combListModuloReglas"
+									value="#{reglasNegocioBean.moduloSeleccionado}"
+									styleClass="comboReglaModuloBusqueda-ebja">
+									<f:selectItem itemLabel="Seleccionar Oferta" />
+									<f:selectItems value="#{reglasNegocioBean.listaModulos}"
+										var="varModulo" itemLabel="#{varModulo.nombre}"
+										itemValue="#{varModulo.nemonico}"></f:selectItems>
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="text-align:center" colspan="4">
+								<h:panelGroup style="display:block">
+									<p:commandButton id="submitRegla" value="Buscar"
+										actionListener="#{reglasNegocioBean.buscarModulo}"
+										styleClass="botonBuscar-Estudiante-ebja" ajax="true"
+										update="@form">
+									</p:commandButton>
+								</h:panelGroup>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<br></br>
+					<p:messages id="messageRegla" style="width:100%; margin-top:3px;" />
+					<h:panelGrid id="pnlIngresoRegistro" columns="1" border="0">
+						<h:panelGroup style="display:block; text-align:center">
+							<p:commandButton value="Crear Regla"
+								actionListener="#{reglasNegocioBean.setearCrearRegla}"
+								styleClass="botonBuscar-ebja-a4j"
+								oncomplete="PF('popGuardarRegla').show();" ajax="true"
+								update=":#{p:component('formGuardarRegla')}" />
+						</h:panelGroup>
+						<p:dataTable id="tblRegla" var="regla"
+							value="#{reglasNegocioBean.listReglas}" scrollable="true"
+						    styleClass="tabla-Regla-ebja" paginator="true"
+							rows="10"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+
+							<p:column headerText="Oferta"
+								styleClass="tabla-Regla-Modulo-ebja ">
+								<h:outputText value="#{regla[0].programaEbja.nombre}" />
+							</p:column>
+							<p:column headerText="Fase"
+								styleClass="tabla-Nombre-fase-regla-ebja">
+								<h:outputText value="#{regla[0].fase.nombre}" />
+							</p:column>
+							<p:column headerText="Fecha Inicio"
+								styleClass=".tabla-Nombre-regla-fechaIni-ebja">
+								<h:outputText value="#{regla[0].fechaInicio}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Fecha Fin"
+								styleClass=".tabla-Nombre-regla-fechaFin-ebja">
+								<h:outputText value="#{regla[0].fechaFin}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Estado"
+								styleClass="tabla-Regla-Estado-ebja">
+								<h:outputText value="#{regla[1]} " />
+							</p:column>
+							<p:column styleClass="tabla-editar-regla-ebja"
+								headerText="Editar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{reglasNegocioBean.reglaSeleccionadoEditar(regla)}"
+										oncomplete="PF('popGuardarRegla').show();" ajax="true"
+										update=":#{p:component('formGuardarRegla')},:#{p:component('combListModuloReglas')},:#{p:component('combListFaseReglas')}">
+										<h:graphicImage value="../../img/edit.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+							<p:column styleClass="tabla-borrar-regla-ebja"
+								headerText="Activar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{reglasNegocioBean.reglaSeleccionadoActivar(regla)}"
+										oncomplete="PF('popConfirmarActivarRegla').show();"
+										ajax="true">
+										<h:graphicImage value="../../img/visto.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+							<p:column styleClass="tabla-borrar-regla-ebja"
+								headerText="Inactivar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{reglasNegocioBean.reglaSeleccionadoBorrar(regla)}"
+										oncomplete="PF('popConfirmarInactivarRegla').show();"
+										ajax="true">
+										<h:graphicImage value="../../img/delete.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+							<f:facet name="paginatorBottomRight">
+								<p:commandButton type="button" icon="fa fa-sync" />
+							</f:facet>
+						</p:dataTable>
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+			<h:form id="formGuardarRegla">
+				<p:dialog header="Guardar Regla Seleccionada"
+					widgetVar="popGuardarRegla" resizable="false" autosized="false"  width="300"
+					height="240">
+					<div>
+						<h:panelGrid id="pnlNuevoRegistroRegla" columns="2"
+							cellpadding="5" cellspacing="1" border="0"
+							styleClass="popUpCreacionRegla-ebja"
+							columnClasses="popUpBusqueda-primeraCol-regla-ebja,popUpBusqueda-segundaCol-regla-ebja"
+							rendered="true">
+							<h:outputText value=" Seleccione un Oferta: " />
+							<p:selectOneMenu id="combListModuloReglas"
+								value="#{reglasNegocioBean.moduloNuevoRegistro}"
+								styleClass="comboReglaModulo-ebja" required="true"
+								requiredMessage="Debe escojer una 'Oferta' para guardar el registro">
+								<f:selectItem itemLabel="Seleccionar Oferta" />
+								<f:selectItems value="#{reglasNegocioBean.listaModulos}"
+									var="varModulo" itemLabel="#{varModulo.nombre}"
+									itemValue="#{varModulo.nemonico}"></f:selectItems>
+							</p:selectOneMenu>
+							<h:outputText value=" Seleccione una Fase: " />
+							<p:selectOneMenu id="combListFaseReglas"
+								value="#{reglasNegocioBean.faseSeleccionada}"
+								styleClass="comboReglaFase-ebja" required="true"
+								requiredMessage="Debe escojer una 'Fase' para guardar el registro">
+								<f:selectItem itemLabel="Seleccionar Fase" />
+								<f:selectItems value="#{reglasNegocioBean.listaFases}"
+									var="varFases" itemLabel="#{varFases.nombre}"
+									itemValue="#{varFases.nemonico}"></f:selectItems>
+							</p:selectOneMenu>
+							<p:outputLabel for="calReglaInicio" value=" Fecha Inicio: " />
+							<p:calendar id="calReglaInicio"
+								value="#{reglasNegocioBean.fechaInicio}" showOn="button"
+								styleClass="calendarFase-ebja" mindate="#{reglasNegocioBean.fechaInicio}" pattern="yyyy-MM-dd" />
+							<p:outputLabel for="calReglaFin" value=" Fecha Fin: " />
+							<p:calendar id="calReglaFin"
+								value="#{reglasNegocioBean.fechaFin}" showOn="button"
+								styleClass="calendarFase-ebja" mindate="#{reglasNegocioBean.fechaFin}" pattern="yyyy-MM-dd"/>
+								
+						</h:panelGrid>
+					</div>
+					<br></br>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionReglaBotones-ebja"
+						columnClasses="popUpBusqueda-botones-regla-ebja,popUpBusqueda-botones-regla-ebja"
+						border="0">
+						<p:commandButton id="guardarRegistroRegla" value="Guardar"
+							styleClass="popUpBoton-ebja" ajax="true"
+							actionListener="#{reglasNegocioBean.ejecutarCrearOEditarRegistro}"
+							oncomplete="PF('popGuardarRegla').hide();"
+							update=":#{p:component('messageRegla')},:#{p:component('tblRegla')},:#{p:component('combListModuloReglas')}" />
+						<p:commandButton id="cancelarRegistroRegla" value="Cancelar"
+							styleClass="popUpBoton-ebja"
+							oncomplete="PF('popGuardarRegla').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+			<h:form>
+				<p:dialog header="Inactivar Registro"
+					widgetVar="popConfirmarInactivarRegla" resizable="false" autosized="false"
+					width="250" height="100">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-regla-ebja,popUpBusqueda-segundaCol-regla-ebja">
+						<div class="ebja_global_classIcono_001"></div>
+						<h:outputLabel value="Está seguro que desea Inactivar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true" actionListener="#{reglasNegocioBean.borrarRegla}"
+							oncomplete="PF('popConfirmarInactivarRegla').hide();"
+							update=":#{p:component('tblRegla')},#{p:component('messageRegla')}" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true" oncomplete="PF('popConfirmarInactivarRegla').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+			<h:form>
+				<p:dialog header="Activar Registro"
+					widgetVar="popConfirmarActivarRegla" resizable="false" autosized="false" width="250"
+					height="100">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="ebja_global_classIcono_001"></div>
+						<h:outputLabel value="Está seguro que desea Activar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true" actionListener="#{reglasNegocioBean.activarRegla}"
+							oncomplete="PF('popConfirmarActivarRegla').hide();"
+							update=":#{p:component('tblRegla')},#{p:component('messageRegla')}" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true" oncomplete="PF('popConfirmarActivarRegla').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

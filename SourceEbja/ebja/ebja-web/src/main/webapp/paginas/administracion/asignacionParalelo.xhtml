@@ -1,0 +1,350 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantillas/contenedorBloqueo.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">
+        Asignación de Paralelos a Institución Educativa por Programa 
+  	</ui:define>
+
+	<ui:define name="contenido">
+
+		<style>
+.contenido {
+	background: #fff;
+}
+</style>
+		<h:form id="frmForm">
+			<p:panel styleClass="contienePanelBusqueda-ebja">
+					<f:facet name="header">Búsqueda de Instituciones por Programa:</f:facet>
+					<p:panelGrid id="pnlBusquedaInstituciones" cellpadding="10"
+						cellspacing="1" border="1" styleClass="panelBusqueda-ebja">
+						<p:row>
+							<p:column>
+								<div class="userIcon-Asignacion-Paralelo-ebja"></div>
+							</p:column>
+							<p:column styleClass="panelBusqueda-primeraCol-ebja">
+								<h:outputText value=" Seleccione un Programa: " />
+							</p:column>
+							<p:column styleClass="panelBusqueda-terceraCol-reglas-ebja">
+								<p:selectOneMenu id="cmbListPrograma"
+									value="#{asignacionParaleloBean.idProgramaEbja}"
+									styleClass="comboReglaModulo-ebja" required="true"
+								    requiredMessage="Debe seleccionar un 'Programa' para desplegar la lista">
+									<f:selectItem itemLabel="Seleccionar Programa" />
+									<f:selectItems value="#{asignacionParaleloBean.listaProgramaEbja}"
+										var="varPrograma" itemLabel="#{varPrograma.nombre}"
+										itemValue="#{varPrograma.id}" />
+									<p:ajax execute="@this" update="@form" 
+	                							listener="#{asignacionParaleloBean.reseteaObjetos()}"/>
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>								
+							<p:column styleClass="panelBusqueda-primeraCol-ebja">
+								<h:outputText value=" Busqueda de Institución por: " />
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-ebja">
+								<p:selectOneRadio layout="pageDirection"
+									styleClass="radioButton-Busqueda-ebja"
+									value="#{asignacionParaleloBean.busquedaTipo}">
+									<f:selectItem itemLabel="Amie" itemValue="1" />
+									<f:selectItem itemLabel="División Administrativa" itemValue="2" />
+									<f:ajax event="change" execute="@this" render="panelBusqueda" 
+										listener="#{asignacionParaleloBean.reseteaCamposBusqueda()}"/>
+								</p:selectOneRadio>
+							</p:column>
+							<p:column styleClass="panelBusqueda-terceraCol-reglas-ebja" >
+								<p:panel id = "panelBusqueda">
+									<p:inputText id="inpTxtingresarAmie"
+										styleClass="inputText-ebja"
+										value="#{asignacionParaleloBean.busquedaContenido}"
+										rendered="#{asignacionParaleloBean.busquedaTipo eq 1}">
+										<p:keyFilter mask="alphanum" />
+										</p:inputText>
+										
+									<p:selectOneMenu id="cmbListZona"
+										value="#{asignacionParaleloBean.idZona}"
+										styleClass="comboReglaModulo-ebja"
+										rendered="#{asignacionParaleloBean.busquedaTipo eq 2}">
+										<f:selectItem itemLabel="Seleccionar Zona" />
+										<f:selectItems value="#{asignacionParaleloBean.listaZona}"
+											var="varZona" itemLabel="#{varZona.nombreZona}"
+											itemValue="#{varZona.id}" />
+										<p:ajax execute="@this" update="frmForm"
+				                               	    listener="#{asignacionParaleloBean.obtenerZona()}"/>
+									</p:selectOneMenu>
+									
+									<p:selectOneMenu id="cmbListDistrito"
+										value="#{asignacionParaleloBean.idDistrito}"
+										styleClass="comboReglaModulo-ebja"
+										rendered="#{asignacionParaleloBean.busquedaTipo eq 2}">
+										<f:selectItem itemLabel="Seleccionar Distrito" />
+										<f:selectItems value="#{asignacionParaleloBean.listaDistrito}"
+											var="varDistrito" itemLabel="#{varDistrito.nombreDistrito}"
+											itemValue="#{varDistrito.id}" />
+										<p:ajax execute="@this" update="frmForm"
+				                               	    listener="#{asignacionParaleloBean.obtenerDistrito()}"/>
+									</p:selectOneMenu>
+									
+									<p:selectOneMenu id="cmbListCircuito"
+										value="#{asignacionParaleloBean.idCircuito}"
+										styleClass="comboReglaModulo-ebja"
+										rendered="#{asignacionParaleloBean.busquedaTipo eq 2}">
+										<f:selectItem itemLabel="Seleccionar Circuito" />
+										<f:selectItems value="#{asignacionParaleloBean.listaCircuito}"
+											var="varCircuito" itemLabel="#{varCircuito.codigoSenpladesCircuito}"
+											itemValue="#{varCircuito.id}" />
+									</p:selectOneMenu>
+								</p:panel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="text-align:center" colspan="4">
+								<h:panelGroup style="display:block">
+									<p:commandButton id="submitBuscar" value="Buscar"
+										actionListener="#{asignacionParaleloBean.buscarInstituciones()}"
+										styleClass="botonBuscar-Estudiante-ebja" ajax="true"
+										update="@form">
+									</p:commandButton>
+								</h:panelGroup>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				<br></br>
+				<p:messages id="messageAsignacionParalelo" style="width:100%; margin-top:3px;" />
+				<p:growl id="growl" showDetail="true" sticky="true" />
+				<h:panelGrid id="pnlListaProgramaInstitucion" columns="1" border="0">					
+					<p:dataTable id="tblListaProgramaInstitucion" var="programaInstitucion"
+						value="#{asignacionParaleloBean.listaProgramaInstitucion}"
+						selection="#{asignacionParaleloBean.selectedInstitucion}" rowKey="#{programaInstitucion.id}"
+						selectionMode="single"
+						scrollable="true" scrollHeight="200"
+						styleClass="tabla-Acuerdo-ebja" paginator="true" rows="10"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+						<f:facet name="header">LISTA DE INSTITUCIONES SELECCIONADAS PARA EL PROGRAMA: #{asignacionParaleloBean.nombreProgramaEbja}</f:facet>
+						<p:ajax event="rowSelect" listener="#{asignacionParaleloBean.cargarListaParalelo()}" update=":frmForm:tblListaCursoParalelo,:frmForm:cbAgregar,:formGuardarParalelo:pnlNuevoRegistroParalelo" />
+						<p:column headerText="Amie" style="width:70px; text-align:center;">
+							<h:outputText value="#{programaInstitucion.institucEstablec.idInstitucion.amie}" />
+						</p:column>
+						<p:column headerText="Institución Educativa" style="width:200px">
+							<h:outputText value="#{programaInstitucion.institucEstablec.idInstitucion.descripcion}" />
+						</p:column>
+						<p:column headerText="Geo código" style="width:70px; text-align:center;">
+							<h:outputText value="#{programaInstitucion.institucEstablec.idEstablecimiento.codigoCuadrante}" />
+						</p:column>
+						<p:column headerText="Zona" style="width:50px; text-align:center;">
+							<h:outputText value="#{programaInstitucion.institucEstablec.idCircuitoParroquia.idCircuito.idDistrito.idZona.codigoSenpladesZona}" />
+						</p:column>
+						<p:column headerText="Distrito" style="width:60px; text-align:center;">
+							<h:outputText value="#{programaInstitucion.institucEstablec.idCircuitoParroquia.idCircuito.idDistrito.codigoSenpladesDistrito}" />
+						</p:column>
+						<p:column headerText="Circuito" style="width:100px; text-align:center;">
+							<h:outputText value="#{programaInstitucion.institucEstablec.idCircuitoParroquia.idCircuito.codigoSenpladesCircuito}" />
+						</p:column>
+						<p:column headerText="Total Aforo" style="width:100px; text-align:center;">
+							<h:outputText value="#{programaInstitucion.totalAforo}" />
+						</p:column>
+						<p:column headerText="Total Bancas" style="width:100px; text-align:center;">
+							<h:outputText value="#{programaInstitucion.totalBanca}" />
+						</p:column>
+						<p:column headerText="Cupos disponibles" style="width:100px; text-align:center;">
+							<h:outputText value="#{programaInstitucion.cupoDisponible}" />
+						</p:column>
+						<f:facet name="paginatorBottomRight">
+							<p:commandButton type="button" icon="fa fa-sync" />
+						</f:facet>
+					</p:dataTable>
+				</h:panelGrid>
+				<br/><br/>
+				<h:panelGrid id="pnlListaCursoParalelo" columns="1" border="0">					
+					<p:dataTable id="tblListaCursoParalelo" var="cursoParalelo"
+						value="#{asignacionParaleloBean.listaCursoParalelo}"
+						scrollable="true" scrollHeight="200"
+						styleClass="tabla-Acuerdo-ebja" paginator="true" rows="10"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+						<f:facet name="header">
+							LISTA DE PARALELOS ASIGNADOS AL:
+							<br/> PROGRAMA: #{asignacionParaleloBean.nombreProgramaEbja}
+							<br/> AMIE: #{asignacionParaleloBean.amieInstitucionSeleccionada}
+							<br/> GEO CÓDIGO: #{asignacionParaleloBean.geocodigoInstitucionSeleccionada}						
+							<br/> LA INSTITUCIÓN: #{asignacionParaleloBean.nombreInstitucionSeleccionada}  
+						</f:facet>									
+						<p:column headerText="Paralelo" style="width:70px; text-align:center;">
+							<h:outputText value="#{cursoParalelo.paralelo.descripcion}" />
+						</p:column>
+						<p:column headerText="Aforo" style="width:100px; text-align:center;">
+							<h:outputText value="#{cursoParalelo.aforo}" />
+						</p:column>
+						<p:column headerText="No. Bancas" style="width:100px; text-align:center;">
+							<h:outputText value="#{cursoParalelo.numeroBanca}" />
+						</p:column>
+						<p:column headerText="No. Matriculados" style="width:50px; text-align:center;">
+							<h:outputText value="#{cursoParalelo.numeroMatriculado}" />
+						</p:column>
+						<p:column headerText="Estado" styleClass="tabla-Regla-Estado-ebja">
+							<h:outputText value="#{cursoParalelo.estado=='1'? 'ACTIVO' : 'INACTIVO'} " />
+						</p:column>
+						<p:column styleClass="tabla-editar-regla-ebja" headerText="Editar">
+							<div style="text-align: center;">
+								<p:commandLink
+									actionListener="#{asignacionParaleloBean.paraleloSeleccionadoEditar(cursoParalelo)}"
+									oncomplete="PF('popGuardarParalelo').show();" ajax="true"
+									update=":#{p:component('formGuardarParalelo')}">
+									<h:graphicImage value="../../img/edit.png" />
+								</p:commandLink>
+							</div>
+						</p:column>
+						<p:column styleClass="tabla-borrar-regla-ebja"
+							headerText="Activar">
+							<div style="text-align: center;">
+								<p:commandLink
+									actionListener="#{asignacionParaleloBean.paraleloSeleccionadoActivar(cursoParalelo)}"
+									oncomplete="PF('popConfirmarActivar').show();"
+									ajax="true">
+									<h:graphicImage value="../../img/visto.png" />
+								</p:commandLink>
+							</div>
+						</p:column>
+						<p:column styleClass="tabla-borrar-regla-ebja"
+							headerText="Inactivar">
+							<div style="text-align: center;">
+								<p:commandLink
+									actionListener="#{asignacionParaleloBean.paraleloSeleccionadoInactivar(cursoParalelo)}"
+									oncomplete="PF('popConfirmarInactivar').show();"
+									ajax="true">
+									<h:graphicImage value="../../img/delete.png" />
+								</p:commandLink>
+							</div>
+						</p:column>
+						<f:facet name="paginatorBottomRight">
+							<p:commandButton type="button" icon="fa fa-sync" />
+						</f:facet>
+					</p:dataTable>
+					<h:panelGroup style="display:block; text-align:center">	
+						<p:commandButton id="cbAgregar" value="Agregar Paralelo"
+								disabled="#{asignacionParaleloBean.disabledCbAgregar}"
+								actionListener="#{asignacionParaleloBean.setearCrearParalelo}"
+								styleClass="botonBuscar-ebja-a4j"
+								oncomplete="PF('popGuardarParalelo').show();" ajax="true"
+								update=":#{p:component('formGuardarParalelo')}" />
+					</h:panelGroup>
+				</h:panelGrid>				
+			</p:panel>
+		</h:form>
+		
+		<h:form id="formGuardarParalelo">
+				<p:dialog header="Asignar Paralelos a Institución por Programa"
+					widgetVar="popGuardarParalelo" autosized="true" width="330"
+					height="340">
+					<div>
+						<h:panelGrid id="pnlNuevoRegistroParalelo" columns="2"
+							cellpadding="5" cellspacing="1" border="0"
+							styleClass="popUpCreacionRegla-ebja"
+							columnClasses="popUpBusqueda-primeraCol-regla-ebja,popUpBusqueda-segundaCol-regla-ebja"
+							rendered="true">
+							<h:outputText for="txtPrograma" value=" Programa: " />
+							<p:inputText id="txtPrograma" styleClass="inputText-ebja" value="#{asignacionParaleloBean.nombreProgramaEbja}" readonly="true"/>
+							<h:outputText for="txtAmie" value=" Amie: " />
+							<p:inputText id="txtAmie" styleClass="inputText-ebja" value="#{asignacionParaleloBean.amieInstitucionSeleccionada}" readonly="true"/>
+							<h:outputText for="txtGeoCodigo" value=" Geo Código: " />
+							<p:inputText id="txtGeoCodigo" styleClass="inputText-ebja" value="#{asignacionParaleloBean.geocodigoInstitucionSeleccionada}" readonly="true"/>
+							<h:outputText for="txtInstitucion" value=" Institución: " />
+							<p:inputText id="txtInstitucion" styleClass="inputText-ebja" value="#{asignacionParaleloBean.nombreInstitucionSeleccionada}" readonly="true"/>
+							<h:outputText for="cmbParalelo" value=" Paralelo: " />
+							<p:selectOneMenu id="cmbParalelo"
+								value="#{asignacionParaleloBean.idParalelo}"
+								styleClass="comboReglaFase-ebja" required="true"
+								disabled="#{asignacionParaleloBean.crearOEditar == 2 ? true : false}" 
+								requiredMessage="Debe escojer un 'Paralelo' para guardar el registro">
+								<f:selectItem itemLabel="Seleccionar Paralelo" />
+								<f:selectItems value="#{asignacionParaleloBean.listaParalelo}"
+									var="varParalelo" itemLabel="#{varParalelo.descripcion}"
+									itemValue="#{varParalelo.id}">
+								</f:selectItems>
+							</p:selectOneMenu>
+							<h:outputText for="txtAforo" value=" Aforo: " />
+							<p:inputText id="txtAforo" styleClass="inputText-ebja"
+								value="#{asignacionParaleloBean.aforo}" required="true"
+								requiredMessage="El campo 'Aforo' está vacío">
+								<p:keyFilter mask="int" />
+							</p:inputText>
+							<h:outputText for="txtBanca" value=" No. Bancas: " />
+							<p:inputText id="txtBanca" styleClass="inputText-ebja"
+								value="#{asignacionParaleloBean.numBanca}" required="true"
+								requiredMessage="El campo 'No. Bancas' está vacío">
+								<p:keyFilter mask="int" />
+							</p:inputText>
+						</h:panelGrid>
+					</div>
+					<br></br>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionReglaBotones-ebja"
+						columnClasses="popUpBusqueda-botones-regla-ebja,popUpBusqueda-botones-regla-ebja"
+						border="0">
+						<p:commandButton id="guardarRegistro" value="Guardar"
+							styleClass="popUpBoton-ebja" ajax="true"
+							actionListener="#{asignacionParaleloBean.ejecutarCrearOEditarRegistro()}"
+							oncomplete="PF('popGuardarParalelo').hide();"
+							update="frmForm:tblListaProgramaInstitucion, frmForm:tblListaCursoParalelo, frmForm:messageAsignacionParalelo, frmForm:growl"
+							 />
+						<p:commandButton id="cancelarRegistro" value="Cancelar"
+							styleClass="popUpBoton-ebja"
+							actionListener="#{asignacionParaleloBean.setearCrearParalelo()}"
+							oncomplete="PF('popGuardarParalelo').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+			<h:form>
+				<p:dialog header="Inactivar Registro"
+					widgetVar="popConfirmarInactivar" autosized="false"
+					width="250" height="100">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-regla-ebja,popUpBusqueda-segundaCol-regla-ebja">
+						<div class="eliminar-archivo-ebja"></div>
+						<h:outputLabel value="Está seguro que desea Inactivar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true" actionListener="#{asignacionParaleloBean.inactivarCursoParalelo()}"
+							oncomplete="PF('popConfirmarInactivar').hide();"
+							update="frmForm:tblListaProgramaInstitucion, frmForm:tblListaCursoParalelo, frmForm:messageAsignacionParalelo, frmForm:growl" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true" oncomplete="PF('popConfirmarInactivar').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+			<h:form>
+				<p:dialog header="Activar Registro"
+					widgetVar="popConfirmarActivar" autosized="false" width="250"
+					height="100">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="eliminar-archivo-ebja"></div>
+						<h:outputLabel value="Está seguro que desea Activar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true" actionListener="#{asignacionParaleloBean.activarCursoParalelo()}"
+							oncomplete="PF('popConfirmarActivar').hide();"
+							update="frmForm:tblListaProgramaInstitucion, frmForm:tblListaCursoParalelo, frmForm:messageAsignacionParalelo, frmForm:growl" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true" oncomplete="PF('popConfirmarActivar').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>		
+	</ui:define>
+</ui:composition>

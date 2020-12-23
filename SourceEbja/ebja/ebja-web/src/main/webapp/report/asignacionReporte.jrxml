@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="asignacionReporte" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="451" leftMargin="72" rightMargin="72" topMargin="72" bottomMargin="30" uuid="99d477c7-8d21-4fe2-b3a7-20c5b69f9a81">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="96"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#73ADE6">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#CFDAE6">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#1E90FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE0FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="IMAGE_DIR" class="java.lang.String"/>
+	<parameter name="URL_BACKGROUND" class="java.lang.String"/>
+	<parameter name="URL_LOGO" class="java.lang.String"/>
+	<parameter name="registroEstudianteDTO" class="java.util.Map"/>
+	<parameter name="fechaCreacion" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band height="740" splitType="Stretch">
+			<image>
+				<reportElement uuid="c89c0ddf-52a9-4456-a7c3-d265a20ee0f6" x="-27" y="-19" width="501" height="717"/>
+				<imageExpression><![CDATA[$P{URL_BACKGROUND}]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="100"/>
+	</pageHeader>
+	<detail>
+		<band height="479">
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="dea111ce-7a67-4578-a87f-b45d356bf879" positionType="Float" x="168" y="67" width="238" height="20"/>
+				<box leftPadding="7">
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{registroEstudianteDTO}.get("nomProvincia")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="da5ef193-f345-4441-8c38-bd5baa1b5bb7" positionType="Float" x="168" y="87" width="238" height="20"/>
+				<box leftPadding="7">
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{registroEstudianteDTO}.get("nomCanton")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="a74aef8c-b547-41ba-a728-2739c46c80f3" positionType="Float" x="168" y="127" width="238" height="20"/>
+				<box leftPadding="7">
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{registroEstudianteDTO}.get("correoElectronico")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="c65cf7d0-5e52-45ad-87d7-e2153ffaa908" positionType="Float" x="138" y="248" width="179" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[OPERADOR]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="50b6cded-4ca5-4792-b275-a070941d1be3" positionType="Float" x="139" y="293" width="179" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="8baa2774-4ba8-4c7a-8ef1-90cd83249d41" positionType="Float" x="223" y="337" width="95" height="1">
+					<printWhenExpression><![CDATA[]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<textField>
+				<reportElement uuid="0dc6a9af-127d-49c2-8969-f0b46d70a0fd" positionType="Float" x="139" y="294" width="179" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{registroEstudianteDTO}.get("apellidosNombresUsuarioTmp")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="43ee3030-6f86-4728-94b8-8d8dd375acce" positionType="Float" x="223" y="318" width="95" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{registroEstudianteDTO}.get("numeroIdentificacionUsuarioTmp")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="219035b0-9bf8-4fa7-a8f9-bce8b4fb0b01" positionType="Float" x="3" y="374" width="448" height="15"/>
+				<textElement textAlignment="Justified" markup="html">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["El inicio de clases de " + $P{registroEstudianteDTO}.get("apellidosNombres") + " es el día: " + $P{registroEstudianteDTO}.get("fechaInicioClases")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="f14b617e-2de2-46f3-a1e4-014d77b0c08e" x="1" y="1" width="451" height="33"/>
+				<box topPadding="8"/>
+				<textElement textAlignment="Justified" markup="html">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["El/la aspirante " + $P{registroEstudianteDTO}.get("apellidosNombres") +
+", portador/a del documento No. " + $P{registroEstudianteDTO}.get("numeroIdentificacion") +
+", fue matriculado en " + $P{registroEstudianteDTO}.get("nomProgramaEbja") +
+", el día " + $P{fechaCreacion}.toString()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="ad4c08bc-7b0a-44de-a860-ea8e611335f3" x="2" y="390" width="449" height="33"/>
+				<box topPadding="8"/>
+				<textElement textAlignment="Justified" markup="html">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Nota de descargo: El Ministerio de Educación, realizará la asignación de estudiantes a instituciones educativas correspondientes."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="9878a3c3-0717-4157-8bbe-91f2a5bc03af" x="3" y="428" width="449" height="33"/>
+				<box topPadding="8"/>
+				<textElement textAlignment="Justified" markup="html">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["El/la registrante declara tener poder/autorización suficiente para realizar el presente registro y establecer que la información que este documento contiene es veraz, por lo que asumirá la responsabilidad y obligaciones que por efecto de este proceso se generen."]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="6b9bd74c-1e1d-44d3-b581-833e938ce8b0" positionType="Float" x="139" y="317" width="82" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Identificación:"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="79d4aa8b-9a4a-43aa-ae33-d165d2a35f7b" positionType="Float" x="168" y="167" width="238" height="20"/>
+				<box leftPadding="7">
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{registroEstudianteDTO}.get("callePrincipal")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="f1031479-028c-4023-8a1c-55706b41685c" positionType="Float" x="166" y="47" width="240" height="20"/>
+				<box leftPadding="7">
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{registroEstudianteDTO}.get("nomPais")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="3d68971d-93f5-40d5-8c98-84a6e49a565a" positionType="Float" x="168" y="197" width="238" height="20"/>
+				<box leftPadding="7">
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{registroEstudianteDTO}.get("idInscripcion")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="47826e04-51d5-4f1f-a168-f0b4fe2e189f" positionType="Float" x="168" y="147" width="238" height="20"/>
+				<box leftPadding="7">
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{registroEstudianteDTO}.get("telefono")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="692aacd4-8b78-4c50-a5c4-3f5610f11583" positionType="Float" x="168" y="107" width="238" height="20"/>
+				<box leftPadding="7">
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{registroEstudianteDTO}.get("codigoSenpladesDistrito")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="140bfe88-e3f6-4b56-a32b-5076c08fddcb" mode="Opaque" x="50" y="47" width="118" height="20" backcolor="#65B32E"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["País: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="200d2949-1a32-48c9-84f5-248a3796ff88" mode="Opaque" x="50" y="67" width="118" height="20" backcolor="#65B32E"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Provincia: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1cfbe0f2-b9ee-4c45-b33b-b121dfddd248" mode="Opaque" x="50" y="87" width="118" height="20" backcolor="#65B32E"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Circuito: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7ce005a6-10ed-4d61-9f2e-c401c5bcfbaf" mode="Opaque" x="50" y="107" width="118" height="20" backcolor="#65B32E"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Distrito: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="38ad8aae-ae78-4d3b-878f-be981174e807" mode="Opaque" x="50" y="127" width="118" height="20" backcolor="#65B32E"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Correo: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b5512573-39c4-42f4-901f-46cc188550d5" mode="Opaque" x="50" y="147" width="118" height="20" backcolor="#65B32E"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Celular: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d2d00502-760c-4ee9-9058-2c7d9c0b9c1d" mode="Opaque" x="50" y="167" width="118" height="20" backcolor="#65B32E"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Dirección: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a352fa94-2612-4ab2-a3a2-75fa89952a41" mode="Opaque" x="50" y="197" width="118" height="20" backcolor="#65B32E"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Inscripción: "]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="59" splitType="Stretch">
+			<componentElement>
+				<reportElement uuid="a129f058-8b54-4d6b-9823-188f979870be" x="6" y="18" width="136" height="41"/>
+				<jr:Code39 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
+					<jr:codeExpression><![CDATA[$P{registroEstudianteDTO}.get("numeroIdentificacion")]]></jr:codeExpression>
+				</jr:Code39>
+			</componentElement>
+			<staticText>
+				<reportElement uuid="c809148f-4ddc-49ae-982a-b00e9d90f914" positionType="Float" x="22" y="0" width="93" height="18">
+					<printWhenExpression><![CDATA[]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[código QR]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	 version="3.1">
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+	
+	<!-- servlet para el captcha -->
+    <servlet>
+        <servlet-name>Captcha</servlet-name>
+        <servlet-class>ec.gob.educacion.ebja.servlets.CaptchaServlet</servlet-class>
+        <init-param>
+            <description>passing height</description>
+            <param-name>height</param-name>
+            <param-value>30</param-value>
+        </init-param>
+        <init-param>
+            <description>passing height</description>
+            <param-name>width</param-name>
+            <param-value>120</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Captcha</servlet-name>
+        <url-pattern>/Captcha.jpg</url-pattern>
+    </servlet-mapping>
+     <!-- fin servlet para el captcha -->
+    
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>
+    
+    <context-param>
+    	<param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+    	<param-value>true</param-value>
+	</context-param>
+	<context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            /WEB-INF/security-context.xml
+        </param-value>
+    </context-param>
+	<!-- Seguridad https 
+	<security-constraint>
+    	<web-resource-collection>
+        	<web-resource-name>All</web-resource-name>
+            <url-pattern>/faces/*</url-pattern>
+         </web-resource-collection>
+         <user-data-constraint>
+         	<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+         </user-data-constraint>
+    </security-constraint>
+	-->
+	<!-- para accesar a los iconos del primefaces -->	
+	<context-param>
+		<param-name>primefaces.FONT_AWESOME</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+   <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+    </listener> 
+    
+    <welcome-file-list>
+        <welcome-file>faces/login.xhtml</welcome-file>
+    </welcome-file-list>
+</web-app>

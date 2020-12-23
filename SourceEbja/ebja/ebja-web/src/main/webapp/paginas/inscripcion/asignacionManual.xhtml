@@ -1,0 +1,217 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantillas/contenedorBloqueo.xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:p1="http://primefaces.prime.com.tr/ui">
+
+	<ui:define name="titulo">#{asignacionManualBean.tituloPagina}</ui:define>
+
+	<ui:define name="contenido">
+		<style> .contenido { background: #fff; } </style>
+		<div>
+			<h:form id="frmForm">
+				<p:panel styleClass="contienePanelBusqueda-ebja">
+					<f:facet name="header" style="color:blue">Parámetros para Proceso:</f:facet>
+					<p:panelGrid id="pnlBusquedaReglas" cellpadding="1"
+						cellspacing="1" border="1" styleClass="panelBusqueda-ebja">
+						<p:row>
+							<p:column>
+								<div class="userIdMap-Reglas-ebja"></div>
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-reglas-ebja">
+								<p:panelGrid columns="2" styleClass="panelBusqueda-ebja">
+									<h:outputText value=" Oferta: " />
+									<p:selectOneMenu id="combListaProgramaEbja" value="#{asignacionManualBean.idProgramaEbja}"
+										styleClass="comboReglaModulo-ebja" required="true" requiredMessage="Seleccionar Oferta...">
+										<f:selectItem itemLabel="Seleccionar Oferta" />
+										<f:selectItems value="#{asignacionManualBean.listaProgramaEbja}"
+											var="var" itemLabel="#{var.nombre}"
+													  itemValue="#{var.id}"/>
+	                					<p:ajax execute="@this" update="frmForm" 
+	                							listener="#{asignacionManualBean.obtenerOferta()}"/>
+									</p:selectOneMenu>
+									<h:outputText value=" Zona: " />
+									<p:selectOneMenu id="combListaZona" value="#{asignacionManualBean.idZona}"
+										styleClass="comboReglaModulo-ebja" required="true" requiredMessage="Seleccionar Zona...">
+										<f:selectItem itemLabel="Seleccionar Zona" />
+										<f:selectItems value="#{asignacionManualBean.listaZona}"
+											var="var" itemLabel="#{var.nombreZona}"
+													  itemValue="#{var.id}"/>
+	                					<p:ajax execute="@this" update="frmForm" 
+	                							listener="#{asignacionManualBean.obtenerZona()}"/>
+									</p:selectOneMenu>
+								 </p:panelGrid>
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-reglas-ebja" rendered="#{asignacionManualBean.numInscrito > 0 or asignacionManualBean.numNoMatricula > 0}">
+								<p:fieldset legend="Resultados del Proceso" style="width:100%; text-align:center">
+									<p:panelGrid columns="2" style="width: 100%; text-align:center" cellspacing="1" border="1">
+										<h:outputText value=" Inscritos: " />
+										<h:outputText value="#{asignacionManualBean.numInscrito}" />
+										<h:outputText value=" Matriculados: " />
+										<h:outputText value="#{asignacionManualBean.numMatricula}" />
+										<h:outputText value=" NO Matriculados: " />
+										<h:outputText value="#{asignacionManualBean.numNoMatricula}" />
+									</p:panelGrid>
+								</p:fieldset>
+								<p:fieldset legend="Matriculados en la Oferta y Zona" style="width:100%; text-align:center">
+									<p:panelGrid columns="2" style="width: 100%; text-align:center" cellspacing="1" border="1">
+										<h:outputText value=" Matriculados: " />
+										<h:outputText value="#{asignacionManualBean.numMatriculados}" />
+									</p:panelGrid>
+								</p:fieldset>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="text-align:center" colspan="4">
+								<h:panelGroup style="display:block">
+									<p:commandButton value="Iniciar asignación Manual"
+										actionListener="#{asignacionManualBean.buscarEstudiantesParaMatricula()}"
+										styleClass="botonBuscar-Estudiante-ebja" ajax="true" update="frmForm" icon="fa fa-search">
+									</p:commandButton>
+								</h:panelGroup>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					
+					<p:messages id="mensaje" style="width:100%; margin-top:3px;" />
+
+					<p:dataTable id="tblProgramaInstitucion" var="reg" rowIndexVar="indice" paginatorPosition="bottom"
+						value="#{asignacionManualBean.listaProgramaInstitucion}" scrollable="true"
+						scrollHeight="150" paginator="true" rows="10" rowsPerPageTemplate="5,10,15"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						emptyMessage="No existe registros" filteredValue="#{asignacionManualBean.listaProgramaInstitucionFilter}" >
+							
+						<f:facet name="header"><h6>Instituciones de la Oferta: #{asignacionManualBean.nombreProgramaEbja}</h6></f:facet>
+                            
+                        <p:column headerText="Nro." style="width:40px; text-align:center" >
+                        	<f:facet name="header">Nro.</f:facet>
+                                #{indice + 1} 
+                        </p:column>
+						<p:column headerText="Zona"	style="width:50px; text-align:center" >
+							<h:outputText value="#{reg.institucEstablec.idCircuitoParroquia.idCircuito.idDistrito.idZona.codigoSenpladesZona}" />
+						</p:column>
+						<p:column headerText="Circuito"	style="width:100px" >
+							<h:outputText value="#{reg.institucEstablec.idCircuitoParroquia.idCircuito.codigoSenpladesCircuito}" />
+						</p:column>
+						<p:column headerText="Parroquia" style="width:80px; text-align:center" >
+							<h:outputText value="#{reg.institucEstablec.idCircuitoParroquia.idParroquia.codigoParroquia}" />
+						</p:column>
+							
+						<p:column headerText="Institución" style="width:300px" >
+							<h:outputText value="#{reg.institucEstablec.idInstitucion.descripcion}" />
+						</p:column>
+						<p:column filterBy="#{reg.institucEstablec.idInstitucion.amie}" headerText="Amie" style="width:120px; text-align:center" >
+					       	<h:outputText value="#{reg.institucEstablec.idInstitucion.amie}" />
+					    </p:column>							
+						<p:column headerText="Total Aforo" style="width:70px; text-align:center" >
+							<h:outputText value="#{reg.totalAforo}" />
+						</p:column>
+						<p:column headerText="Total Bancas" style="width:70px; text-align:center" >
+							<h:outputText value="#{reg.totalBanca}" />
+						</p:column>
+						<p:column headerText="Cupo Disponible" style="width:90px; text-align:center" >
+							<h:outputText value="#{reg.cupoDisponible}" />
+						</p:column>
+                        <p:column style="width:80px; text-align:center" >
+                            <f:facet name="header">Procesar</f:facet>
+                        	<p:selectBooleanCheckbox value="#{reg.institucEstablec.estado}" disabled="#{reg.cupoDisponible eq 0}" >
+                        		<p:ajax execute="@this" update="frmForm" />
+                            </p:selectBooleanCheckbox>
+                        </p:column>
+							
+						<f:facet name="paginatorBottomRight">
+							<p:commandButton type="button" icon="fa fa-sync" />
+						</f:facet>
+					</p:dataTable>
+					
+					<br></br>
+
+					<p:dataTable id="tblRegistroEstudiante" var="reg"
+						rowIndexVar="indice" paginatorPosition="bottom"
+						value="#{asignacionManualBean.listaEstudiantesParaMatricula}"
+						scrollable="true" scrollHeight="150" paginator="true" rows="10"
+						rowsPerPageTemplate="5,10,15"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						emptyMessage="No existe registros"
+						filteredValue="#{asignacionManualBean.listaEstudiantesParaMatriculaFilter}">
+
+						<f:facet name="header">
+							<h6>Estudiantes Inscritos en la Oferta:	#{asignacionManualBean.nombreProgramaEbja}</h6>
+						</f:facet>
+						<p:column headerText="Nro." style="width:30px; text-align:center">
+							<f:facet name="header">Nro.</f:facet>
+                                #{indice + 1} 
+                        </p:column>
+						<p:column filterBy="#{reg[0].id}" headerText="Inscripción" style="width:60px; text-align:center">
+							<h:outputText value="#{reg[0].id}" />
+						</p:column>
+						<p:column headerText="Estudiante" style="width:50px; text-align:center">
+							<h:outputText value="#{reg[2].id}" />
+						</p:column>
+						<p:column headerText="Grado Aprobado" style="width:50px; text-align:center">
+							<h:outputText value="#{reg[0].gradoAprobado.id}" />
+						</p:column>
+						<p:column headerText="Circuito" style="width:80px">
+							<h:outputText value="#{reg[1].circuito.codigoSenpladesCircuito}" />
+						</p:column>
+						<p:column headerText="Parroquia" style="width:60px">
+							<h:outputText value="#{reg[1].parroquia.codigoParroquia}" />
+						</p:column>
+						<p:column filterBy="#{reg[2].numeroIdentificacion}" headerText="Identificación" style="width:90px; text-align:center">
+							<h:outputText value="#{reg[2].numeroIdentificacion}" />
+						</p:column>
+						<p:column filterBy="#{reg[2].apellidosNombres}" headerText="Apellidos Nombres" style="width:280px">
+							<h:outputText value="#{reg[2].apellidosNombres}" />
+						</p:column>
+						<p:column style="width:80px; text-align:center">
+							<f:facet name="header">Procesar</f:facet>
+							<p:selectBooleanCheckbox value="#{reg[0].estadoProceso}">
+								<p:ajax execute="@this" update="frmForm"
+									listener="#{asignacionManualBean.procesarRegistroEstudiante(reg, indice)}" />
+							</p:selectBooleanCheckbox>
+						</p:column>
+						<f:facet name="paginatorBottomRight">
+							<p:commandButton type="button" icon="fa fa-sync" />
+						</f:facet>
+					</p:dataTable>
+
+					<p:panelGrid id="pgProceso" styleClass="panelBusqueda-ebja">
+						<p:row>	
+							<p:column styleClass="panelBusqueda-primeraCol-ebja">
+								<p:panel>
+									<f:facet name="header">
+										<h:graphicImage value="/img/check.jpeg" />
+									</f:facet>
+									<center>
+										<p:commandButton id="cbProcesar" value="Asignación Manual (JPA)"
+											disabled="#{asignacionManualBean.disabledCbProcesar}" 
+											actionListener="#{asignacionManualBean.procesarAsignacionManual()}"
+											ajax="true" update="frmForm" icon="fa fa-gears" target="_blank"/>
+									</center>
+								</p:panel>
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-ebja">
+								<p:panel style="text-align:center">
+									<f:facet name="header">
+										<h:outputText value="Estudiantes No Matriculados" />
+									</f:facet>
+									<center>
+										<h:commandLink value="" render="frmForm"
+											disabled="#{empty asignacionManualBean.listaEstudiantesNoMatricula}"
+								    		actionListener="#{asignacionManualBean.exportarExcel()}" target="_blank">
+											<h:graphicImage value="/img/excel.gif" 
+												alt="Estudiantes No Asignados"
+												title="Estudiantes No Matriculados" />
+								    	</h:commandLink>
+									</center>
+								</p:panel>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:panel>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

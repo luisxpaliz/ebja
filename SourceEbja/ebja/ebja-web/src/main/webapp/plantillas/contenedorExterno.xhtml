@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title><ui:insert name="titulo">
+			<h:outputText value="T&#205;tulo de P&#225;gina" />
+		</ui:insert></title>
+	<link rel="icon" href="#{request.contextPath}/img/favicon.ico" type="image/x-icon"/>
+	<link type="text/css" rel="stylesheet"
+		href="#{request.contextPath}/css/estilo.css" />
+	<link rel="stylesheet"
+		href="#{request.contextPath}/css/font-awesome.min.css" />
+	<link type="text/css" rel="stylesheet"
+		href="#{request.contextPath}/css/estilos_inspinia.css" />
+	<link type="text/css" rel="stylesheet"
+		href="#{request.contextPath}/css/bootstrap.min.css" />
+	<script type="text/javascript" src="#{request.contextPath}/js/utils.js" />
+</h:head>
+
+<h:body>
+	<div class="contenedor">
+		<ui:insert name="cabecera">
+			<ui:include src="/plantillas/cabeceraNoLogin.xhtml" />
+		</ui:insert>
+		<div class="contenedor-horizontal-externo">
+			<div class="contenido-ext">
+				<!-- PANEL DE ESTADO  -->
+				<p:ajaxStatus onstart="PF('statusDialog').show()"
+					onsuccess="PF('statusDialog').hide()" />
+				<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+					closable="false" resizable="false" showHeader="false">
+					<h:graphicImage value="/css/images/ajax-loader.gif" alt="ai" />
+                            Por favor espere...
+					</p:dialog>
+				<!-- FIN PANEL DE ESTADO  -->
+				<ui:insert name="contenido">
+					<h:outputText value="Contenido de la p&#255;gina" />
+				</ui:insert>
+			</div>
+		</div>
+		<ui:insert name="pie">
+			<ui:include src="/plantillas/pie.xhtml" />
+		</ui:insert>
+	</div>
+</h:body>
+
+</html>

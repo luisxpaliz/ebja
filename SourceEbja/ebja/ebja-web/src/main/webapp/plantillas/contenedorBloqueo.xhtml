@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<title><ui:insert name="titulo">
+			<h:outputText value="T&#205;tulo de P&#225;gina" />
+		</ui:insert></title>
+	<link rel="icon" href="#{request.contextPath}/img/favicon.ico" type="image/x-icon"/>
+	<link type="text/css" rel="stylesheet"
+		href="#{request.contextPath}/css/estilo.css" />
+	<link type="text/css" rel="stylesheet"
+		href="#{request.contextPath}/css/estilos_inspinia.css" />
+	<link type="text/css" rel="stylesheet"
+		href="#{request.contextPath}/css/bootstrap.min.css" />
+	<!-- Google Fonts -->
+	<link
+		href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i%7cWork+Sans:400,500,700"
+		rel="stylesheet" type="text/css" />
+	<link rel="stylesheet"
+		href="#{request.contextPath}/css/font-awesome.min.css" />
+	<script type="text/javascript" src="#{request.contextPath}/js/utils.js" />
+</h:head>
+
+<h:body>
+	<div class="contenedor">
+		<ui:insert name="cabecera">
+			<ui:include src="/plantillas/cabecera.xhtml" />
+		</ui:insert>
+
+		<div class="contenedor-horizontal">
+			<div class="menu-vertical">
+				<ui:insert name="menu">
+					<ui:include src="/plantillas/menu.xhtml" />
+				</ui:insert>
+			</div>
+			<div class="contenido">
+				<div class="padding-contenido">
+					<span class="titulo"> <ui:insert name="titulo">
+							<h:outputText value="Titulo de la Pagina" />
+						</ui:insert>
+					</span> <br /> <br />
+					<fieldset>
+						<!-- PANEL DE ESTADO  -->
+						<p:ajaxStatus onstart="PF('statusDialog').show()"
+							onsuccess="PF('statusDialog').hide()" />
+						<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+							closable="false" resizable="false" showHeader="false">
+							<h:graphicImage value="/css/images/ajax-loader.gif" alt="ai" />
+                            Por favor espere...
+				</p:dialog>
+						<!-- FIN PANEL DE ESTADO  -->
+
+
+						<div class="row" style="margin: 0px">
+							<!-- PANEL DE ASIGANCION DOCENTES -->
+							<div class="col-lg-12" style="padding: 0px">
+								<div class="wrapper wrapper-content " style="padding: 0px;">
+									<div class="ibox float-e-margins">
+										<ui:insert name="contenido">
+											<h:outputText value="Contenido de la p&#255;gina" />
+										</ui:insert>
+									</div>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+			</div>
+		</div>
+		<ui:insert name="pie">
+			<ui:include src="/plantillas/pie.xhtml" />
+		</ui:insert>
+
+	</div>
+</h:body>
+
+</html>

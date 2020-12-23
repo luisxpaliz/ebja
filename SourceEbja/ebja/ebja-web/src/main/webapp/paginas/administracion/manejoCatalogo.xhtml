@@ -1,0 +1,280 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/plantillas/contenedorBloqueo.xhtml">
+
+	<ui:define name="titulo">
+        Administración del sistema - Manejo de catálogos 
+  	</ui:define>
+
+	<ui:define name="contenido">
+		<style>
+.contenido {
+	background: #fff;
+}
+</style>
+		<div>
+			<h:form id="frmForm">
+				<p:panel styleClass="contienePanelBusqueda-ebja">
+					<f:facet name="header">Búsqueda de Catálogos:</f:facet>
+					<p:panelGrid id="pnlBusqueda" cellpadding="10" cellspacing="1"
+						styleClass="panelBusqueda-ebja"
+						columnClasses="panelBusqueda-primeraCol-ebja,panelBusqueda-segundaCol-ebja,panelBusqueda-terceraCol-ebja">
+						<p:row>
+							<p:column>
+								<div class="userIdMap-Catalogo-ebja"></div>
+							</p:column>
+							<p:column styleClass="panelBusqueda-primeraCol-ebja">
+								<h:outputText value=" Búsqueda de Catálogo por: " />
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-ebja">
+								<p:selectOneRadio layout="pageDirection"
+									styleClass="radioButton-Busqueda-ebja"
+									value="#{catalogoEbjaBean.busquedaTipo}">
+									<f:selectItem itemLabel="Nemónico" itemValue="1" />
+									<f:selectItem itemLabel="Nombre Catálogo" itemValue="2" />
+								</p:selectOneRadio>
+							</p:column>
+							<p:column styleClass="panelBusqueda-terceraCol-ebja">
+								<h:inputText styleClass="inputText-ebja"
+									value="#{catalogoEbjaBean.busquedaContenido}" maxlength="60" >
+									<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ_-\s]+$/i" preventPaste="false"/>
+									</h:inputText>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="text-align:center" colspan="4">
+								<h:panelGroup style="display:block ">
+									<p:commandButton id="submit" value="Buscar"
+										actionListener="#{catalogoEbjaBean.buscarCatalogoEbja}"
+										styleClass="botonBuscar-ebja" ajax="true" update="@form" />
+								</h:panelGroup>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<br></br>
+					<p:messages id="messageCatalogoEbja"
+						style="width:100%; margin-top:3px;" />
+					<h:panelGrid id="pnlIngresoRegistro" columns="1" border="0">
+						<h:panelGroup style="display:block; text-align:center">
+							<p:commandButton value="Crear Catálogo"
+								actionListener="#{catalogoEbjaBean.setearCrearCatalogoEbja}"
+								styleClass="botonBuscar-ebja-a4j"
+								oncomplete="PF('popGuardarCatalogo').show();" ajax="true"
+								update=":#{p:component('formGuardarCatalogo')}" />
+						</h:panelGroup>
+						<p:dataTable id="tblCatalogos" var="catalogo"
+							value="#{catalogoEbjaBean.listaCatalogos}" scrollable="true"
+							scrollHeight="191" styleClass="tabla-Acuerdo-ebja"
+							paginator="true" rows="7"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+
+							<p:column headerText="Tipo Catálogo"
+								styleClass="tabla-Codigo-ebja">
+								<h:outputText value="#{catalogo[0].tipoCatalogoEbja.nombre}" />
+							</p:column>
+							<p:column headerText="Nemónico" styleClass="tabla-Codigo-ebja">
+								<h:outputText value="#{catalogo[0].nemonico}" />
+							</p:column>
+							<p:column headerText="Nombre Catálogo"
+								styleClass="tabla-Nombre-ebja">
+								<h:outputText value="#{catalogo[0].nombre}" />
+							</p:column>
+							<p:column headerText="Estado" styleClass="tabla-Estado-ebja">
+								<h:outputText value="#{catalogo[1]}" />
+							</p:column>
+							<p:column styleClass="tabla-editar-ebja" headerText="Editar">
+								<div style="text-align: center;">
+								<p:commandLink
+									actionListener="#{catalogoEbjaBean.catalogoSeleccionadoEditar(catalogo)}"
+									oncomplete="PF('popGuardarCatalogo').show();" ajax="true"
+									update=":#{p:component('formGuardarCatalogo')},:#{p:component('combListFaseReglas')}">
+									<h:graphicImage value="../../img/edit.png" />
+								</p:commandLink>
+								</div>
+							</p:column>
+
+							<p:column styleClass="tabla-borrar-ebja" headerText="Activar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{catalogoEbjaBean.catalogoSeleccionadoActivar(catalogo)}"
+										oncomplete="PF('popConfirmarActivarCatalogo').show();"
+										ajax="true">
+										<h:graphicImage value="../../img/visto.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+							<p:column styleClass="tabla-borrar-ebja" headerText="Inactivar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{catalogoEbjaBean.catalogoSeleccionadoBorrar(catalogo)}"
+										oncomplete="PF('popConfirmarInactivarCatalogo').show();"
+										ajax="true">
+										<h:graphicImage value="../../img/delete.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+
+							<p:column styleClass="tabla-borrar-ebja" headerText="Borrar">
+								<div style="text-align: center;">
+								<p:commandLink
+									actionListener="#{catalogoEbjaBean.catalogoSeleccionadoBorrar(catalogo)}"
+									oncomplete="PF('popConfirmarEliminarCatalogoLista').show();"
+									ajax="true">
+									<h:graphicImage value="../../img/eliminarIcon.png" />
+								</p:commandLink>
+								</div>
+							</p:column>
+							<f:facet name="paginatorBottomRight">
+								<p:commandButton type="button" icon="fa fa-sync" />
+							</f:facet>
+						</p:dataTable>
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+
+			<h:form id="formGuardarCatalogo">
+				<p:dialog header="Guardar Catalogo Seleccionado"
+					widgetVar="popGuardarCatalogo" resizable="false" autosized="false"  width="300"
+					height="175">
+					<div>
+						<h:panelGrid id="pnlNuevoRegistroCatalogo" columns="2"
+							cellpadding="5" cellspacing="1" border="0"
+							styleClass="popUpCreacionAcuerdo-ebja"
+							columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja"
+							rendered="true">
+							<h:outputText value="Tipo Catálogo: " />
+							<p:selectOneMenu id="combListFaseReglas"
+								value="#{catalogoEbjaBean.tipoCatalogoSeleccionado}"
+								styleClass="calendarModuloNuevoNemonico-ebja" required="true"
+								requiredMessage="Debe escojer una 'Tipo Catalogo' para guardar el registro">
+								<f:selectItem itemLabel="Seleccionar Tipo Catálogo" />
+								<f:selectItems value="#{catalogoEbjaBean.listaTipoCatalogo}"
+									var="varTipCat" itemLabel="#{varTipCat.nombre}"
+									itemValue="#{varTipCat.nemonico}"></f:selectItems>
+							</p:selectOneMenu>
+							<h:outputText value="Nemónico: " />
+							<p:inputText id="input-text-nemonico" styleClass="calendarModuloNuevoNemonico-ebja"
+								value="#{catalogoEbjaBean.nemonico}" required="true"
+								requiredMessage="El campo 'Nemónico' está vacío" maxlength="40">
+								<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ_-\s]+$/i" preventPaste="false" />
+							</p:inputText>
+							<h:outputText value="Nombre: " />
+							<p:inputText id="input-text-nombre" styleClass="calendarModuloNuevoNemonico-ebja"
+								value="#{catalogoEbjaBean.nombre}" required="true"
+								requiredMessage="El campo 'Nombre Catálogo' está vacío" maxlength="40">
+								<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ_-\s]+$/i" preventPaste="false"/>
+							</p:inputText>
+						</h:panelGrid>
+					</div>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton id="guardarRegistroCatalogo" value="Guardar"
+							styleClass="popUpBoton-ebja" ajax="true"
+							actionListener="#{catalogoEbjaBean.ejecutarCrearOEditarRegistro}"
+							oncomplete="PF('popGuardarCatalogo').hide();"
+							update=":#{p:component('messageCatalogoEbja')},:#{p:component('tblCatalogos')}" />
+						<p:commandButton id="cancelarRegistroCatalogo" value="Cancelar"
+							styleClass="popUpBoton-ebja"
+							oncomplete="PF('popGuardarCatalogo').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+
+
+			<h:form>
+				<p:dialog header="Inactivar Registro"
+					widgetVar="popConfirmarInactivarCatalogo" resizable="false" autosized="false" 
+					width="250" height="100">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="eliminar-archivo-ebja"></div>
+						<h:outputLabel value="Está seguro que desea Inactivar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true"
+							actionListener="#{catalogoEbjaBean.borrarCatalogoEbja}"
+							oncomplete="PF('popConfirmarInactivarCatalogo').hide();"
+							update=":#{p:component('tblCatalogos')},:#{p:component('messageCatalogoEbja')}" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true"
+							oncomplete="PF('popConfirmarInactivarAcuerdo').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+			<h:form>
+				<p:dialog header="Activar Registro"
+					widgetVar="popConfirmarActivarCatalogo" resizable="false" autosized="false" 
+					width="250" height="100">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="eliminar-archivo-ebja"></div>
+						<h:outputLabel value="Está seguro que desea Activar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true"
+							actionListener="#{catalogoEbjaBean.activarCatalogoEbja}"
+							oncomplete="PF('popConfirmarActivarCatalogo').hide();"
+							update=":#{p:component('tblCatalogos')},:#{p:component('messageCatalogoEbja')}" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true"
+							oncomplete="PF('popConfirmarActivarCatalogo').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+			<p:dialog id="popConfirmarElimnarCatalogo" modal="true"
+				widgetVar="popConfirmarEliminarCatalogoLista" resizable="false" autosized="false" 
+				width="250" height="100" domElementAttachment="form">
+				<f:facet name="header">
+					<div align="center">
+						<h:outputText
+							style="text-align:center; font-weight: bold; color: black; font-size: 12px"
+							value="Confirmar eliminación de archivos" />
+					</div>
+				</f:facet>
+
+				<h:form>
+					<div>
+						<h:panelGrid id="pnlConfirmarEliminarCatalogo" columns="1"
+							border="0" width="100%" height="100%">
+							<h:panelGroup border="0">
+								<div class="eliminar-archivo-ebja"></div>
+								<h:outputText value="Desea eliminar?"
+									styleClass="texto-confirmar-borrar-archivo-ebja" />
+							</h:panelGroup>
+							<h:panelGroup border="0">
+								<h:commandButton id="btn4ConfirmarCatalogo" value="Sí"
+									ajax="true"
+									actionListener="#{catalogoEbjaBean.eliminarCatalogoEbja}"
+									styleClass="popUpBoton-ebja-eliminar-archivo-popup"
+									oncomplete="#PF('popConfirmarEliminarCatalogoLista').hide()"
+									update=":#{p:component('tblCatalogos')},:#{p:component('messageCatalogoEbja')}" />
+								<h:commandButton id="btnCancel4arBorrarCatalogo" value="No"
+									styleClass="popUpBoton-ebja-cancelar-archivo-popup"
+									oncomplete="#PF('popConfirmarEliminarCatalogoLista').hide()" />
+							</h:panelGroup>
+						</h:panelGrid>
+					</div>
+				</h:form>
+			</p:dialog>
+		</div>
+	</ui:define>
+</ui:composition>

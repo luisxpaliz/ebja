@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+    <title>DataTable BUG</title>
+</h:head>
+
+<body>
+    <h:form id="form">
+        <p:dataTable id="families" value="#{backingBean.families}" var="family">
+            <p:column headerText="Families">
+                <h3>#{family.name}</h3>
+                <p:dataTable id="persons" value="#{family.persons}" var="person">
+                    <p:column headerText="Name">
+                        Does #{person} ...
+                    </p:column>
+                    <p:columns value="#{family.cars}" var="car" headerText="#{car}">
+                        ... have insurance for the #{car}? 
+                    </p:columns>
+                    <p:columns value="#{backingBean.countries}" var="country" headerText="#{country}">
+                        ... have insurance for #{country}?
+                    </p:columns>
+                </p:dataTable>
+            </p:column>    
+       </p:dataTable>
+    </h:form>   
+</body>
+</html>

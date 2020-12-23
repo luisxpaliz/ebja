@@ -1,0 +1,336 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantillas/contenedorBloqueo.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">
+        Asignar Paralelo a los Estudiantes de la Institución Educativa '#{asignarParaleloPorInstitucionBean.amie}'
+  	</ui:define>
+
+	<ui:define name="contenido">
+
+		<style>
+.contenido {
+	background: #fff;
+}
+</style>
+		<h:form id="frmForm">
+			<p:panel styleClass="contienePanelBusqueda-ebja">
+					<f:facet name="header">Búsqueda de Estudiantes por Oferta:</f:facet>
+					<p:panelGrid id="pnlBusquedaInstituciones" cellpadding="10" cellspacing="1" border="1" styleClass="panelBusqueda-ebja">
+						<p:row>
+							<p:column>
+								<div class="userIcon-Asignacion-Paralelo-ebja"></div>
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-reglas-ebja">
+								<h:outputText value=" Seleccione una Oferta: " />
+								<br></br>
+								<br></br>
+								<h:outputText value=" Seleccione un Paralelo: " />
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-reglas-ebja">
+								<p:selectOneMenu id="cmbListPrograma"
+									value="#{asignarParaleloPorInstitucionBean.idProgramaInstitucion}"
+									styleClass="comboReglaModulo-ebja" required="true"
+								    requiredMessage="Debe seleccionar una 'Oferta' para desplegar los 'Paralelos'">
+									<f:selectItem itemLabel="Seleccionar Oferta" />
+									<f:selectItems value="#{asignarParaleloPorInstitucionBean.listaProgramaInstitucion}"
+										var="varProgramaInstitucion" itemLabel="#{varProgramaInstitucion.programaEbja.nombre}"
+														  			 itemValue="#{varProgramaInstitucion.id}" />
+									<p:ajax execute="@this" update="frmForm" 
+		                					listener="#{asignarParaleloPorInstitucionBean.obtenerParalelo()}"/>
+								</p:selectOneMenu>
+								<br></br>
+								<br></br>
+								<p:selectOneMenu id="cmbListParalelo"
+									value="#{asignarParaleloPorInstitucionBean.idCursoParalelo}"
+									styleClass="comboReglaModulo-ebja" required="true"
+								    requiredMessage="Debe seleccionar un 'Paralelo' para desplegar los Estudiantes">
+									<f:selectItem itemLabel="Seleccionar Paralelo" />
+									<f:selectItems value="#{asignarParaleloPorInstitucionBean.listaCursoParalelo}"
+										var="varCursoParalelo" itemLabel="#{varCursoParalelo.paralelo.descripcion}"
+														  	   itemValue="#{varCursoParalelo.id}" />
+									<p:ajax execute="@this" update="frmForm" 
+		                					listener="#{asignarParaleloPorInstitucionBean.obtenerEstudiante()}"/>
+								</p:selectOneMenu>
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-reglas-ebja">
+								<p:fieldset legend="De la Institución" style="width:100%; text-align:center">
+									<p:panelGrid columns="2" styleClass="panelBusqueda-ebja" style="text-align:center">
+										<h:outputText value="Total Aforo: " />
+										<h:outputText value="#{asignarParaleloPorInstitucionBean.programaInstitucion.totalAforo}" />
+										<h:outputText value="Total Bancas: " />
+										<h:outputText value="#{asignarParaleloPorInstitucionBean.programaInstitucion.totalBanca}" />
+										<h:outputText value="Cupo Disponible: " />
+										<h:outputText value="#{asignarParaleloPorInstitucionBean.programaInstitucion.cupoDisponible}" />
+									</p:panelGrid>
+								</p:fieldset>
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-reglas-ebja">
+								<p:fieldset legend="Del Paralelo #{asignarParaleloPorInstitucionBean.cursoParalelo.paralelo.descripcion}" style="width:100%; text-align:center">
+									<p:panelGrid columns="2" styleClass="panelBusqueda-ebja" style="text-align:center">
+										<h:outputText value="Total Aforo: " />
+										<h:outputText value="#{asignarParaleloPorInstitucionBean.cursoParalelo.aforo}" />
+										<h:outputText value="Total Bancas: " />
+										<h:outputText value="#{asignarParaleloPorInstitucionBean.cursoParalelo.numeroBanca}" />
+										<h:outputText value="Número Matriculados: " />
+										<h:outputText value="#{asignarParaleloPorInstitucionBean.cursoParalelo.numeroMatriculado}" />
+									</p:panelGrid>
+								</p:fieldset>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				<br></br>
+				
+				<!-- Manejo de mensajes -->
+				<p:messages id="messageAsignacionParalelo" style="width:100%; margin-top:3px;" />
+				<p:growl id="growl" showDetail="true" sticky="true" />
+				
+				<h:panelGrid id="pnlListaEstudiante" columns="2" border="0">					
+					<p:dataTable id="tblListaEstudiante" var="matricula" rowIndexVar="indice" paginatorPosition="bottom"
+						value="#{asignarParaleloPorInstitucionBean.listaMatricula}" 
+						paginator="true" rows="10" scrollable="true" scrollHeight="200" rowsPerPageTemplate="5,10,15"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+						filteredValue="#{asignarParaleloPorInstitucionBean.listaMatriculaFilter}">
+						
+						<f:facet name="header">
+							Lista de Estudiantes Matriculados para el Programa: #{asignarParaleloPorInstitucionBean.programaInstitucion.programaEbja.nombre}
+							<br/>
+							del Paralelo: #{asignarParaleloPorInstitucionBean.cursoParalelo.paralelo.descripcion}
+						</f:facet>
+                        <p:column  headerText="Nro." style="width:1px; text-align:center" >
+                        	<f:facet name="header">Nro.</f:facet>
+                        	#{indice + 1} 
+                        </p:column>
+						<p:column filterBy="#{matricula.estudiante.inscripcion.id}" headerText="Inscripción" style="width:40px; text-align:center">
+							<h:outputText value="#{matricula.estudiante.inscripcion.id}"/>
+					    </p:column>							
+						<p:column filterBy="#{matricula.estudiante.registroEstudiante.numeroIdentificacion}" headerText="Identificación" style="width:100px; text-align:center;">
+				        	<h:outputText value="#{matricula.estudiante.registroEstudiante.numeroIdentificacion}" />
+				        </p:column>							
+						<p:column filterBy="#{matricula.estudiante.registroEstudiante.apellidosNombres}" headerText="Apellidos/Nombres" style="width:230px">
+							<h:outputText value="#{matricula.estudiante.registroEstudiante.apellidosNombres}" />
+						</p:column>
+						<p:column headerText="Asignar" style="width:50px; text-align:center;">
+							<f:facet name="header">
+								<h:outputText value="Todos" />
+								<br/>
+	            				<p:selectBooleanCheckbox value="#{asignarParaleloPorInstitucionBean.asignarParaleloTodos1}" itemLabel=""
+	            					rendered="#{asignarParaleloPorInstitucionBean.verParaleloTodos1}">
+            						<p:ajax update="frmForm" listener="#{asignarParaleloPorInstitucionBean.asignarParaleloTodos1()}" />
+        						</p:selectBooleanCheckbox>
+	            				<p:selectBooleanCheckbox value="#{asignarParaleloPorInstitucionBean.asignarParaleloTodos2}" itemLabel=""
+	            					rendered="#{!asignarParaleloPorInstitucionBean.verParaleloTodos1}">
+            						<p:ajax update="frmForm" listener="#{asignarParaleloPorInstitucionBean.asignarParaleloTodos2()}" />
+        						</p:selectBooleanCheckbox>
+							</f:facet>
+	            			<p:selectBooleanCheckbox value="#{matricula.asignarParalelo}" itemLabel="">
+            					<p:ajax update="frmForm" listener="#{asignarParaleloPorInstitucionBean.asignarParalelo(matricula, indice)}" />
+        					</p:selectBooleanCheckbox>
+						</p:column>
+						<p:column styleClass="ebja_acuerdo_tblAcuerdo_5thColActivar_006" headerText="Activar">
+							<div style="text-align: center;">
+								<p:commandLink actionListener="#{asignarParaleloPorInstitucionBean.activarRegistro(matricula, indice)}"
+									disabled="#{matricula.estado eq '1'}"
+									oncomplete="PF('popConfirmarActivar').show();" ajax="true">
+									<h:graphicImage value="../../img/visto.png" />
+								</p:commandLink>
+							</div>
+						</p:column>
+						<p:column styleClass="ebja_acuerdo_tblAcuerdo_6thColInactivar_007" headerText="Inactivar">
+							<div style="text-align: center;">
+								<p:commandLink actionListener="#{asignarParaleloPorInstitucionBean.inactivarRegistro(matricula, indice)}"
+									disabled="#{matricula.estado eq '0'}"
+									oncomplete="PF('popConfirmarInactivar').show();" ajax="true">
+									<h:graphicImage value="../../img/delete.png" />
+								</p:commandLink>
+							</div>
+						</p:column>
+
+						<f:facet name="paginatorBottomRight">
+							<p:commandButton type="button" icon="fa fa-sync" />
+						</f:facet>
+					</p:dataTable>
+				</h:panelGrid>
+				<br/><br/>
+				<p:panelGrid id="pgProceso" styleClass="panelBusqueda-ebja">
+					<p:row>	
+						<p:column styleClass="panelBusqueda-primeraCol-ebja">
+							<p:panel>
+								<f:facet name="header">
+									<h:graphicImage value="/img/check.jpeg" />
+								</f:facet>
+								<center>
+									<p:commandButton id="cbAsignar" icon="fa fa-save"
+										value="Asignar Estudiantes al Paralelo #{asignarParaleloPorInstitucionBean.cursoParalelo.paralelo.descripcion}"
+										disabled="#{asignarParaleloPorInstitucionBean.disabledCbAsignar}"
+										actionListener="#{asignarParaleloPorInstitucionBean.asignarEstudianteParalelo()}"
+										ajax="true" update="frmForm">
+									</p:commandButton>
+								</center>
+							</p:panel>
+						</p:column>
+						<p:column styleClass="panelBusqueda-segundaCol-ebja" >
+							<p:panel style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="Estudiantes del Paralelo #{asignarParaleloPorInstitucionBean.cursoParalelo.paralelo.descripcion}" />
+								</f:facet>
+								<center>
+									<h:commandLink value=""  styleClass="claseParaBotonLink"
+										style="color: black" render="frmForm"
+										disabled="#{asignarParaleloPorInstitucionBean.disabledClExcel}"
+							    		actionListener="#{asignarParaleloPorInstitucionBean.exportarExcelParalelo()}" target="_blank">
+										<h:graphicImage value="/img/excel.gif" 
+											alt="Estudiantes del Paralelo #{asignarParaleloPorInstitucionBean.cursoParalelo.paralelo.descripcion}"
+											title="Estudiantes del Paralelo #{asignarParaleloPorInstitucionBean.cursoParalelo.paralelo.descripcion}" />
+							    	</h:commandLink>
+									<h:commandLink value="" styleClass="claseParaBotonLink"
+										style="color: black" render="frmForm"
+										disabled="#{asignarParaleloPorInstitucionBean.disabledClExcel}"
+							    		actionListener="#{asignarParaleloPorInstitucionBean.exportarPdfParalelo()}" target="_blank">
+										<h:graphicImage value="/img/pdf_icono.png" 
+											alt="Estudiantes del Paralelo #{asignarParaleloPorInstitucionBean.cursoParalelo.paralelo.descripcion}"
+											title="Estudiantes del Paralelo #{asignarParaleloPorInstitucionBean.cursoParalelo.paralelo.descripcion}" />
+							    	</h:commandLink>
+								</center>
+							</p:panel>
+						</p:column>
+
+						<p:column styleClass="panelBusqueda-segundaCol-ebja">
+							<p:panel style="text-align:center">
+								<f:facet name="header">
+									<h:outputText value="Estudiantes de la Institucion #{asignarParaleloPorInstitucionBean.amie}" />
+								</f:facet>
+								<center>
+									<h:commandLink value="" styleClass="claseParaBotonLink"
+										style="color: black" render="frmForm"
+										disabled="#{asignarParaleloPorInstitucionBean.disabledClExcel}"
+							    		actionListener="#{asignarParaleloPorInstitucionBean.exportarExcelInstitucion()}" target="_blank">
+										<h:graphicImage value="/img/excel.gif" 
+											alt="Estudiantes de la Institucion #{asignarParaleloPorInstitucionBean.amie}"
+											title="Estudiantes de la Institucion #{asignarParaleloPorInstitucionBean.amie}" />
+							    	</h:commandLink>
+									<h:commandLink value="" styleClass="claseParaBotonLink"
+										style="color: black" render="frmForm"
+										disabled="#{asignarParaleloPorInstitucionBean.disabledClExcel}"
+							    		actionListener="#{asignarParaleloPorInstitucionBean.exportarPdfInstitucion()}" target="_blank">
+										<h:graphicImage value="/img/pdf_icono.png" 
+											alt="Estudiantes de la Institucion #{asignarParaleloPorInstitucionBean.amie}"
+											title="Estudiantes de la Institucion #{asignarParaleloPorInstitucionBean.amie}" />
+							    	</h:commandLink>
+								</center>
+							</p:panel>
+						</p:column>
+					</p:row>
+				</p:panelGrid>	
+			</p:panel>
+		</h:form>
+		
+		<h:form>
+			<p:dialog header="Alerta en Oferta" widgetVar="popConfirmarOferta" autosized="false" width="270" height="100">
+				<h:panelGrid border="0" columns="2"
+					columnClasses="popUpBusqueda-primeraCol-regla-ebja,popUpBusqueda-segundaCol-regla-ebja">
+					<div class="eliminar-archivo-ebja"></div>
+					<h:outputLabel value="Se perderán los registros seleccionados..."
+						styleClass="texto-confirmar-borrar-archivo-ebja" />
+				</h:panelGrid>
+				<h:panelGrid columns="2" border="0" styleClass="popUpCreacionAcuerdoBotones-ebja"
+					columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja" >
+					<p:commandButton value="Continuar" styleClass="popUpBoton-ebja"
+						ajax="true" actionListener="#{asignarParaleloPorInstitucionBean.obtenerParaleloContinuar()}"
+						oncomplete="PF('popConfirmarOferta').hide();"
+						update="frmForm" />
+					<p:commandButton value="Cancelar" styleClass="popUpBoton-ebja"
+						ajax="true" actionListener="#{asignarParaleloPorInstitucionBean.obtenerParaleloCancelar()}" 
+						oncomplete="PF('popConfirmarOferta').hide();" 
+						update="frmForm" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+
+		<h:form>
+			<p:dialog header="Alerta en Paralelo" widgetVar="popConfirmarParalelo" autosized="false" width="270" height="100">
+				<h:panelGrid border="0" columns="2" columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+					<div class="eliminar-archivo-ebja"></div>
+					<h:outputLabel value="Se perderán los registros seleccionados..."
+						styleClass="texto-confirmar-borrar-archivo-ebja" />
+				</h:panelGrid>
+				<h:panelGrid columns="2" styleClass="popUpCreacionAcuerdoBotones-ebja"
+					columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja" border="0">
+					<p:commandButton value="Continuar" styleClass="popUpBoton-ebja"
+						ajax="true" actionListener="#{asignarParaleloPorInstitucionBean.obtenerEstudianteContinuar()}"
+						oncomplete="PF('popConfirmarParalelo').hide();"
+						update="frmForm" />
+					<p:commandButton value="Cancelar" styleClass="popUpBoton-ebja"
+						ajax="true" actionListener="#{asignarParaleloPorInstitucionBean.obtenerEstudianteCancelar()}" 
+						oncomplete="PF('popConfirmarParalelo').hide();" 
+						update="frmForm" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>		
+
+		<h:form>
+			<p:dialog header="Alerta en Cupo" widgetVar="popConfirmarCupo" autosized="false" width="270" height="100">
+				<h:panelGrid border="0" columns="2" columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+					<div class="eliminar-archivo-ebja"></div>
+					<h:outputLabel value="No existe cupo disponible..."
+						styleClass="texto-confirmar-borrar-archivo-ebja" />
+				</h:panelGrid>
+				<h:panelGrid columns="2" styleClass="popUpCreacionAcuerdoBotones-ebja"
+					columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja" border="0">
+					<p:commandButton value="Salir" styleClass="popUpBoton-ebja"
+						ajax="true"  
+						oncomplete="PF('popConfirmarCupo').hide();" 
+						update="frmForm:tblListaEstudiante, frmForm:messageAsignacionParalelo, frmForm:growl" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+		
+		<h:form>
+			<p:dialog header="Activar Registro" widgetVar="popConfirmarActivar" resizable="false"
+				autosized="false" width="250" height="130">
+				<h:panelGrid border="0" columns="2" columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+					<div class="ebja_global_classIcono_001"></div>
+					<h:outputLabel value="Está seguro que desea Activar Registro?"
+						styleClass="ebja_global_txtConfirmaBorrarArchivo_002" />
+				</h:panelGrid>
+				<h:panelGrid columns="2" styleClass="ebja_global_pnlGrdInactivo_003"
+					columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja" border="0">
+					<p:commandButton value="Sí"
+						styleClass="ebja_global_btnInactivoAceptar_004" ajax="true"
+						actionListener="#{asignarParaleloPorInstitucionBean.procesarRegistro()}"
+						oncomplete="PF('popConfirmarActivar').hide();"
+						update=":#{p:component('tblListaEstudiante')}, :#{p:component('messageAsignacionParalelo')}" />
+					<p:commandButton value="No"
+						styleClass="ebja_global_btnInactivoCancelar_005" ajax="true"
+						oncomplete="PF('popConfirmarActivar').hide();" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+
+		<h:form>
+			<p:dialog header="Inactivar Registro" widgetVar="popConfirmarInactivar" resizable="false"
+				autosized="false" width="250" height="130">
+				<h:panelGrid border="0" columns="2" columnClasses="ebja_global_pnlGrd_col1st_InactivarRegistro_010,ebja_global_pnlGrd_col2nd_InactivarRegistro_011">
+					<div class="ebja_global_classIcono_001"></div>
+					<h:outputLabel value="Está seguro que desea Inactivar Registro?"
+						styleClass="ebja_global_txtConfirmaBorrarArchivo_002" />
+				</h:panelGrid>
+				<h:panelGrid columns="2" styleClass="ebja_global_pnlGrdInactivo_003"
+					columnClasses="ebja_global_pnlGrd_col1st_GuardarRegistro_006,ebja_global_pnlGrd_col2nd_CancelarRegistro_007" border="0">
+					<p:commandButton value="Sí"
+						styleClass="ebja_global_btnInactivoAceptar_004" ajax="true"
+						actionListener="#{asignarParaleloPorInstitucionBean.procesarRegistro()}"
+						oncomplete="PF('popConfirmarInactivar').hide();"
+						update=":#{p:component('tblListaEstudiante')}, :#{p:component('messageAsignacionParalelo')}" />
+					<p:commandButton value="No"
+						styleClass="ebja_global_btnInactivoCancelar_005" ajax="true"
+						oncomplete="PF('popConfirmarInactivar').hide();" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

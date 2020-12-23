@@ -1,0 +1,171 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantillas/contenedorBloqueo.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">
+        Eliminar Aspirante Inscrito 
+  	</ui:define>
+
+	<ui:define name="contenido">
+		<style>
+			.contenido { background: #fff; }
+		</style>
+		<div>
+			<h:form id="frmForm">
+				<p:panel styleClass="contienePanelBusqueda-ebja">
+					<f:facet name="header">Búsqueda de Aspirante:</f:facet>
+					<p:panelGrid id="pnlBusquedaEstudiante" cellpadding="10" cellspacing="1" border="1" styleClass="panelBusqueda-ebja">
+						<p:row>
+							<p:column>
+								<div class="userIcon-ModeloAsistencia-ebja"></div>
+							</p:column>
+							<p:column styleClass="panelBusqueda-primeraCol-Estudiante-ebja" style="text-align:center">
+								<h:outputText value=" Búsqueda de Aspirante por: " />
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-Estudiante-ebja" style="text-align:center">
+								<p:outputLabel value="Número Inscripción: "/>
+							</p:column>
+							<p:column styleClass="panelBusqueda-terceraCol-Estudiante-ebja"> 
+								<p:inputText id="itNumeroInscripcion" styleClass="inputText-Estudiante-ebja"
+									readonly="#{eliminarInscripcionBean.readonlyNumeroInscripcion}"
+									value="#{eliminarInscripcionBean.inscripcion.id}" onkeyup="javascript:this.value=this.value.toUpperCase()">
+								</p:inputText>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+
+					<p:panelGrid cellpadding="10" cellspacing="1" border="1" styleClass="panelBusqueda-ebja">
+						<p:row>	
+							<p:column styleClass="panelBusqueda-segundaCol-Estudiante-ebja" style="text-align:center">
+								<p:commandButton id="cbBuscarEstudiante" value="Buscar Aspirante"
+									disabled="#{eliminarInscripcionBean.disabledCbBuscarAspirante}"
+									actionListener="#{eliminarInscripcionBean.buscarAspiranteInscrito()}"
+									icon="fa fa-search" ajax="true" update="frmForm">
+								</p:commandButton>
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-Estudiante-ebja" style="text-align:center">
+								<p:commandButton id="cbInicializarObjetos" value="Otro Aspirante"
+									disabled="#{!eliminarInscripcionBean.disabledCbBuscarAspirante}"
+									actionListener="#{eliminarInscripcionBean.inicializarObjetos()}"
+									icon="fa fa-refresh" ajax="true" update="frmForm">
+								</p:commandButton>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					
+					<p:messages id="mensaje" style="width:100%; margin-top:3px;" />
+					<p:growl id="growl" showDetail="true" sticky="true" />
+
+					<p:panel id="pPanelA" visible="#{eliminarInscripcionBean.habPanelA}">
+						<f:facet name="header">A. Información del Aspirante a Eliminar:</f:facet>
+						<p:panelGrid>
+							<p:row>
+								<p:column rowspan="6">
+									<div class="userId-Estudiante-ebja"></div>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="panelBEstudianteCol1">
+									<h:outputText value=" Inscripción: " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2">
+									<h:outputText
+										value="#{eliminarInscripcionBean.registroEstudiante.inscripcion.id}"
+										style="font-weight:bold;" />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol1">
+									<h:outputText value=" Oferta: " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2">
+									<h:outputText
+										value="#{eliminarInscripcionBean.inscripcion.programaGrado.programaEbja.nombre}"
+										style="font-weight:bold;" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="panelBEstudianteCol1">
+									<h:outputText value=" Identificación: " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2">
+									<h:outputText
+										value="#{eliminarInscripcionBean.registroEstudiante.catalogoTipoIdentificacion.descripcion} / #{eliminarInscripcionBean.registroEstudiante.numeroIdentificacion}" />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol1">
+									<h:outputText value=" Apellidos y Nombres: " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2">
+									<h:outputText
+										value="#{eliminarInscripcionBean.registroEstudiante.apellidosNombres}" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="panelBEstudianteCol1">
+									<h:outputText value=" Celular: " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2">
+									<h:outputText
+										value="#{eliminarInscripcionBean.registroEstudiante.telefono}" />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol1">
+									<h:outputText value=" Correo electrónico: " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2">
+									<h:outputText
+										value="#{eliminarInscripcionBean.registroEstudiante.correoElectronico}" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="panelBEstudianteCol1">
+									<h:outputText value=" Motivo Eliminar: " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2">
+									<p:inputTextarea id="itaMotivoEliminar" styleClass="inputText-Estudiante-ebja"
+										readonly="#{eliminarInscripcionBean.readonlyMotivoEliminar}"
+										value="#{eliminarInscripcionBean.registroEstudiante.motivoNoMatricula}">
+										<p:ajax event="click" immediate="true" update="cbEliminarAspirante"
+							                   		listener="#{eliminarInscripcionBean.habilitarBotonEliminarAspirante()}" />
+									</p:inputTextarea>
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol1">
+									<h:outputText value=" Procesar: " />
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol2" style="text-align:center">
+									<p:commandButton id="cbEliminarAspirante" value="Eliminar Aspirante"
+										disabled="#{eliminarInscripcionBean.disabledCbEliminarAspirante}"
+										actionListener="#{eliminarInscripcionBean.eliminarAspiranteInscrito()}"
+										icon="fa fa-trash" ajax="true" update="frmForm">
+									</p:commandButton>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</p:panel>
+				</p:panel>
+			</h:form>
+		</div>
+
+		<h:form>
+			<p:dialog header="Alerta en Eliminar Aspirante Inscrito" widgetVar="popConfirmarProceso" autosized="false" width="350" height="100">
+				<h:panelGrid border="0" columns="2" columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+					<div class="eliminar-archivo-ebja"></div>
+					<h:outputLabel value="Esta seguro de eliminar al Aspirante Inscrito? "
+						styleClass="texto-confirmar-borrar-archivo-ebja" />
+				</h:panelGrid>
+				<h:panelGrid columns="2" styleClass="popUpCreacionAcuerdoBotones-ebja"
+					columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja" border="0">
+					<p:commandButton value="Continuar" styleClass="popUpBoton-ebja"
+						ajax="true" actionListener="#{eliminarInscripcionBean.procesarContinuar()}"
+						oncomplete="PF('popConfirmarProceso').hide();"
+						update="frmForm" />
+					<p:commandButton value="Cancelar" styleClass="popUpBoton-ebja"
+						ajax="true" actionListener="#{eliminarInscripcionBean.procesarCancelar()}" 
+						oncomplete="PF('popConfirmarProceso').hide();" 
+						update="frmForm" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>		
+		
+	</ui:define>
+</ui:composition>

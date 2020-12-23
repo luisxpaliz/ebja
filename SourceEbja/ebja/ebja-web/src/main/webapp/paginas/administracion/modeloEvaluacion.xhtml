@@ -1,0 +1,922 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantillas/contenedorBloqueo.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">
+        ADMINISTRACIÓN DEL SISTEMA - ALFABETIZACIÓN - MODELO EVALUACIÓN 
+  	</ui:define>
+
+	<ui:define name="contenido">
+
+		<style>
+.contenido {
+	background: #fff;
+}
+</style>
+		<div>
+			<h:form id="frmForm">
+				<p:panel styleClass="contienePanelBusqueda-ebja">
+					<f:facet name="header">Búsqueda de Modelo Evaluación:</f:facet>
+					<p:panelGrid id="pnlBusqueda" cellpadding="10" cellspacing="1"
+						border="1" styleClass="panelBusqueda-ebja">
+						<p:row>
+							<p:column>
+								<div class="userIcon-ModeloEvaluacion-ebja"></div>
+							</p:column>
+							<p:column styleClass="panelBusqueda-primeraCol-reglas-ebja">
+								<h:outputText value=" Búsqueda de Modelo de Evaluación por: "
+									style="font-size: 85%;" />
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-ebja">
+								<p:selectOneRadio layout="pageDirection"
+									styleClass="radioButton-Busqueda-ebja"
+									value="#{modeloEvaluacionBean.busquedaTipo}">
+									<f:selectItem itemLabel="Código" itemValue="1" />
+									<f:selectItem itemLabel="Nombre de Modelo" itemValue="2" />
+								</p:selectOneRadio>
+							</p:column>
+							<p:column styleClass="panelBusqueda-terceraCol-ebja">
+								<h:inputText id="inpTxtingresarBuscar"
+									styleClass="inputText-ebja"
+									value="#{modeloEvaluacionBean.busquedaContenido}">
+									<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ\s]+$/i" />
+								</h:inputText>
+							</p:column>
+
+						</p:row>
+						<p:row>
+							<p:column style="text-align:center" colspan="4">
+								<h:panelGroup style="display:block ">
+									<p:commandButton id="submit" value="Buscar"
+										actionListener="#{modeloEvaluacionBean.buscarModeloEvaluacion}"
+										styleClass="botonBuscar-ebja" ajax="true" update="@form">
+									</p:commandButton>
+								</h:panelGroup>
+							</p:column>
+						</p:row>
+
+					</p:panelGrid>
+				</p:panel>
+				<br></br>
+				<p:messages id="messageEvaluacion"
+					style="width:100%; margin-top:3px;" />
+				<p:panel>
+					<f:facet name="header">Crear Modelo de Evaluación</f:facet>
+					<p:panel>
+						<f:facet name="header">Registros de Modelos de Evaluación</f:facet>
+						<h:panelGrid id="pnlIngresoRegistro" columns="1" border="0"
+							width="100%">
+							<h:panelGroup style="display:block; text-align:center">
+								<p:commandButton value="Crear Modelo"
+									actionListener="#{modeloEvaluacionBean.setearCrearModulo}"
+									styleClass="botonBuscar-ebja-a4j"
+									oncomplete="PF('popGuardarModuloEvaluacion').show();"
+									ajax="true"
+									update=":#{p:component('formGuardarModuloEvaluacion')}" />
+							</h:panelGroup>
+						</h:panelGrid>
+						<p:dataTable id="tblModeloEvaluacion" var="modeloEvaluacion"
+							value="#{modeloEvaluacionBean.listaModelos}" scrollable="true"
+							scrollWidth="98%" styleClass="tabla-Evaluacion-ebja"
+							paginator="true" rows="10"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+
+							<p:column headerText="Ver Quimestre"
+								styleClass="tabla-Eval-coltipo1-ebja">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{modeloEvaluacionBean.buscarQuimestres(modeloEvaluacion)}"
+										ajax="true" update=":#{p:component('tblModeloQuimistre')}">
+										<h:graphicImage value="../../img/IconBuscarRegistros.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+							<p:column headerText="Nemónico" styleClass="tabla-Eval-coltipo1-ebja">
+								<h:outputText value="#{modeloEvaluacion[0].nemonico}" />
+							</p:column>
+							<p:column headerText="Código Programa"
+								styleClass="tabla-Eval-coltipo1-ebja">
+								<h:outputText
+									value="#{modeloEvaluacion[0].programaEbja.nemonico}" />
+							</p:column>
+
+							<p:column headerText="Nombre Programa"
+								styleClass="tabla-Eval-coltipo1-ebja">
+								<h:outputText value="#{modeloEvaluacion[0].programaEbja.nombre}" />
+							</p:column>
+							<p:column headerText="Número de Quimestres"
+								styleClass="tabla-Eval-coltipo1-ebja">
+								<h:outputText value="#{modeloEvaluacion[0].numeroQuimestre}" />
+							</p:column>
+
+							<p:column headerText="Número Parcial"
+								styleClass="tabla-Eval-coltipo1-ebja">
+								<h:outputText value="#{modeloEvaluacion[0].numeroParcial}" />
+							</p:column>
+							<p:column headerText="Porcentaje Promedio Parcial"
+								styleClass="tabla-Eval-coltipo1-ebja">
+								<h:outputText
+									value="#{modeloEvaluacion[0].porcentajePromedioParcial}" />
+							</p:column>
+							<p:column headerText="Número Examen"
+								styleClass="tabla-Eval-coltipo1-ebja">
+								<h:outputText value="#{modeloEvaluacion[0].numeroExamen}" />
+							</p:column>
+							<p:column headerText="Porcentaje Examen"
+								styleClass="tabla-Eval-coltipo1-ebja">
+								<h:outputText value="#{modeloEvaluacion[0].porcentajeExamen}" />
+							</p:column>
+							<p:column headerText="Número Decimal Calificación"
+								styleClass="tabla-Eval-coltipo1-ebja">
+								<h:outputText
+									value="#{modeloEvaluacion[0].numeroDecimalCalificacion}" />
+							</p:column>
+							<p:column headerText="Existe Supletorio"
+								styleClass="tabla-Eval-coltipo1-ebja">
+								<h:outputText value="#{modeloEvaluacion[0].existeSupletorio}" />
+							</p:column>
+							<p:column headerText="Existe Remedial"
+								styleClass="tabla-Eval-coltipo1-ebja">
+								<h:outputText value="#{modeloEvaluacion[0].existeRemedial}" />
+							</p:column>
+							<p:column headerText="Existe Examen Gracia"
+								styleClass="tabla-Eval-coltipo1-ebja">
+								<h:outputText value="#{modeloEvaluacion[0].existeExamenGracia}" />
+							</p:column>
+							<p:column headerText="Fecha Inicio Supletorio"
+								styleClass="tabla-Eval-coltipo1-ebja">
+								<h:outputText
+									value="#{modeloEvaluacion[0].fechaInicioSupletorio}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Fecha Fin Supletorio"
+								styleClass="tabla-Eval-coltipo1-ebja">
+								<h:outputText value="#{modeloEvaluacion[0].fechaFinSupletorio}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Fecha Inicio Remedial"
+								styleClass="tabla-Eval-coltipo1-ebja">
+								<h:outputText value="#{modeloEvaluacion[0].fechaInicioRemedial}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Fecha Fin Remedial"
+								styleClass="tabla-Eval-coltipo1-ebja">
+								<h:outputText value="#{modeloEvaluacion[0].fechaFinRemedial}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Fecha Inicio Gracia"
+								styleClass="tabla-Eval-coltipo1-ebja">
+								<h:outputText value="#{modeloEvaluacion[0].fechaInicioGracia}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Fecha Fin Gracia"
+								styleClass="tabla-Eval-coltipo1-ebja">
+								<h:outputText value="#{modeloEvaluacion[0].fechaFinGracia}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Fecha Creación"
+								styleClass="tabla-Eval-coltipo1-ebja">
+								<h:outputText value="#{modeloEvaluacion[0].fechaCreacion}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Estado"
+								styleClass="tabla-Eval-coltipo1-ebja">
+								<h:outputText value="#{modeloEvaluacion[1]}" />
+							</p:column>
+
+							<p:column styleClass="tabla-Eval-Acciones-ebja"
+								headerText="Editar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{modeloEvaluacionBean.registroEditarModelo(modeloEvaluacion)}"
+										oncomplete="PF('popGuardarModuloEvaluacion').show();"
+										ajax="true"
+										update=":#{p:component('formGuardarModuloEvaluacion')}">
+										<h:graphicImage value="../../img/edit.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+							<p:column styleClass="tabla-Eval-Acciones-ebja"
+								headerText="Activar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{modeloEvaluacionBean.modeloSeleccionadoActivar(modeloEvaluacion)}"
+										oncomplete="PF('popConfirmarActivarModelo').show();"
+										ajax="true">
+										<h:graphicImage value="../../img/visto.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+							<p:column styleClass="tabla-Eval-Acciones-ebja"
+								headerText="Inactivar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{modeloEvaluacionBean.moduloSeleccionadoBorrar(modeloEvaluacion)}"
+										oncomplete="PF('popConfirmarInactivarModelo').show();"
+										ajax="true">
+										<h:graphicImage value="../../img/delete.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+
+							<f:facet name="paginatorBottomRight">
+								<p:commandButton type="button" icon="fa fa-sync" />
+							</f:facet>
+						</p:dataTable>
+
+					</p:panel>
+					<div></div>
+					<p:panel id="panelQuimestres" visible="true">
+						<f:facet name="header">Registros de Quimestres</f:facet>
+						<h:panelGrid id="pnlIngresoRegistro2" columns="1" border="0">
+							<h:panelGroup style="display:block; text-align:center">
+								<p:commandButton value="Crear Quimestre"
+									actionListener="#{modeloEvaluacionBean.setearCrearQuimestre}"
+									styleClass="botonBuscar-ebja-a4j"
+									oncomplete="PF('popGuardarQuimestre').show();" ajax="true"
+									update=":#{p:component('formGuardarQuimestre')}" />
+							</h:panelGroup>
+							<p:dataTable id="tblModeloQuimistre" var="quimestre"
+								value="#{modeloEvaluacionBean.listaQuimestres}"
+								scrollable="true" scrollWidth="100%"
+								styleClass="tabla-Acuerdo-ebja" paginator="true" rows="10"
+								paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="5,10,15">
+								<p:column headerText="Ver Parcial"
+									styleClass="tabla-Codigo-ebja">
+									<div style="text-align: center;">
+										<p:commandLink
+											actionListener="#{modeloEvaluacionBean.buscarParciales(quimestre)}"
+											ajax="true" update=":#{p:component('tblModeloParcial')}">
+											<h:graphicImage value="../../img/IconBuscarRegistros.png" />
+										</p:commandLink>
+									</div>
+								</p:column>
+								<p:column headerText="Nemónico"
+									styleClass="tabla-Codigo-ebja">
+									<h:outputText value="#{quimestre[0].nemonico}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Modelo"
+									styleClass="tabla-Codigo-ebja">
+									<h:outputText value="#{quimestre[0].modeloEvaluacion.nemonico}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Fecha Inicio Examen"
+									styleClass="tabla-Codigo-ebja">
+									<h:outputText value="#{quimestre[0].fechaInicioExamen}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Fecha Fin Examen "
+									styleClass="tabla-Codigo-ebja">
+									<h:outputText value="#{quimestre[0].fechaFinExamen}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Número Quimestre "
+									styleClass="tabla-Codigo-ebja">
+									<h:outputText value="#{quimestre[0].quimestre}"/>
+								</p:column>
+								<p:column headerText="Estado" styleClass="tabla-Codigo-ebja">
+									<h:outputText value="#{quimestre[1]}" />
+								</p:column>
+								<p:column styleClass="tabla-editar-ebja" headerText="Editar">
+									<div style="text-align: center;">
+										<p:commandLink
+											actionListener="#{modeloEvaluacionBean.registroEditarQuimestre(quimestre)}"
+											oncomplete="PF('popGuardarQuimestre').show();" ajax="true"
+											update=":#{p:component('formGuardarQuimestre')}">
+											<h:graphicImage value="../../img/edit.png" />
+										</p:commandLink>
+									</div>
+								</p:column>
+								<p:column styleClass="tabla-borrar-ebja" headerText="Activar">
+									<div style="text-align: center;">
+										<p:commandLink
+											actionListener="#{modeloEvaluacionBean.quimestreSeleccionadoActivar(quimestre)}"
+											oncomplete="PF('popConfirmarActivarQuimestre').show();"
+											ajax="true">
+											<h:graphicImage value="../../img/visto.png" />
+										</p:commandLink>
+									</div>
+								</p:column>
+								<p:column styleClass="tabla-borrar-ebja" headerText="Inactivar">
+									<div style="text-align: center;">
+										<p:commandLink
+											actionListener="#{modeloEvaluacionBean.quimestreSeleccionadoBorrar(quimestre)}"
+											oncomplete="PF('popConfirmarInactivarQuimestre').show();"
+											ajax="true">
+											<h:graphicImage value="../../img/delete.png" />
+										</p:commandLink>
+									</div>
+								</p:column>
+								<f:facet name="paginatorBottomRight">
+									<p:commandButton type="button" icon="fa fa-sync" />
+								</f:facet>
+							</p:dataTable>
+						</h:panelGrid>
+					</p:panel>
+					<div></div>
+					<p:panel id="panelParciales" visible="true">
+						<f:facet name="header">Registro de Parciales</f:facet>
+						<h:panelGrid id="pnlIngresoRegistro3" columns="1" border="0">
+
+							<h:panelGroup style="display:block; text-align:center">
+								<p:commandButton value="Crear Parcial"
+									actionListener="#{modeloEvaluacionBean.setearCrearParcial}"
+									styleClass="botonBuscar-ebja-a4j"
+									oncomplete="PF('popGuardarParcial').show();" ajax="true"
+									update=":#{p:component('formGuardarParcial')}" />
+							</h:panelGroup>
+
+							<p:dataTable id="tblModeloParcial" var="parcial"
+								value="#{modeloEvaluacionBean.listaParciales}" scrollable="true"
+								scrollWidth="100%" styleClass="tabla-Acuerdo-ebja"
+								paginator="true" rows="10"
+								paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="5,10,15">
+
+
+								<p:column headerText="Nemónico"
+									styleClass="tabla-EvalPacial-ColTipo1-ebja">
+									<h:outputText value="#{parcial[0].nemonico}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Quimestre"
+									styleClass="tabla-EvalPacial-ColTipo1-ebja">
+									<h:outputText value="#{parcial[0].modeloEvaluacionQuimestre.nemonico}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Numero Parcial"
+									styleClass="tabla-EvalPacial-ColTipo1-ebja">
+									<h:outputText value="#{parcial[0].parcial}"/>
+								</p:column>
+								<p:column headerText="Fecha Inicio"
+									styleClass="tabla-EvalPacial-ColTipo1-ebja">
+									<h:outputText value="#{parcial[0].fechaInicio}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column> 
+								<p:column headerText="Fecha Fin"
+									styleClass="tabla-EvalPacial-ColTipo1-ebja">
+									<h:outputText value="#{parcial[0].fechaFin}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Fecha Inicio Examen"
+									styleClass="tabla-EvalPacial-ColTipo1-ebja">
+									<h:outputText value="#{parcial[0].fechaInicioExamen}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Fecha Fin Examen"
+									styleClass="tabla-EvalPacial-ColTipo1-ebja">
+									<h:outputText value="#{parcial[0].fechaFinExamen}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Fecha Inicio Ingreso Notas"
+									styleClass="tabla-EvalPacial-ColTipo1-ebja">
+									<h:outputText value="#{parcial[0].fechaInicioIngNotas}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Fecha Fin Ingreso Notas"
+									styleClass="tabla-EvalPacial-ColTipo1-ebja">
+									<h:outputText value="#{parcial[0].fechaFinIngNotas}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Estado" styleClass="tabla-Estado-ebja">
+									<h:outputText value="#{parcial[1]}" />
+								</p:column>
+								<p:column styleClass="tabla-editar-ebja" headerText="Editar">
+									<div style="text-align: center;">
+										<p:commandLink
+											actionListener="#{modeloEvaluacionBean.registroEditarParcial(parcial)}"
+											oncomplete="PF('popGuardarParcial').show();" ajax="true"
+											update=":#{p:component('formGuardarParcial')}">
+											<h:graphicImage value="../../img/edit.png" />
+										</p:commandLink>
+									</div>
+								</p:column>
+								<p:column styleClass="tabla-borrar-ebja" headerText="Activar">
+									<div style="text-align: center;">
+										<p:commandLink
+											actionListener="#{modeloEvaluacionBean.parcialSeleccionadoActivar(parcial)}"
+											oncomplete="PF('popConfirmarActivarParcial').show();"
+											ajax="true">
+											<h:graphicImage value="../../img/visto.png" />
+										</p:commandLink>
+									</div>
+								</p:column>
+								<p:column styleClass="tabla-borrar-ebja" headerText="Inactivar">
+									<div style="text-align: center;">
+										<p:commandLink
+											actionListener="#{modeloEvaluacionBean.parcialSeleccionadoBorrar(parcial)}"
+											oncomplete="PF('popConfirmarInactivarParcial').show();"
+											ajax="true">
+											<h:graphicImage value="../../img/delete.png" />
+										</p:commandLink>
+									</div>
+								</p:column>
+								<f:facet name="paginatorBottomRight">
+									<p:commandButton type="button" icon="fa fa-sync" />
+								</f:facet>
+							</p:dataTable>
+						</h:panelGrid>
+					</p:panel>
+				</p:panel>
+			</h:form>
+			
+			<h:form>
+				<p:dialog header="Inactivar Registro"
+					widgetVar="popConfirmarInactivarModelo" autosized="false"
+					width="250" height="100">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="eliminar-archivo-ebja"></div>
+						<h:outputLabel value="Está seguro que desea Inactivar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true"
+							actionListener="#{modeloEvaluacionBean.modeloBorrar}"
+							oncomplete="PF('popConfirmarInactivarModelo').hide();"
+							update=":#{p:component('tblModeloEvaluacion')}" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true"
+							oncomplete="PF('popConfirmarInactivarModelo').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+			<h:form>
+				<p:dialog header="Activar Registro"
+					widgetVar="popConfirmarActivarModelo" autosized="false"
+					width="250" height="100">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="eliminar-archivo-ebja"></div>
+						<h:outputLabel value="Está seguro que desea Activar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true"
+							actionListener="#{modeloEvaluacionBean.modeloActivar}"
+							oncomplete="PF('popConfirmarActivarModelo').hide();"
+							update=":#{p:component('tblModeloEvaluacion')}" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true" oncomplete="PF('popConfirmarActivarModelo').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+			
+			<h:form>
+				<p:dialog header="Inactivar Registro"
+					widgetVar="popConfirmarInactivarQuimestre" autosized="false"
+					width="250" height="100">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="eliminar-archivo-ebja"></div>
+						<h:outputLabel value="Está seguro que desea Inactivar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true"
+							actionListener="#{modeloEvaluacionBean.quimestreBorrar}"
+							oncomplete="PF('popConfirmarInactivarQuimestre').hide();"
+							update=":#{p:component('tblModeloQuimistre')}" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true"
+							oncomplete="PF('popConfirmarInactivarQuimestre').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+			<h:form>
+				<p:dialog header="Activar Registro"
+					widgetVar="popConfirmarActivarQuimestre" autosized="false"
+					width="250" height="100">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="eliminar-archivo-ebja"></div>
+						<h:outputLabel value="Está seguro que desea Activar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true"
+							actionListener="#{modeloEvaluacionBean.quimestreActivar}"
+							oncomplete="PF('popConfirmarActivarQuimestre').hide();"
+							update=":#{p:component('tblModeloQuimistre')}" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true" oncomplete="PF('popConfirmarActivarQuimestre').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+			
+			<h:form>
+				<p:dialog header="Inactivar Registro"
+					widgetVar="popConfirmarInactivarParcial" autosized="false"
+					width="250" height="100">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="eliminar-archivo-ebja"></div>
+						<h:outputLabel value="Está seguro que desea Inactivar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true"
+							actionListener="#{modeloEvaluacionBean.parcialBorrar}"
+							oncomplete="PF('popConfirmarInactivarParcial').hide();"
+							update=":#{p:component('tblModeloParcial')}" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true"
+							oncomplete="PF('popConfirmarInactivarParcial').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+			<h:form>
+				<p:dialog header="Activar Registro"
+					widgetVar="popConfirmarActivarParcial" autosized="false"
+					width="250" height="100">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="eliminar-archivo-ebja"></div>
+						<h:outputLabel value="Está seguro que desea Activar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true"
+							actionListener="#{modeloEvaluacionBean.parcialActivar}"
+							oncomplete="PF('popConfirmarActivarParcial').hide();"
+							update=":#{p:component('tblModeloParcial')}" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true" oncomplete="PF('popConfirmarActivarParcial').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+			
+			
+
+			<h:form id="formGuardarModuloEvaluacion">
+				<p:dialog header="Guardar Módulo Seleccionado"
+					widgetVar="popGuardarModuloEvaluacion" resizable="false"
+					autosized="false" width="350" height="530">
+					<h:panelGrid id="pnlNuevoRegistroModuloEval" columns="2"
+						cellpadding="5" cellspacing="1" border="0"
+						styleClass="popUpCreacionAcuerdo-ebja"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja"
+						rendered="true">
+						
+						<h:outputText value="Nemónico: " />
+						<p:inputText styleClass="inputModuloNuevoNemonico-ebja"
+							value="#{modeloEvaluacionBean.moduloNemonico}" required="true"
+							requiredMessage="El campo 'Nemónico' está vacío">
+							<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ_-\s]+$/i" preventPaste="false" />
+						</p:inputText>
+						
+						<h:outputText value="Oferta: " />
+						<p:selectOneMenu id="combListModalidad"
+							value="#{modeloEvaluacionBean.moduloSeleccionado}"
+							styleClass="comboModuloNuevoNemonico-ebja" required="true"
+							requiredMessage="Debe escojer una Oferta para guardar el registro">
+							<f:selectItem itemLabel="Seleccionar Oferta" />
+							<f:selectItems value="#{modeloEvaluacionBean.listaModulos}"
+								var="varModulo" itemLabel="#{varModulo.nombre}"
+								itemValue="#{varModulo.nemonico}"></f:selectItems>
+						</p:selectOneMenu>
+
+						<h:outputText value=" Número Quimestre: " />
+						<p:inputText styleClass="inputModuloNuevoNemonico-ebja"
+							value="#{modeloEvaluacionBean.numeroQuimestre}" required="true"
+							requiredMessage="El campo 'Número de Quimestre' está vacío">
+							<p:keyFilter mask="num" />
+						</p:inputText>
+
+						<h:outputText value=" Número Parcial: " />
+						<p:inputText styleClass="inputModuloNuevoNemonico-ebja"
+							value="#{modeloEvaluacionBean.numeroParcial}" required="true"
+							requiredMessage="El campo 'Número Parcial' está vacío">
+							<p:keyFilter mask="num" />
+						</p:inputText>
+
+						<h:outputText value=" % Promedio Parcial: " />
+						<p:inputText styleClass="inputModuloNuevoNemonico-ebja"
+							value="#{modeloEvaluacionBean.porcentPromedioParcial}"
+							required="true"
+							requiredMessage="El campo 'Porcentaje Promedio Parcial' está vacío">
+							<p:keyFilter mask="num" />
+						</p:inputText>
+
+						<h:outputText value=" Número Examen: " />
+						<p:inputText styleClass="inputModuloNuevoNemonico-ebja"
+							value="#{modeloEvaluacionBean.numeroExamen}" required="true"
+							requiredMessage="El campo 'Número Examen' está vacío">
+							<p:keyFilter mask="num" />
+						</p:inputText>
+
+						<h:outputText value=" Porcentaje Examen: " />
+						<p:inputText styleClass="inputModuloNuevoNemonico-ebja"
+							value="#{modeloEvaluacionBean.porcentExamen}" required="true"
+							requiredMessage="El campo 'Porcentaje Examen' está vacío">
+							<p:keyFilter mask="num" />
+						</p:inputText>
+
+						<h:outputText value=" Numero Decimal Calificador: " />
+						<p:inputText styleClass="inputModuloNuevoNemonico-ebja"
+							value="#{modeloEvaluacionBean.numeroDecimalCalif}"
+							required="true"
+							requiredMessage="El campo 'Numero Decimal Calificador' está vacío">
+							<p:keyFilter mask="num" />
+						</p:inputText>
+
+						<h:outputText value=" Existe Supletorio: " />
+						<p:selectOneMenu id="combExisteSupl"
+							value="#{modeloEvaluacionBean.existeSupletorio}"
+							styleClass="comboModuloNuevoNemonico-ebja" required="true"
+							requiredMessage="Debe escojer si Existe Supletorio para guardar el registro">
+							<f:selectItem itemLabel="Seleccionar Opción" />
+							<f:selectItems value="#{modeloEvaluacionBean.listaSiNO}"
+								var="varExisteSupl" itemLabel="#{varExisteSupl.nombre}"
+								itemValue="#{varExisteSupl.nemonico}"></f:selectItems>
+						</p:selectOneMenu>
+
+						<h:outputText value=" Existe Remedial: " />
+						<p:selectOneMenu id="combExisteRemedial"
+							value="#{modeloEvaluacionBean.existeRemedial}"
+							styleClass="comboModuloNuevoNemonico-ebja" required="true"
+							requiredMessage="Debe escojer si Existe Remedial para guardar el registro">
+							<f:selectItem itemLabel="Seleccionar Opción" />
+							<f:selectItems value="#{modeloEvaluacionBean.listaSiNO}"
+								var="varExisteRemedial" itemLabel="#{varExisteRemedial.nombre}"
+								itemValue="#{varExisteRemedial.nemonico}"></f:selectItems>
+						</p:selectOneMenu>
+
+						<h:outputText value=" Existe Examen Gracia: " />
+						<p:selectOneMenu id="combExisteExamGracia"
+							value="#{modeloEvaluacionBean.existeExamenGracia}"
+							styleClass="comboModuloNuevoNemonico-ebja" required="true"
+							requiredMessage="Debe escojer si Existe Examen de Gracia para guardar el registro">
+							<f:selectItem itemLabel="Seleccionar Opción" />
+							<f:selectItems value="#{modeloEvaluacionBean.listaSiNO}"
+								var="varExisteExaGrac" itemLabel="#{varExisteExaGrac.nombre}"
+								itemValue="#{varExisteExaGrac.nemonico}"></f:selectItems>
+						</p:selectOneMenu>
+
+						<p:outputLabel for="FechaIniSupl"
+							value=" Fecha Inicio Supletorio: " />
+						<p:calendar id="FechaIniSupl"
+							value="#{modeloEvaluacionBean.fechaInicioSuple}" showOn="button"
+							styleClass="calendarModuloNuevoNemonico-ebja"
+							pattern="yyyy-MM-dd" />
+						<p:outputLabel for="FechaFinSupl" value=" Fecha Fin Supletorio: " />
+						<p:calendar id="FechaFinSupl"
+							value="#{modeloEvaluacionBean.fechaFinSuple}" showOn="button"
+							styleClass="calendarModuloNuevoNemonico-ebja"
+							pattern="yyyy-MM-dd" />
+						<p:outputLabel for="FechaInicioRem"
+							value=" Fecha Inicio Remedial: " />
+						<p:calendar id="FechaInicioRem"
+							value="#{modeloEvaluacionBean.fechaInicioRemedial}"
+							showOn="button" styleClass="calendarModuloNuevoNemonico-ebja"
+							pattern="yyyy-MM-dd" />
+						<p:outputLabel for="FechaFinRem" value=" Fecha Fin Remedial: " />
+						<p:calendar id="FechaFinRem"
+							value="#{modeloEvaluacionBean.fechaFinRemedial}" showOn="button"
+							styleClass="calendarModuloNuevoNemonico-ebja"
+							pattern="yyyy-MM-dd" />
+
+						<p:outputLabel for="FechaIniGrac" value=" Fecha Inicio Gracia: " />
+						<p:calendar id="FechaIniGrac"
+							value="#{modeloEvaluacionBean.fechaInicioGracia}" showOn="button"
+							styleClass="calendarModuloNuevoNemonico-ebja"
+							pattern="yyyy-MM-dd" />
+						<p:outputLabel for="FechaFinGrac" value=" Fecha Fin Gracia: " />
+						<p:calendar id="FechaFinGrac"
+							value="#{modeloEvaluacionBean.fechaFinGracia}" showOn="button"
+							styleClass="calendarModuloNuevoNemonico-ebja"
+							pattern="yyyy-MM-dd" />
+
+					</h:panelGrid>
+					<h:panelGrid border="0" columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja">
+						<p:commandButton id="guardarRegistroModulo" value="Guardar"
+							styleClass="popUpBoton-ebja" ajax="true"
+							actionListener="#{modeloEvaluacionBean.ejecutarCrearOEditarModulo}"
+							oncomplete="PF('popGuardarModuloEvaluacion').hide();"
+							update=":#{p:component('messageEvaluacion')},:#{p:component('tblModeloEvaluacion')}" />
+						<p:commandButton id="cancelarRegistroModulo" value="Cancelar"
+							styleClass="popUpBoton-ebja"
+							oncomplete="PF('popGuardarModuloEvaluacion').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+			<h:form id="formGuardarQuimestre">
+				<p:dialog header="Guardar Quimestre Seleccionado"
+					widgetVar="popGuardarQuimestre" resizable="false" autosized="false"  width="300"
+					height="290">
+					<div>
+						<h:panelGrid id="pnlNuevoRegistroQuimestre" columns="2"
+							cellpadding="5" cellspacing="1" border="0"
+							styleClass="popUpCreacionQuimestre-ebja"
+							columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja"
+							rendered="true">
+							
+							<h:outputText value="Nemónico: " />
+						    <p:inputText styleClass="inputModuloNuevoNemonico-ebja"
+							value="#{modeloEvaluacionBean.quimestreNemonico}" required="true"
+							requiredMessage="El campo 'Nemónico' está vacío">
+							<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ_-\s]+$/i" preventPaste="false" />
+						    </p:inputText>
+							<h:outputText value=" Modelo: " />
+							<p:selectOneMenu id="combModelo"
+								value="#{modeloEvaluacionBean.modeloSeleccionado}"
+								styleClass="comboModuloNuevoNemonico-ebja" required="true">
+								<f:selectItem itemLabel="Seleccionar Modelo" />
+								<f:selectItems value="#{modeloEvaluacionBean.listaModeloEvaluacion}"
+									var="varModelo" itemLabel="#{varModelo.nemonico}"
+									itemValue="#{varModelo.nemonico}"></f:selectItems>
+									<p:ajax execute="@this" update="combNumeroQuimestre" listener="#{modeloEvaluacionBean.cargarQuimestres}"/>
+							</p:selectOneMenu>
+							<h:outputText value=" Quimestre: " />
+							<p:selectOneMenu id="combNumeroQuimestre"
+								value="#{modeloEvaluacionBean.numQuimestre}"
+								styleClass="comboModuloNuevoNemonico-ebja" required="true">
+								<f:selectItem itemLabel="Seleccionar # Quimestre" />
+								<f:selectItems value="#{modeloEvaluacionBean.listaNumeroQuimestres}"
+									var="varModelo" itemLabel="#{varModelo}"
+									itemValue="#{varModelo}"></f:selectItems>
+							</p:selectOneMenu>
+							
+							<h:outputText value=" Fecha Inicio Examen: " />
+							<p:calendar id="FechaIniExa"
+								value="#{modeloEvaluacionBean.fechaInicioExamen}"
+								showOn="button" styleClass="calendarModuloNuevoNemonico-ebja"
+								pattern="yyyy-MM-dd" />
+							<h:outputText value=" Fecha Fin Examen: " />
+							<p:calendar id="FechaFinExa"
+								value="#{modeloEvaluacionBean.fechaFinExamen}"
+								showOn="button" styleClass="calendarModuloNuevoNemonico-ebja"
+								pattern="yyyy-MM-dd" />
+						</h:panelGrid>
+					</div>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton id="guardarRegistroQuimestre" value="Guardar"
+							styleClass="popUpBoton-ebja" ajax="true"
+							actionListener="#{modeloEvaluacionBean.ejecutarCrearOEditarQuimestre}"
+							oncomplete="PF('popGuardarQuimestre').hide();"
+							update=":#{p:component('messageEvaluacion')},:#{p:component('tblModeloQuimistre')}" />
+						<p:commandButton id="cancelarRegistroModulo" value="Cancelar"
+							styleClass="popUpBoton-ebja"
+							oncomplete="PF('popGuardarQuimestre').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+			<h:form id="formGuardarParcial">
+				<p:dialog header="Guardar Parcial Seleccionado"
+					widgetVar="popGuardarParcial" autosized="true" width="300"
+					height="300">
+					<div>
+						<h:panelGrid id="pnlNuevoRegistroParcial" columns="2"
+							cellpadding="5" cellspacing="1" border="0"
+							styleClass="popUpCreacionAcuerdo-ebja"
+							columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja"
+							rendered="true">
+							<h:outputText value="Nemónico:" />
+							<p:inputText id="input-text-nemonico-parcial" styleClass="inputText-ebja"
+								value="#{modeloEvaluacionBean.parcialNemonico}" required="true"
+								requiredMessage="El campo 'Nemónico' está vacío">
+							<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ_-\s]+$/i" preventPaste="false" />
+							</p:inputText>
+							<h:outputText value=" Quimestre: " />
+							<p:selectOneMenu id="combQuimestre"
+								value="#{modeloEvaluacionBean.quimestreSeleccionado}"
+								styleClass="comboModuloNuevoNemonico-ebja" required="true">
+								<f:selectItem itemLabel="Seleccionar Quimestre" />
+								<f:selectItems value="#{modeloEvaluacionBean.listaQuimestresActivos}"
+									var="varQuimestre" itemLabel="#{varQuimestre.nemonico}"
+									itemValue="#{varQuimestre.nemonico}"></f:selectItems>
+									<p:ajax execute="@this" update="combNumeroParcial" listener="#{modeloEvaluacionBean.cargarParciales}"/>
+							</p:selectOneMenu>
+							<h:outputText value="Número Parcial " />
+							<p:selectOneMenu id="combNumeroParcial"
+								value="#{modeloEvaluacionBean.numParcial}"
+								styleClass="comboModuloNuevoNemonico-ebja" required="true">
+								<f:selectItem itemLabel="Seleccionar # Parcial" />
+								<f:selectItems value="#{modeloEvaluacionBean.listaNumeroParciales}"
+									var="varParcial" itemLabel="#{varParcial}"
+									itemValue="#{varParcial}"></f:selectItems>
+							</p:selectOneMenu>
+							<p:outputLabel for="FechaIniParcial"
+							value=" Fecha Inicio: " />
+						     <p:calendar id="FechaIniParcial"
+							value="#{modeloEvaluacionBean.fechaInicioParcial}" showOn="button"
+							styleClass="calendarModuloNuevoNemonico-ebja"
+							pattern="yyyy-MM-dd" />
+						    
+						    <p:outputLabel for="FechaFinParcial"
+							value=" Fecha Fin: " />
+						     <p:calendar id="FechaFinParcial"
+							value="#{modeloEvaluacionBean.fechaFinParcial}" showOn="button"
+							styleClass="calendarModuloNuevoNemonico-ebja"
+							pattern="yyyy-MM-dd" />
+						   
+						    <p:outputLabel for="FechaInicioExamenParcial"
+							value=" Fecha Inicio: " />
+						     <p:calendar id="FechaInicioExamenParcial"
+							value="#{modeloEvaluacionBean.fechaInicioExamenParcial}" showOn="button"
+							styleClass="calendarModuloNuevoNemonico-ebja"
+							pattern="yyyy-MM-dd" />
+						    
+						    <p:outputLabel for="FechaFinExamenParcial"
+							value=" Fecha Fin: " />
+						     <p:calendar id="FechaFinExamenParcial"
+							value="#{modeloEvaluacionBean.fechaFinExamenParcila}" showOn="button"
+							styleClass="calendarModuloNuevoNemonico-ebja"
+							pattern="yyyy-MM-dd" />
+							
+							 <p:outputLabel for="FechaInicioIngresoNotasParcial"
+							value=" Fecha Fin: " />
+						     <p:calendar id="FechaInicioIngresoNotasParcial"
+							value="#{modeloEvaluacionBean.fechaInicioIngresoNotas}" showOn="button"
+							styleClass="calendarModuloNuevoNemonico-ebja"
+							pattern="yyyy-MM-dd" />
+							
+							 <p:outputLabel for="FechaFinIngresoNotasParcial"
+							value=" Fecha Fin: " />
+						     <p:calendar id="FechaFinIngresoNotasParcial"
+							value="#{modeloEvaluacionBean.fechaFinIngresoNotas}" showOn="button"
+							styleClass="calendarModuloNuevoNemonico-ebja"
+							pattern="yyyy-MM-dd" />
+						    </h:panelGrid>
+					</div>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton id="guardarRegistroParcial" value="Guardar"
+							styleClass="popUpBoton-ebja" ajax="true"
+							actionListener="#{modeloEvaluacionBean.ejecutarCrearOEditarParcial}"
+							oncomplete="PF('popGuardarParcial').hide();"
+							update=":#{p:component('messageEvaluacion')},:#{p:component('tblModeloParcial')}" />
+						<p:commandButton id="cancelarRegistroModulo" value="Cancelar"
+							styleClass="popUpBoton-ebja"
+							oncomplete="PF('popGuardarParcial').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+			
+			
+
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,220 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantillas/contenedorBloqueo.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">
+        ADMINISTRACIÓN DEL SISTEMA - ALFABETIZACIÓN - PROGRAMA GRADO 
+  	</ui:define>
+
+	<ui:define name="contenido">
+
+		<style>
+.contenido {
+	background: #fff;
+}
+</style>
+		<div>
+			<h:form id="frmForm">
+				<p:panel styleClass="contienePanelBusqueda-ebja">
+					<f:facet name="header">Búsqueda de Programa Grado por Oferta:</f:facet>
+					
+					<p:panelGrid id="pnlBusqueda" cellpadding="10"
+						cellspacing="1" border="1" styleClass="panelBusqueda-ebja">
+						<p:row>
+							<p:column>
+								<div class="userIcon-Grado-ebja"></div>
+							</p:column>
+							<p:column styleClass="panelBusqueda-primeraCol-ebja">
+								<h:outputText value=" Seleccione una Oferta: " />
+							</p:column>
+							<p:column styleClass="panelBusqueda-terceraCol-reglas-ebja">
+								<p:selectOneMenu id="combListModuloReglas"
+									value="#{programaGradoBean.programaSeleccionado}"
+									styleClass="comboReglaGradoBusqueda-ebja">
+									<f:selectItem itemLabel="Seleccionar Oferta" />
+									<f:selectItems value="#{programaGradoBean.listaProgramaEbja}"
+										var="varModulo" itemLabel="#{varModulo.nombre}"
+										itemValue="#{varModulo.nemonico}"></f:selectItems>
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="text-align:center" colspan="4">
+								<h:panelGroup style="display:block">
+									<p:commandButton id="submitPrograma" value="Buscar"
+										actionListener="#{programaGradoBean.buscarGrado()}"
+										styleClass="botonBuscar-Estudiante-ebja" ajax="true"
+										update="@form">
+									</p:commandButton>
+								</h:panelGroup>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<br></br>
+					<p:messages id="messagePagGrado"
+						style="width:100%; margin-top:3px;" />
+					<h:panelGrid id="pnlIngresoRegistro" columns="1" border="0">
+						<h:panelGroup style="display:block; text-align:center">
+							<p:commandButton value="Crear Grado"
+								actionListener="#{programaGradoBean.setearCrearGrado()}"
+								styleClass="botonBuscar-ebja-a4j"
+								oncomplete="PF('popGuardarGrado').show();" ajax="true"
+								update=":#{p:component('formGuardarGrado')},:#{p:component('combListProgramaGrado')},:#{p:component('combListFormulario')}" />
+						</h:panelGroup>
+						<p:dataTable id="tblGrado" var="progGrado"
+							value="#{programaGradoBean.listaProgramaGrado}" scrollable="true"
+							styleClass="tabla-Mensaje-ebja" paginator="true" rows="10"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+
+							<p:column headerText="Programa" styleClass="tabla-Codigo-ebja">
+								<h:outputText value="#{progGrado[0].programaEbja.nombre}" />
+							</p:column>
+							<p:column headerText="Grado"
+								styleClass="tabla-Nombre-ebja">
+								<h:outputText value="#{progGrado[0].grado.descripcionNemonico}" />
+							</p:column>
+							<p:column headerText="Estado" styleClass="tabla-Estado-ebja">
+								<h:outputText value="#{progGrado[1]}" />
+							</p:column>
+							<p:column styleClass="tabla-editar-ebja" headerText="Editar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{programaGradoBean.gradoSeleccionadoEditar(progGrado)}"
+										oncomplete="PF('popGuardarGrado').show()" ajax="true"
+										update=":#{p:component('formGuardarGrado')},:#{p:component('combListProgramaGrado')},:#{p:component('combListFormulario')}">
+										<h:graphicImage value="../../img/edit.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+							<p:column styleClass="tabla-borrar-ebja" headerText="Activar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{programaGradoBean.gradoSeleccionadoActivar(progGrado)}"
+										oncomplete="PF('popConfirmarActivarGrado').show();"
+										ajax="true">
+										<h:graphicImage value="../../img/visto.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+							<p:column styleClass="tabla-borrar-ebja" headerText="Inactivar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{programaGradoBean.gradoSeleccionadoBorrar(progGrado)}"
+										oncomplete="PF('popConfirmarInactivarGrado').show();"
+										ajax="true">
+										<h:graphicImage value="../../img/delete.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+							<f:facet name="paginatorBottomRight">
+								<p:commandButton type="button" icon="fa fa-sync" />
+							</f:facet>
+						</p:dataTable>
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+			<h:form id="formGuardarGrado">
+				<p:dialog header="Guardar Grado Seleccionado"
+					widgetVar="popGuardarGrado" resizable="false" autosized="false" width="425"
+					height="140">
+					<div>
+						<h:panelGrid id="pnlNuevoRegistroMensaje" columns="2"
+							cellpadding="5" cellspacing="1" border="0"
+							styleClass="popUpCreacionMensaje-ebja"
+							columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja"
+							rendered="true">
+							<h:outputText value=" Oferta: " />
+							<p:selectOneMenu id="combListProgramaGrado"
+								value="#{programaGradoBean.programaNuevoSeleccionado}"
+								styleClass="comboMensajeProgramaFormulario-ebja" required="true" 
+								requiredMessage="Debe escojer una Oferta para guardar el registro">
+								<f:selectItem itemLabel="Seleccionar Oferta" />
+								<f:selectItems 
+									value="#{programaGradoBean.listaProgramaEbja}"
+									var="varPrograma" itemLabel="#{varPrograma.nombre}"
+									itemValue="#{varPrograma.nemonico}"></f:selectItems>
+							</p:selectOneMenu>
+							<h:outputText value=" Grado: " />
+							<p:selectOneMenu id="combListFormulario"
+								value="#{programaGradoBean.programaGradoSeleccionado}"
+								styleClass="comboMensajeProgramaFormulario-ebja" required="true"
+								requiredMessage="Debe escojer un Formulario para guardar el registro">
+								<f:selectItem itemLabel="Seleccionar Grado" />
+								<f:selectItems
+									value="#{programaGradoBean.listaGrado}"
+									var="varFormulario" itemLabel="#{varFormulario.descripcionNemonico}"
+									itemValue="#{varFormulario.nemonico}"></f:selectItems>
+							</p:selectOneMenu>
+						</h:panelGrid>
+					</div>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionMensajeBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton id="guardarRegistroGrado" value="Guardar"
+							styleClass="popUpBoton-ebja" ajax="true"
+							actionListener="#{programaGradoBean.ejecutarCrearOEditarRegistro}"
+							oncomplete="PF('popGuardarGrado').hide();"
+							update=":#{p:component('messagePagGrado')},:#{p:component('tblGrado')},:#{p:component('combListModuloReglas')}" />
+						<p:commandButton id="cancelarRegistroModulo" value="Cancelar"
+							styleClass="popUpBoton-ebja"
+							oncomplete="PF('popGuardarGrado').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+			<h:form>
+				<p:dialog header="Inactivar Registro"
+					widgetVar="popConfirmarInactivarGrado" resizable="false" autosized="false"
+					width="250" height="100">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="ebja_global_classIcono_001"></div>
+						<h:outputLabel value="Está seguro que desea Inactivar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionMensajeBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true" actionListener="#{programaGradoBean.borrarGrado}"
+							oncomplete="PF('popConfirmarInactivarGrado').hide();"
+							update=":#{p:component('tblGrado')},:#{p:component('messagePagGrado')}" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true"
+							oncomplete="PF('popConfirmarInactivarGrado').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+			<h:form>
+				<p:dialog header="Activar Registro"
+					widgetVar="popConfirmarActivarGrado" resizable="false" autosized="false"
+					width="250" height="100">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="ebja_global_classIcono_001"></div>
+						<h:outputLabel value="Está seguro que desea Activar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionMensajeBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true" actionListener="#{programaGradoBean.activarGrado}"
+							oncomplete="PF('popConfirmarActivarGrado').hide();"
+							update=":#{p:component('tblGrado')},:#{p:component('messagePagGrado')}" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true" oncomplete="PF('popConfirmarActivarGrado').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

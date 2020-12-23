@@ -1,0 +1,536 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantillas/contenedorBloqueo.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">
+        ADMINISTRACIÓN DEL SISTEMA - ALFABETIZACIÓN - ACTUALIZACIÓN DE DATOS DEL ESTUDIANTE
+  	</ui:define>
+
+	<ui:define name="contenido">
+
+		<style>
+.contenido {
+	background: #fff;
+}
+</style>
+		<div>
+			<h:form id="frmForm">
+				<p:panel styleClass="contienePanelBusqueda-ebja">
+					<f:facet name="header">Búsqueda de Estudiante:</f:facet>
+					<p:panelGrid id="pnlBusquedaEstudiante" cellpadding="10"
+						cellspacing="1" border="1" styleClass="panelBusqueda-ebja">
+						<p:row>
+							<p:column>
+								<div class="userIdMap-IconEstudiante-ebja"></div>
+							</p:column>
+							<p:column styleClass="panelBusqueda-primeraCol-Estudiante-ebja">
+								<h:outputText value=" Búsqueda de Estudiante por: " />
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-Estudiante-ebja">
+								<p:selectOneMenu layout="pageDirection"
+									styleClass="cmbButton-Estudiante-ebja"
+									value="#{estudianteBean.busquedaTipo}">
+									<f:selectItem itemLabel="Seleccionar Identificación" />
+									<f:selectItems value="#{estudianteBean.listaTipoDocumento}"
+										var="tdo" itemLabel="#{tdo.descripcion}" itemValue="#{tdo.id}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column styleClass="panelBusqueda-terceraCol-Estudiante-ebja">
+								<h:inputText id="inpTxtingresarBuscarEstudiante"
+									styleClass="inputText-Estudiante-ebja"
+									value="#{estudianteBean.busquedaContenido}"
+									 >
+									 <p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ\s]+$/i" />
+									 </h:inputText>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="text-align:center" colspan="4">
+								<h:panelGroup>
+									<p:commandButton id="submit" value="Buscar"
+										actionListener="#{estudianteBean.buscarEstudiante}"
+										styleClass="botonBuscar-Estudiante-ebja" ajax="true"
+										update="@form">
+									</p:commandButton>
+								</h:panelGroup>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<br></br>
+					<p:messages id="messageEstudiante"
+						style="width:100%; margin-top:3px;" />
+					<p:panel>
+						<f:facet name="header">Formulario de Inscripción:</f:facet>
+						<p:panel id="EstudiantePanelA" visible="true">
+							<f:facet name="header">A. Identificación General del Aspirante:</f:facet>
+							<div class="userPanelA-Estudiante-ebja">
+								<p:panelGrid>
+									<p:row>
+										<p:column rowspan="6">
+											<div class="userId-Estudiante-ebja"></div>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="panelAEstudianteCol1">
+											<h:outputText value=" Tipo Documento: " />
+										</p:column>
+										<p:column styleClass="panelAEstudianteCol2">
+											<h:outputText value=" Cedula: " />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="panelAEstudianteCol1">
+											<h:outputText value=" Documento: " />
+										</p:column>
+										<p:column styleClass="panelAEstudianteCol2">
+											<h:inputText id="editNumeroIdentificacion" maxlength="15"
+												autocomplete="on" required="true" style="width:100%"
+												requiredMessage="Ingrese el Número de Identificación"
+												validatorMessage="Número de Identificación no válido..."
+												disabled="#{estudianteBean.editNumeroIdentificacion}"
+												readonly="#{estudianteBean.editNumeroIdentificacion}"
+												value="dato"
+												></h:inputText>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="panelAEstudianteCol1">
+											<h:outputText value=" Apellidos y Nombres: " />
+										</p:column>
+										<p:column styleClass="panelAEstudianteCol2">
+											<h:inputText id="apellidosNombres" required="true"
+												requiredMessage="Campo obligatorio" autocomplete="off"
+												readonly="#{inscripcionBean.readonlyApellidosNombres}"
+												style="width:100%"
+												onkeyup="javascript:this.value=this.value.toUpperCase()"
+												value="#{inscripcionBean.registroEstudiante.apellidosNombres}">
+											</h:inputText>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="panelAEstudianteCol1">
+											<h:outputText value=" Fecha de Nacimiento: " />
+										</p:column>
+										<p:column styleClass="panelAEstudianteCol2">
+											<h:inputText id="apellidosNombresEstudiante" required="true"
+												requiredMessage="Campo obligatorio" autocomplete="off"
+												readonly="#{inscripcionBean.readonlyApellidosNombres}"
+												style="width:100%"
+												onkeyup="javascript:this.value=this.value.toUpperCase()"
+												value="#{inscripcionBean.registroEstudiante.apellidosNombres}">
+											</h:inputText>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="ppanelAEstudianteCol1">
+											<h:outputText value=" Edad: " />
+										</p:column>
+										<p:column styleClass="panelAEstudianteCol2">
+											<h:inputText id="edad" required="true"
+												requiredMessage="Campo obligatorio" autocomplete="off"
+												readonly="#{inscripcionBean.readonlyApellidosNombres}"
+												style="width:100%"
+												onkeyup="javascript:this.value=this.value.toUpperCase()"
+												value="#{inscripcionBean.registroEstudiante.apellidosNombres}">
+											</h:inputText>
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</div>
+						</p:panel>
+						<p:panel id="EstudiantePanelB">
+							<f:facet name="header">B. Información Adicional del Aspirante:</f:facet>
+							<p:panelGrid>
+								<p:row>
+									<p:column rowspan="4">
+										<div class="userIdAddInfo-Estudiante-ebja"></div>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="panelBEstudianteCol1">
+										<h:outputText value=" Género " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2">
+										<p:selectOneMenu layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja"
+											value="#{estudianteBean.busquedaTipo}"
+											disabled="true"
+											
+											>
+											<f:selectItem itemLabel="Masculino" />
+										</p:selectOneMenu>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol1">
+										<h:outputText value=" Actividad Económica " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2">
+										<p:selectOneMenu layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja"
+											value="#{estudianteBean.busquedaTipo}">
+											<f:selectItem itemLabel="_" />
+										</p:selectOneMenu>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="panelBEstudianteCol1">
+										<h:outputText value=" Estado Civil " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2">
+										<p:selectOneMenu layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja"
+											value="#{estudianteBean.busquedaTipo}">
+											<f:selectItem itemLabel="_" />
+										</p:selectOneMenu>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol1">
+										<h:outputText value=" Situación Laboral " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2">
+										<p:selectOneMenu layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja"
+											value="#{estudianteBean.busquedaTipo}">
+											<f:selectItem itemLabel="_" />
+										</p:selectOneMenu>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="panelBEstudianteCol1">
+										<h:outputText value=" Nacionalidad " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2">
+										<p:selectOneMenu layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja"
+											value="#{estudianteBean.busquedaTipo}">
+											<f:selectItem itemLabel="_" />
+										</p:selectOneMenu>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol1">
+										<h:outputText value=" Autodefinición Étnica " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2">
+										<p:selectOneMenu layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja"
+											value="#{estudianteBean.busquedaTipo}">
+											<f:selectItem itemLabel="_" />
+										</p:selectOneMenu>
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+							<p:panelGrid>
+								<p:row>
+									<p:column rowspan="1">
+										<div class="userIcon-Estudiante-AyudaSocial-ebja"></div>
+									</p:column>
+									<p:column styleClass="panelBEstudianteSocialCol">
+										<p:fieldset legend="Datos Familiares"
+											style=" text-align: center; width:100%">
+											<p:panelGrid id="pgTieneDiscapacidad1">
+												<p:row>
+													<p:column>
+														<h:outputText value="  ¿Tiene Hijos? : " />
+													</p:column>
+													<p:column>
+														<p:selectOneRadio layout="lineDirection"
+															styleClass="radioButton-Estudiante-ebja"
+															value="#{adminAlfabAcuRelControlador.busquedaTipo}"
+															disabled="true">
+															<f:selectItem itemLabel="Sí" itemValue="1" />
+															<f:selectItem itemLabel="No" itemValue="2" />
+														</p:selectOneRadio>
+													</p:column>
+												</p:row>
+											</p:panelGrid>
+										</p:fieldset>
+									</p:column>
+									<p:column styleClass="panelBEstudianteSocialCol">
+										<p:fieldset legend="Discapacidad"
+											style="text-align: center; width:100%">
+											<p:panelGrid id="pgTieneDiscapacidad38">
+												<p:row>
+													<p:column>
+														<h:outputText value="  ¿Tiene Discapacidad? : " />
+													</p:column>
+													<p:column>
+														<p:selectOneRadio layout="lineDirection"
+															styleClass="radioButton-Estudiante-ebja"
+															value="#{adminAlfabAcuRelControlador.busquedaTipo}">
+															<f:selectItem itemLabel="Sí" itemValue="1" />
+															<f:selectItem itemLabel="No" itemValue="2" />
+														</p:selectOneRadio>
+													</p:column>
+												</p:row>
+											</p:panelGrid>
+										</p:fieldset>
+									</p:column>
+									<p:column styleClass="panelBEstudianteSocialCol">
+										<p:fieldset legend="Bono"
+											style="text-align: center; width:100%">
+											<p:panelGrid id="pgTieneDiscapacidad332">
+												<p:row>
+													<p:column>
+														<h:outputText value="  ¿Recibe Bono? : " />
+													</p:column>
+													<p:column>
+														<p:selectOneRadio layout="lineDirection"
+															styleClass="radioButton-Estudiante-ebja"
+															value="#{adminAlfabAcuRelControlador.busquedaTipo}">
+															<f:selectItem itemLabel="Sí" itemValue="1" />
+															<f:selectItem itemLabel="No" itemValue="2" />
+														</p:selectOneRadio>
+													</p:column>
+												</p:row>
+											</p:panelGrid>
+										</p:fieldset>
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+							<p:panelGrid>
+								<p:row>
+									<p:column rowspan="3">
+										<div class="userIcon-Estudiante-Mail-ebja"></div>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="panelBEstudianteCol1">
+										<h:outputText value=" Teléfono " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2">
+										<h:inputText id="edad34" required="true"
+											requiredMessage="Campo obligatorio" autocomplete="off"
+											readonly="#{inscripcionBean.readonlyApellidosNombres}"
+											style="width:100%"
+											onkeyup="javascript:this.value=this.value.toUpperCase()"
+											value="#{inscripcionBean.registroEstudiante.apellidosNombres}">
+										</h:inputText>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol1">
+										<h:outputText value=" Correo Electrónico " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2">
+										<h:inputText id="edad67" required="true"
+											requiredMessage="Campo obligatorio" autocomplete="off"
+											readonly="#{inscripcionBean.readonlyApellidosNombres}"
+											style="width:100%"
+											onkeyup="javascript:this.value=this.value.toUpperCase()"
+											value="#{inscripcionBean.registroEstudiante.apellidosNombres}">
+										</h:inputText>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="panelBEstudianteCol1">
+										<h:outputText value=" Rezago Educativo " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2" colspan="3">
+										<p:selectOneMenu layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja"
+											value="#{estudianteBean.busquedaTipo}">
+											<f:selectItem itemLabel="_" />
+										</p:selectOneMenu>
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+							<p:panelGrid>
+								<p:row>
+									<p:column rowspan="1">
+										<div class="userIcon-Estudiante-AnioCursado-ebja"></div>
+									</p:column>
+									<p:column styleClass="panelBEstudianteSocialCol">
+										<p:fieldset legend="Último Año Aprobado"
+											style=" text-align: center; width:100%">
+											<p:panelGrid id="pgTieneDiscapacidad396">
+												<p:row>
+													<p:column>
+														<h:outputText value=" Presenta Certificado " />
+													</p:column>
+													<p:column>
+														<p:selectOneRadio layout="lineDirection"
+															styleClass="radioButton-Estudiante-ebja"
+															value="#{adminAlfabAcuRelControlador.busquedaTipo}">
+															<f:selectItem itemLabel="Sí" itemValue="1" />
+															<f:selectItem itemLabel="No" itemValue="2" />
+														</p:selectOneRadio>
+													</p:column>
+												</p:row>
+											</p:panelGrid>
+										</p:fieldset>
+									</p:column>
+									<p:column styleClass="panelBEstudianteSocialCol">
+										<p:fieldset legend="Ofer. Edu. en la que se inscribe"
+											style="text-align: center; width:100%">
+											<p:panelGrid id="pgTieneDiscapacidad388">
+												<p:row>
+													<p:column styleClass="panelBEstudianteCol2">
+														<p:selectOneMenu layout="pageDirection"
+															styleClass="panelBcmbButton-Estudiante-ebja"
+															value="#{estudianteBean.busquedaTipo}">
+															<f:selectItem itemLabel="_" />
+														</p:selectOneMenu>
+													</p:column>
+												</p:row>
+											</p:panelGrid>
+										</p:fieldset>
+									</p:column>
+									<p:column styleClass="panelBEstudianteSocialCol">
+										<p:fieldset legend="Características de la Ofer. Edu."
+											style="text-align: center; width:100%">
+											<p:panelGrid id="pgTieneDiscapacidad39">
+												<p:row>
+													<p:column>
+														<h:outputText value=" Edad Mínima: " />
+													</p:column>
+													<p:column>
+														<h:outputText value="15 Años " />
+													</p:column>
+												</p:row>
+												<p:row>
+													<p:column>
+														<h:outputText value=" Rezago Educativo: " />
+													</p:column>
+													<p:column>
+														<h:outputText value=" 3 Años " />
+													</p:column>
+												</p:row>
+											</p:panelGrid>
+										</p:fieldset>
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						</p:panel>
+						<p:panel id="EstudiantePanelC">
+							<f:facet name="header">C. Información de Ubicación del Aspirante:</f:facet>
+							<p:panelGrid>
+								<p:row>
+									<p:column rowspan="6">
+										<div class="userIdMap-Estudiante-ebja"></div>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="panelBEstudianteCol1Cue">
+										<h:outputText value=" País: " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2Cue">
+										<p:selectOneMenu layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja"
+											value="#{estudianteBean.busquedaTipo}">
+											<f:selectItem itemLabel="_" />
+										</p:selectOneMenu>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol1Cue">
+										<h:outputText value=" Código Postal " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2Cue">
+										<h:inputText id="edad678" required="true"
+											requiredMessage="Campo obligatorio" autocomplete="off"
+											readonly="#{inscripcionBean.readonlyApellidosNombres}"
+											style="width:100%"
+											onkeyup="javascript:this.value=this.value.toUpperCase()"
+											value="#{inscripcionBean.registroEstudiante.apellidosNombres}">
+										</h:inputText>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="panelBEstudianteCol1Cue">
+										<h:outputText value="Posee Código Único Eléctrico de la planilla de luz (CUE)? " style ="font-size: 80%;" />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2Cue">
+										<div style="text-align: right;">
+										<p:selectOneRadio layout="lineDirection"
+															styleClass="radioButton-EstudianteCue-ebja"
+															value="#{adminAlfabAcuRelControlador.busquedaTipo}">
+															<f:selectItem itemLabel="Sí" itemValue="1" />
+															<f:selectItem itemLabel="No" itemValue="2" />
+										</p:selectOneRadio>
+										</div>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol1Cue">
+										<h:outputText value=" Provincia: " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2Cue">
+										<p:selectOneMenu layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja"
+											value="#{estudianteBean.busquedaTipo}">
+											<f:selectItem itemLabel="_" />
+										</p:selectOneMenu>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="panelBEstudianteCol1Cue">
+										<h:outputText value=" Zona: " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2Cue">
+										<p:selectOneMenu layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja"
+											value="#{estudianteBean.busquedaTipo}">
+											<f:selectItem itemLabel="_" />
+										</p:selectOneMenu>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol1Cue">
+										<h:outputText value=" Cantón: " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2Cue">
+										<p:selectOneMenu layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja"
+											value="#{estudianteBean.busquedaTipo}">
+											<f:selectItem itemLabel="_" />
+										</p:selectOneMenu>
+									</p:column>
+								</p:row>
+
+								<p:row>
+									<p:column styleClass="panelBEstudianteCol1">
+										<h:outputText value=" Distrito: " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2">
+										<p:selectOneMenu layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja"
+											value="#{estudianteBean.busquedaTipo}">
+											<f:selectItem itemLabel="_" />
+										</p:selectOneMenu>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol1">
+										<h:outputText value=" Parroquia: " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2">
+										<p:selectOneMenu layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja"
+											value="#{estudianteBean.busquedaTipo}">
+											<f:selectItem itemLabel="_" />
+										</p:selectOneMenu>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="panelBEstudianteCol1">
+										<h:outputText value=" Circuito: " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2">
+										<p:selectOneMenu layout="pageDirection"
+											styleClass="panelBcmbButton-Estudiante-ebja"
+											value="#{estudianteBean.busquedaTipo}">
+											<f:selectItem itemLabel="_" />
+										</p:selectOneMenu>
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol1">
+										<h:outputText value=" Dirección: " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2">
+										<h:inputText id="edad679" required="true"
+											requiredMessage="Campo obligatorio" autocomplete="off"
+											readonly="#{inscripcionBean.readonlyApellidosNombres}"
+											style="width:100%"
+											onkeyup="javascript:this.value=this.value.toUpperCase()"
+											value="#{inscripcionBean.registroEstudiante.apellidosNombres}">
+										</h:inputText>
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						</p:panel>
+					</p:panel>
+				</p:panel>
+			</h:form>
+
+		</div>
+	</ui:define>
+</ui:composition>

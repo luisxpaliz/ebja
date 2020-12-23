@@ -1,0 +1,253 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantillas/contenedorBloqueo.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">
+        ADMINISTRACIÓN DEL SISTEMA - ALFABETIZACIÓN - ASISTENCIA 
+  	</ui:define>
+
+	<ui:define name="contenido">
+
+		<style>
+.contenido {
+	background: #fff;
+}
+</style>
+		<div>
+			<h:form id="frmForm">
+				<p:panel styleClass="contienePanelBusqueda-ebja">
+					<f:facet name="header">Búsqueda de Modelo Asistencia:</f:facet>
+					<p:panelGrid id="pnlBusqueda" cellpadding="10" cellspacing="1"
+						border="1" styleClass="panelBusqueda-ebja">
+						<p:row>
+							<p:column>
+								<div class="userIcon-ModeloAsistencia-ebja"></div>
+							</p:column>
+							<p:column styleClass="panelBusqueda-primeraCol-asistencia-ebja">
+								<h:outputText value=" Búsqueda de Modelo de Asistencia por: "
+									style="font-size: 100%;" />
+							</p:column>
+							<p:column styleClass="panelBusqueda-segundaCol-asistencia-ebja">
+								<p:selectOneMenu id="combListProgramaEbja"
+									value="#{modeloAsistenciaBean.programaSeleccionado}"
+									styleClass="comboModuloNuevoNemonico-Asistencia-ebja">
+									<f:selectItem itemLabel="Seleccionar Programa" />
+									<f:selectItems value="#{modeloAsistenciaBean.listaPrograma}"
+										var="varPrograma" itemLabel="#{varPrograma.nombre}"
+										itemValue="#{varPrograma.nemonico}"></f:selectItems>
+								</p:selectOneMenu>
+							</p:column>
+
+						</p:row>
+						<p:row>
+							<p:column style="text-align:center" colspan="3">
+								<h:panelGroup style="display:block ">
+									<p:commandButton id="submit" value="Buscar"
+										actionListener="#{modeloAsistenciaBean.buscarAcuerdo}"
+										styleClass="botonBuscar-ebja" ajax="true" update="@form">
+									</p:commandButton>
+								</h:panelGroup>
+							</p:column>
+						</p:row>
+
+					</p:panelGrid>
+					<br></br>
+					<p:messages id="messageAsistencia"
+						style="width:100%; margin-top:3px;" />
+					<h:panelGrid id="pnlIngresoRegistro" columns="1" border="0">
+						<h:panelGroup style="display:block; text-align:center">
+							<p:commandButton value="Crear Asistencia"
+								actionListener="#{modeloAsistenciaBean.setearCrearAsistencia}"
+								styleClass="botonBuscar-ebja-a4j"
+								oncomplete="PF('popGuardarAsistencia').show();" ajax="true"
+								update=":#{p:component('formGuardarAsistencia')}" />
+						</h:panelGroup>
+						<p:dataTable id="tblAsistencia" var="asistencia"
+							value="#{modeloAsistenciaBean.listaAsistencia}" scrollable="true"
+							styleClass="tabla-Acuerdo-ebja" paginator="true" rows="10"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+
+							<p:column headerText="Programa" styleClass="tabla-Codigo-ebja">
+								<h:outputText value="#{asistencia[0].programaEbja.nombre}" />
+							</p:column>
+
+							<p:column headerText="Tipo de Asistencia"
+								styleClass="tabla-Codigo-ebja">
+								<h:outputText value="#{asistencia[2]}" />
+							</p:column>
+
+							<p:column headerText="Porcentaje Asistencia Parcial"
+								styleClass="tabla-Codigo-ebja">
+								<h:outputText
+									value="#{asistencia[0].porcentajeAsistenciaParcial}" />
+							</p:column>
+							<p:column headerText="Porcentaje Asistencia Materia "
+								styleClass="tabla-Codigo-ebja">
+								<h:outputText
+									value="#{asistencia[0].porcentajeAsistenciaMateria}" />
+							</p:column>
+							<p:column headerText="Fecha de Creación "
+								styleClass="tabla-Codigo-ebja">
+								<h:outputText value="#{asistencia[0].fechaCreacion}" />
+							</p:column>
+							<p:column headerText="Estado" styleClass="tabla-Codigo-ebja">
+								<h:outputText value="#{asistencia[1]}" />
+							</p:column>
+							<p:column styleClass="tabla-editar-ebja" headerText="Editar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{modeloAsistenciaBean.asistenciaSeleccionadoEditar(asistencia)}"
+										oncomplete="PF('popGuardarAsistencia').show();" ajax="true"
+										update=":#{p:component('formGuardarAsistencia')},:#{p:component('combListTipoAsistencia')},:#{p:component('combListProgramAsistencia')}">
+										<h:graphicImage value="../../img/edit.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+							<p:column styleClass="tabla-borrar-ebja" headerText="Activar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{modeloAsistenciaBean.asistenciaSeleccionadoActivar(asistencia)}"
+										oncomplete="PF('popConfirmarActivarAsistencia').show();"
+										ajax="true">
+										<h:graphicImage value="../../img/visto.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+							<p:column styleClass="tabla-borrar-ebja" headerText="Inactivar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{modeloAsistenciaBean.asistenciaSeleccionadoBorrar(asistencia)}"
+										oncomplete="PF('popConfirmarInactivarAsistencia').show();"
+										ajax="true">
+										<h:graphicImage value="../../img/delete.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+							<f:facet name="paginatorBottomRight">
+								<p:commandButton type="button" icon="fa fa-sync" />
+							</f:facet>
+						</p:dataTable>
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+			<h:form id="formGuardarAsistencia">
+				<p:dialog header="Guardar Asistencia Seleccionada"
+					widgetVar="popGuardarAsistencia" autosized="true" width="300"
+					height="235">
+					<div>
+						<h:panelGrid id="pnlNuevoRegistroAsistencia" columns="2"
+							cellpadding="5" cellspacing="1" border="0"
+							styleClass="popUpCreacionAcuerdo-ebja"
+							columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja"
+							rendered="true">
+							<h:outputText value=" Tipo Programa: " />
+							<p:selectOneMenu id="combListProgramAsistencia"
+								value="#{modeloAsistenciaBean.programaSeleccionadoGuardar}"
+								styleClass="comboModuloNuevoNemonico-ebja" required="true"
+								requiredMessage="Debe escojer un Programa para guardar el registro">
+								<f:selectItem itemLabel="Seleccionar Programa" />
+									<f:selectItems value="#{modeloAsistenciaBean.listaPrograma}"
+										var="varPrograma" itemLabel="#{varPrograma.nombre}"
+										itemValue="#{varPrograma.nemonico}"></f:selectItems>
+							</p:selectOneMenu>
+							<h:outputText value=" Tipo Asistencia: " />
+							<p:selectOneMenu id="combListTipoAsistencia"
+								value="#{modeloAsistenciaBean.tipoAsistenciaSeleccionada}"
+								styleClass="comboModuloNuevoNemonico-ebja" required="true"
+								requiredMessage="Debe escojer un Acuerdo para guardar el registro">
+								<f:selectItem itemLabel="Seleccionar Tip. Asistencia" />
+								<f:selectItems
+									value="#{modeloAsistenciaBean.listaCatalogo}"
+									var="varTipoAsis" itemLabel="#{varTipoAsis.nombre}"
+									itemValue="#{varTipoAsis.nemonico}"></f:selectItems>
+							</p:selectOneMenu>
+							<h:outputText value=" % Parcial Asistencia: " />
+							<p:inputText id="input-text-codigo" styleClass="inputText-ebja"
+								value="#{modeloAsistenciaBean.asistenciaParcial}" required="true"
+								requiredMessage="El campo 'Código' está vacío">
+								<p:keyFilter mask="num" />
+							</p:inputText>
+							<h:outputText value=" % Materia Asistencia: " />
+							<p:inputText id="input-text-nombre" styleClass="inputText-ebja"
+								value="#{modeloAsistenciaBean.asistenciaMateria}" required="true"
+								requiredMessage="El campo 'Nombre Acuerdo' está vacío">
+								<p:keyFilter mask="num" />
+							</p:inputText>
+						</h:panelGrid>
+					</div>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton id="guardarRegistroAsistencia" value="Guardar"
+							styleClass="popUpBoton-ebja" ajax="true"
+							actionListener="#{modeloAsistenciaBean.ejecutarCrearOEditarRegistro}"
+							oncomplete="PF('popGuardarAsistencia').hide();"
+							update=":#{p:component('messageAsistencia')},:#{p:component('tblAsistencia')}" />
+						<p:commandButton id="cancelarRegistroModulo" value="Cancelar"
+							styleClass="popUpBoton-ebja"
+							oncomplete="PF('popGuardarAsistencia').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+
+			<h:form>
+				<p:dialog header="Inactivar Registro"
+					widgetVar="popConfirmarInactivarAsistencia" autosized="false"
+					width="250" height="100">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="eliminar-archivo-ebja"></div>
+						<h:outputLabel value="Está seguro que desea Inactivar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true"
+							actionListener="#{modeloAsistenciaBean.borrarAsistencia}"
+							oncomplete="PF('popConfirmarInactivarAsistencia').hide();"
+							update=":#{p:component('tblAsistencia')}" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true"
+							oncomplete="PF('popConfirmarInactivarAsistencia').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+			<h:form>
+				<p:dialog header="Activar Registro"
+					widgetVar="popConfirmarActivarAsistencia" autosized="false"
+					width="250" height="100">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="eliminar-archivo-ebja"></div>
+						<h:outputLabel value="Está seguro que desea Activar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionAcuerdoBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true"
+							actionListener="#{modeloAsistenciaBean.activarAcuerdo}"
+							oncomplete="PF('popConfirmarActivarAsistencia').hide();"
+							update=":#{p:component('tblAsistencia')}" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true"
+							oncomplete="PF('popConfirmarActivarAsistencia').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+		</div>
+	</ui:define>
+</ui:composition>

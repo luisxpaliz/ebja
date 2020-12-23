@@ -1,0 +1,246 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantillas/contenedorBloqueo.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">
+        Selección de Instituciones Educativas 
+  	</ui:define>
+
+	<ui:define name="contenido">
+
+		<style>
+.contenido {
+	background: #fff;
+}
+</style>
+		<h:form id="frmForm">
+			<p:panel styleClass="contienePanelBusqueda-ebja">
+					<f:facet name="header">Búsqueda de Instituciones:</f:facet>
+					<p:panelGrid id="pnlBusquedaInstituciones" cellpadding="10"
+						cellspacing="1" border="1" styleClass="panelBusqueda-ebja">
+						<p:row>
+							<p:column>
+								<div class="userIcon-Seleccion-Instituciones-ebja"></div>
+							</p:column>
+							<p:column styleClass="ebja_global_1stColBusqueda4objetos_003">
+								<p:panelGrid border ="0" cellpadding="10"
+						         cellspacing="1">
+								<p:row><h:outputText value=" Seleccione un Programa: " /></p:row>
+								<p:row><p:selectOneMenu id="cmbListPrograma"
+									value="#{seleccionInstitucionBean.idProgramaEbja}"
+									styleClass="comboReglaModulo-ebjaEspecial" 
+									requiredMessage="Debe seleccionar un 'Programa' para desplegar la lista"
+									required="true">
+									<f:selectItem itemLabel="Seleccionar Programa" />
+									<f:selectItems value="#{seleccionInstitucionBean.listaProgramaEbja}"
+										var="varPrograma" itemLabel="#{varPrograma.nombre}"
+										itemValue="#{varPrograma.id}" />
+									<p:ajax execute="@this" update="@form"
+	                							listener="#{seleccionInstitucionBean.reseteaObjetos()}"/>
+								</p:selectOneMenu></p:row>
+								</p:panelGrid>
+							</p:column>
+							<p:column styleClass="ebja_global_2ndColBusqueda4objetos_004">
+								<h:outputText value=" Busqueda de Institución por: " />
+								<p:selectOneRadio layout="pageDirection"
+									styleClass="radioButton-Busqueda-ebja"
+									value="#{seleccionInstitucionBean.busquedaTipo}">
+									<f:selectItem itemLabel="Amie" itemValue="1" />
+									<f:selectItem itemLabel="División Administrativa" itemValue="2" />
+									<f:ajax event="change" execute="@this" render="panelBusqueda" 
+										listener="#{seleccionInstitucionBean.reseteaCamposBusqueda()}"/>
+								</p:selectOneRadio>
+							</p:column>
+							<p:column styleClass="ebja_global_3rdColBusqueda4objetos_006">
+								<p:panel id = "panelBusqueda">
+									<p:inputText id="inpTxtingresarAmie"
+										styleClass="inputText-ebja"
+										value="#{seleccionInstitucionBean.busquedaContenido}"
+										rendered="#{seleccionInstitucionBean.busquedaTipo eq 1}">
+										<p:keyFilter mask="alphanum" />
+										</p:inputText>
+										
+									<p:selectOneMenu id="cmbListZona"
+										value="#{seleccionInstitucionBean.idZona}"
+										styleClass="comboReglaModulo-ebja"
+										rendered="#{seleccionInstitucionBean.busquedaTipo eq 2}">
+										<f:selectItem itemLabel="Seleccionar Zona" />
+										<f:selectItems value="#{seleccionInstitucionBean.listaZona}"
+											var="varZona" itemLabel="#{varZona.nombreZona}"
+											itemValue="#{varZona.id}" />
+										<p:ajax execute="@this" update="frmForm"
+				                               	    listener="#{seleccionInstitucionBean.obtenerZona()}"/>
+									</p:selectOneMenu>
+									
+									<p:selectOneMenu id="cmbListDistrito"
+										value="#{seleccionInstitucionBean.idDistrito}"
+										styleClass="comboReglaModulo-ebjaSeleccion"
+										rendered="#{seleccionInstitucionBean.busquedaTipo eq 2}">
+										<f:selectItem itemLabel="Seleccionar Distrito" />
+										<f:selectItems value="#{seleccionInstitucionBean.listaDistrito}"
+											var="varDistrito" itemLabel="#{varDistrito.nombreDistrito}"
+											itemValue="#{varDistrito.id}" />
+										<p:ajax execute="@this" update="frmForm"
+				                               	    listener="#{seleccionInstitucionBean.obtenerDistrito()}"/>
+									</p:selectOneMenu>
+									
+									<p:selectOneMenu id="cmbListCircuito"
+										value="#{seleccionInstitucionBean.idCircuito}"
+										styleClass="comboReglaModulo-ebja"
+										rendered="#{seleccionInstitucionBean.busquedaTipo eq 2}">
+										<f:selectItem itemLabel="Seleccionar Circuito" />
+										<f:selectItems value="#{seleccionInstitucionBean.listaCircuito}"
+											var="varCircuito" itemLabel="#{varCircuito.codigoSenpladesCircuito}"
+											itemValue="#{varCircuito.id}" />
+									</p:selectOneMenu>
+								</p:panel>	
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="text-align:center" colspan="4">
+								<h:panelGroup style="display:block">
+									<p:commandButton id="submitBuscar" value="Buscar"
+										actionListener="#{seleccionInstitucionBean.buscarInstituciones()}"
+										styleClass="botonBuscar-Estudiante-ebja" ajax="true"
+										update="@form">
+									</p:commandButton>
+								</h:panelGroup>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				<br></br>
+				<p:messages id="messageSeleccionInstitucion" style="width:100%; margin-top:3px;" />
+				<h:panelGrid id="pnlListaInstituciones" columns="1" border="0">					
+					<p:dataTable id="tblListaInstituciones" var="instituciones"
+						value="#{seleccionInstitucionBean.listaInstituciones}"
+						scrollable="true" scrollHeight="200"
+						styleClass="tabla-Acuerdo-ebja" paginator="true" rows="10"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+						<f:facet name="header">Lista de Instituciones</f:facet>
+						<p:column style="width:30px; text-align:center;">
+	                        <p:selectBooleanCheckbox value="#{instituciones.estado}" >
+	                            <p:ajax execute="@this" update="frmForm"
+	                            		listener="#{seleccionInstitucionBean.procesarRegistroInstitucion(instituciones)}"/>
+	                        </p:selectBooleanCheckbox>                                
+						</p:column>						
+						<p:column headerText="Amie" style="width:70px; text-align:center;">
+							<h:outputText value="#{instituciones.idInstitucion.amie}" />
+						</p:column>
+						<p:column headerText="Institución Educativa" style="width:200px">
+							<h:outputText value="#{instituciones.idInstitucion.descripcion}" />
+						</p:column>
+						<p:column headerText="Geo código" style="width:70px; text-align:center;">
+							<h:outputText value="#{instituciones.idEstablecimiento.codigoCuadrante}" />
+						</p:column>
+						<p:column headerText="Zona" style="width:50px; text-align:center;">
+							<h:outputText value="#{instituciones.idCircuitoParroquia.idCircuito.idDistrito.idZona.codigoSenpladesZona}" />
+						</p:column>
+						<p:column headerText="Distrito" style="width:60px; text-align:center;">
+							<h:outputText value="#{instituciones.idCircuitoParroquia.idCircuito.idDistrito.codigoSenpladesDistrito}" />
+						</p:column>
+						<p:column headerText="Circuito" style="width:100px; text-align:center;">
+							<h:outputText value="#{instituciones.idCircuitoParroquia.idCircuito.codigoSenpladesCircuito}" />
+						</p:column>
+						<p:column headerText="Provincia" style="width:110px; text-align:center;">
+							<h:outputText value="#{instituciones.idCircuitoParroquia.idParroquia.idCanton.idProvincia.descripcion}" />
+						</p:column>
+						<p:column headerText="Cantón" style="width:110px; text-align:center;">
+							<h:outputText value="#{instituciones.idCircuitoParroquia.idParroquia.idCanton.descripcion}" />
+						</p:column>
+						<p:column headerText="Parroquia" style="width:120px; text-align:center;">
+							<h:outputText value="#{instituciones.idCircuitoParroquia.idParroquia.descripcion}" />
+						</p:column>
+						<f:facet name="paginatorBottomRight">
+							<p:commandButton type="button" icon="fa fa-sync" />
+						</f:facet>
+					</p:dataTable>
+					<h:panelGroup style="display:block; text-align:center">
+						<p:commandButton id="cbAgregar" value="Agregar"
+							disabled="#{seleccionInstitucionBean.disabledCbAgregar}"
+							actionListener="#{seleccionInstitucionBean.procesarAgregarInstitucion()}"
+							styleClass="botonBuscar-ebja-a4j" ajax="true"
+							update="@form" />
+					</h:panelGroup>
+				</h:panelGrid>
+				<h:panelGrid id="pnlListaProgramaInstitucion" columns="1" border="0">					
+					<p:dataTable id="tblListaProgramaInstitucion" var="programaInstitucion"
+						value="#{seleccionInstitucionBean.listaProgramaInstitucion}"
+						scrollable="true" scrollHeight="200"
+						styleClass="tabla-Acuerdo-ebja" paginator="true" rows="10"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+						<f:facet name="header">LISTA DE INSTITUCIONES SELECCIONADAS PARA EL PROGRAMA: #{seleccionInstitucionBean.nombreProgramaEbja} </f:facet>				
+						<p:column headerText="Amie" style="width:70px; text-align:center;">
+							<h:outputText value="#{programaInstitucion.institucEstablec.idInstitucion.amie}" />
+						</p:column>
+						<p:column headerText="Institución Educativa" style="width:200px">
+							<h:outputText value="#{programaInstitucion.institucEstablec.idInstitucion.descripcion}" />
+						</p:column>
+						<p:column headerText="Geo código" style="width:70px; text-align:center;">
+							<h:outputText value="#{programaInstitucion.institucEstablec.idEstablecimiento.codigoCuadrante}" />
+						</p:column>
+						<p:column headerText="Zona" style="width:50px; text-align:center;">
+							<h:outputText value="#{programaInstitucion.institucEstablec.idCircuitoParroquia.idCircuito.idDistrito.idZona.codigoSenpladesZona}" />
+						</p:column>
+						<p:column headerText="Distrito" style="width:60px; text-align:center;">
+							<h:outputText value="#{programaInstitucion.institucEstablec.idCircuitoParroquia.idCircuito.idDistrito.codigoSenpladesDistrito}" />
+						</p:column>
+						<p:column headerText="Circuito" style="width:100px; text-align:center;">
+							<h:outputText value="#{programaInstitucion.institucEstablec.idCircuitoParroquia.idCircuito.codigoSenpladesCircuito}" />
+						</p:column>
+						<p:column headerText="Provincia" style="width:110px; text-align:center;">
+							<h:outputText value="#{programaInstitucion.institucEstablec.idCircuitoParroquia.idParroquia.idCanton.idProvincia.descripcion}" />
+						</p:column>
+						<p:column headerText="Cantón" style="width:110px; text-align:center;">
+							<h:outputText value="#{programaInstitucion.institucEstablec.idCircuitoParroquia.idParroquia.idCanton.descripcion}" />
+						</p:column>
+						<p:column headerText="Parroquia" style="width:120px; text-align:center;">
+							<h:outputText value="#{programaInstitucion.institucEstablec.idCircuitoParroquia.idParroquia.descripcion}" />
+						</p:column>						
+						<p:column styleClass="tabla-borrar-regla-ebja"
+							headerText="Inactivar">
+							<div style="text-align: center;">
+								<p:commandLink
+									actionListener="#{seleccionInstitucionBean.programaInstitucionInactivar(programaInstitucion)}"
+									oncomplete="PF('popConfirmarInactivar').show();"
+									ajax="true">
+									<h:graphicImage value="../../img/delete.png" />
+								</p:commandLink>
+							</div>
+						</p:column>
+						<f:facet name="paginatorBottomRight">
+							<p:commandButton type="button" icon="fa fa-sync" />
+						</f:facet>
+					</p:dataTable>
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+		<h:form>
+			<p:dialog header="Inactivar Registro"
+				widgetVar="popConfirmarInactivar" autosized="false"
+				width="250" height="100">
+				<h:panelGrid border="0" columns="2"
+					columnClasses="popUpBusqueda-primeraCol-regla-ebja,popUpBusqueda-segundaCol-regla-ebja">
+					<div class="eliminar-archivo-ebja"></div>
+					<h:outputLabel value="Está seguro que desea Inactivar Registro?"
+						styleClass="texto-confirmar-borrar-archivo-ebja" />
+				</h:panelGrid>
+				<h:panelGrid columns="2"
+					styleClass="popUpCreacionAcuerdoBotones-ebja"
+					columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+					border="0">
+					<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+						ajax="true" actionListener="#{seleccionInstitucionBean.inactivarProgramaInstitucion()}"
+						oncomplete="PF('popConfirmarInactivar').hide();"
+						update="frmForm:tblListaInstituciones, frmForm:tblListaProgramaInstitucion, frmForm:messageSeleccionInstitucion"/>
+					<p:commandButton value="No" styleClass="popUpBoton-ebja"
+						ajax="true" oncomplete="PF('popConfirmarInactivar').hide();" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

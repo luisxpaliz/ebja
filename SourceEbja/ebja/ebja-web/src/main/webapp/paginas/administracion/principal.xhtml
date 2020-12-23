@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    template="/plantillas/contenedorBloqueo.xhtml"
+    xmlns:p="http://primefaces.org/ui">
+    
+    <ui:define name="titulo">
+        ¡Bienvenidos al Sistema de Gestión de Control Escolar!
+    </ui:define>
+    
+    <ui:define name="contenido">
+    <style >
+    
+    .contenido{
+    background: #fff;
+    }
+    </style>
+    
+       <div align="justify" style="padding: 5px">
+		   <h:outputText value="#{rolesRecursosControlador.mensajeInicio}"
+				escape="false" />
+		</div>
+		<div align="justify" style="padding:10px">
+				<h:outputText value="El portal de servicios virtuales Educar Ecuador, es un espacio de interacción con la comunidad educativa para el acceso a los servicios en línea de forma rápida y oportuna, permitiéndole gestionar de manera inmediata sus requerimientos y la gestión que deseen realizar por tipo de usuario y de acuerdo al sistema educativo al que pertenecen." />
+				<br/><br/>
+				<h:outputText value="Este es un servicio automatizado de toda la gestión escolar, a través de este servicio se podrá realizar un seguimiento de toda la vida estudiantil de los niños, niñas y jóvenes que se encuentran en el sistema educativo fiscal, desde que se inscriben hasta que se gradúan. Parte del modelo de gestión de servicios centrado en el ciudadano, creando así un expediente único del estudiante." />
+				<br/><br/>
+				<h:outputText value="A través de este servicio, se integran los miembros de la comunidad educativa: estudiantes, docentes, padres de familia y/o representantes y autoridades educativas." />
+		</div>
+    
+	</ui:define>
+</ui:composition>

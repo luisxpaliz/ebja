@@ -1,0 +1,218 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantillas/contenedorBloqueo.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">
+        ADMINISTRACIÓN DEL SISTEMA - ALFABETIZACIÓN - ACUERDOS RELACIONADOS 
+  	</ui:define>
+
+	<ui:define name="contenido">
+
+		<style>
+.contenido {
+	background: #fff;
+}
+</style>
+		<div>
+			<h:form id="frmForm">
+				<p:panel styleClass="ebja_global_pnlBusqueda4objetos_001">
+					<f:facet name="header">Búsqueda de Acuerdos:</f:facet>
+					<p:panelGrid id="pnlBusqueda" cellpadding="10" cellspacing="1"
+						border="1" styleClass="ebja_global_pnlBusqueda4objetos_002">
+						<p:row>
+							<p:column>
+								<div class="userIcon-Acuerdo-ebja"></div>
+							</p:column>
+							<p:column styleClass="ebja_global_1stColBusqueda4objetos_003">
+								<h:outputText value=" Búsqueda de Acuerdo por: " />
+							</p:column>
+							<p:column styleClass="ebja_global_2ndColBusqueda4objetos_004">
+								<p:selectOneRadio layout="pageDirection"
+									styleClass="ebja_global_rdbtnBusqueda4objetos_005"
+									value="#{adminAlfabAcuRelControlador.busquedaTipo}">
+									<f:selectItem itemLabel="Código" itemValue="1" />
+									<f:selectItem itemLabel="Nombre de Acuerdo" itemValue="2" />
+								</p:selectOneRadio>
+							</p:column>
+							<p:column styleClass="ebja_global_3rdColBusqueda4objetos_006">
+								<p:inputText id="inpTxtingresarBuscar"
+									styleClass="ebja_global_inpTxtBusqueda4objetos_007"
+									value="#{adminAlfabAcuRelControlador.busquedaContenido}" maxlength="60">
+									<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ_-\s]+$/i" preventPaste="false"/>
+									</p:inputText>		
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="text-align:center" colspan="4">
+								<h:panelGroup style="display:block ">
+									<p:commandButton id="submit" value="Buscar"
+										actionListener="#{adminAlfabAcuRelControlador.buscarAcuerdo}"
+										styleClass="ebja_global_btn4objetos_008" ajax="true" update="@form">
+									</p:commandButton>
+								</h:panelGroup>
+							</p:column>
+						</p:row>
+
+					</p:panelGrid>
+					<br></br>
+					<p:messages id="messageAcuerdo" styleClass="ebja_global_msgbtn4objetos009"/>
+					<h:panelGrid id="pnlIngresoRegistro" columns="1" border="0">
+						<h:panelGroup style="display:block; text-align:center">
+							<p:commandButton value="Crear Acuerdo"
+								actionListener="#{adminAlfabAcuRelControlador.setearCrearAcuerdo}"
+								styleClass="ebja_global_btn4objetos_010"
+								oncomplete="PF('popGuardarAcuerdo').show();" ajax="true"
+								update=":#{p:component('formGuardarAcuerdo')}" />
+						</h:panelGroup>
+						<p:dataTable id="tblAcuerdos" var="acuerdo"
+							value="#{adminAlfabAcuRelControlador.listaAcuerdos}"
+							scrollable="true"
+							styleClass="ebja_acuerdo_tblAcuerdo_001" paginator="true" rows="10"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+
+							<p:column headerText="Código" styleClass="ebja_acuerdo_tblAcuerdo_1stCol_002">
+								<h:outputText value="#{acuerdo[0].nemonico}" />
+							</p:column>
+							<p:column headerText="Nombre Acuerdo"
+								styleClass="ebja_acuerdo_tblAcuerdo_2ndCol_003">
+								<h:outputText value="#{acuerdo[0].nombre}" />
+							</p:column>
+							<p:column headerText="Estado" styleClass="ebja_acuerdo_tblAcuerdo_3rdCol_004">
+								<h:outputText value="#{acuerdo[1]}" />
+							</p:column>
+							<p:column styleClass="ebja_acuerdo_tblAcuerdo_4thColEditar_005" headerText="Editar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{adminAlfabAcuRelControlador.acuerdoSeleccionadoEditar(acuerdo)}"
+										oncomplete="PF('popGuardarAcuerdo').show();" ajax="true"
+										update=":#{p:component('formGuardarAcuerdo')}">
+										<h:graphicImage value="../../img/edit.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+							<p:column styleClass="ebja_acuerdo_tblAcuerdo_5thColActivar_006" headerText="Activar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{adminAlfabAcuRelControlador.acuerdoSeleccionadoActivar(acuerdo)}"
+										oncomplete="PF('popConfirmarActivarAcuerdo').show();"
+										ajax="true">
+										<h:graphicImage value="../../img/visto.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+							<p:column styleClass="ebja_acuerdo_tblAcuerdo_6thColInactivar_007" headerText="Inactivar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{adminAlfabAcuRelControlador.acuerdoSeleccionadoBorrar(acuerdo)}"
+										oncomplete="PF('popConfirmarInactivarAcuerdo').show();"
+										ajax="true">
+										<h:graphicImage value="../../img/delete.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
+							<f:facet name="paginatorBottomRight">
+								<p:commandButton type="button" icon="fa fa-sync" />
+							</f:facet>
+						</p:dataTable>
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+			<h:form id="formGuardarAcuerdo">
+				<p:dialog header="Guardar Acuerdo Seleccionado"
+					widgetVar="popGuardarAcuerdo" resizable="false" autosized="false" width="300"
+					height="135">
+					<div>
+						<h:panelGrid id="pnlNuevoRegistroAcuerdo" columns="2"
+							cellpadding="5" cellspacing="1" border="0"
+							styleClass="ebja_acuerdo_popUpCreacionAcuerdo_008"
+							columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja"
+							rendered="true">
+							<h:outputText value=" Código: " />
+							<p:inputText id="input-text-codigo" styleClass="ebja_acuerdo_inpTxtCreacionAcuerdo_009"
+								value="#{adminAlfabAcuRelControlador.nemonico}" required="true"
+								requiredMessage="El campo 'Código' está vacío" maxlength="25">
+								<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ_-\s]+$/i" preventPaste="false" />
+							</p:inputText>
+							<h:outputText value=" Nombre Acuerdo " />
+							<p:inputText id="input-text-nombre" styleClass="ebja_acuerdo_inpTxtCreacionAcuerdo_010"
+								value="#{adminAlfabAcuRelControlador.nombre}" required="true"
+								requiredMessage="El campo 'Nombre Acuerdo' está vacío" maxlength="50">
+								<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ_-\s]+$/i" preventPaste="false" />
+							</p:inputText>
+						</h:panelGrid>
+					</div>
+					<h:panelGrid columns="2"
+						styleClass="ebja_acuerdo_pnlGrdCreacionAcuerdo_011"
+						columnClasses="ebja_global_pnlGrd_col1st_GuardarRegistro_006,ebja_global_pnlGrd_col2nd_CancelarRegistro_007"
+						border="0">
+						<p:commandButton id="guardarRegistroAcuerdo" value="Guardar"
+							styleClass="ebja_global_btnGuardarRegistro_008" ajax="true"
+							actionListener="#{adminAlfabAcuRelControlador.ejecutarCrearOEditarRegistro}"
+							oncomplete="PF('popGuardarAcuerdo').hide();"
+							update=":#{p:component('messageAcuerdo')},:#{p:component('tblAcuerdos')}" />
+						<p:commandButton id="cancelarRegistroModulo" value="Cancelar"
+							styleClass="ebja_global_btnCancelarRegistro_009"
+							oncomplete="PF('popGuardarAcuerdo').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+
+			<h:form>
+				<p:dialog header="Inactivar Registro"
+					widgetVar="popConfirmarInactivarAcuerdo" resizable="false" autosized="false"
+					width="250" height="130"   >
+					<h:panelGrid border="0" columns="2"
+						columnClasses="ebja_global_pnlGrd_col1st_InactivarRegistro_010,ebja_global_pnlGrd_col2nd_InactivarRegistro_011">
+						<div class="ebja_global_classIcono_001"></div>
+						<h:outputLabel value="Está seguro que desea Inactivar Registro?"
+							styleClass="ebja_global_txtConfirmaBorrarArchivo_002" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="ebja_global_pnlGrdInactivo_003"
+						columnClasses="ebja_global_pnlGrd_col1st_GuardarRegistro_006,ebja_global_pnlGrd_col2nd_CancelarRegistro_007"
+						border="0">
+						<p:commandButton value="Sí" styleClass="ebja_global_btnInactivoAceptar_004"
+							ajax="true"
+							actionListener="#{adminAlfabAcuRelControlador.borrarAcuerdo}"
+							oncomplete="PF('popConfirmarInactivarAcuerdo').hide();"
+							update=":#{p:component('tblAcuerdos')},:#{p:component('messageAcuerdo')}" />
+						<p:commandButton value="No" styleClass="ebja_global_btnInactivoCancelar_005"
+							ajax="true"
+							oncomplete="PF('popConfirmarInactivarAcuerdo').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+			<h:form>
+				<p:dialog header="Activar Registro"
+					widgetVar="popConfirmarActivarAcuerdo" resizable="false" autosized="false"
+					width="250" height="130">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="ebja_global_classIcono_001"></div>
+						<h:outputLabel value="Está seguro que desea Activar Registro?"
+							styleClass="ebja_global_txtConfirmaBorrarArchivo_002" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="ebja_global_pnlGrdInactivo_003"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="ebja_global_btnInactivoAceptar_004"
+							ajax="true"
+							actionListener="#{adminAlfabAcuRelControlador.activarAcuerdo}"
+							oncomplete="PF('popConfirmarActivarAcuerdo').hide();"
+							update=":#{p:component('tblAcuerdos')},:#{p:component('messageAcuerdo')}" />
+						<p:commandButton value="No" styleClass="ebja_global_btnInactivoCancelar_005"
+							ajax="true" oncomplete="PF('popConfirmarActivarAcuerdo').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+		</div>
+	</ui:define>
+</ui:composition>
