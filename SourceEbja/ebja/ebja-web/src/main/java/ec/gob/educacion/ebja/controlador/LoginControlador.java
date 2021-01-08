@@ -68,9 +68,10 @@ public class LoginControlador extends BaseControlador implements Serializable {
 				Type type = new TypeToken<UsuarioSeg>() {
 				}.getType();
 				String jsonEnvio = gson.toJson(usuario, type);
-				String jsonRespuesta = ClienteServicioWeb.servicioWebPost(ClienteServicioWeb
+				/*String jsonRespuesta = ClienteServicioWeb.servicioWebPost(ClienteServicioWeb
 						.getURLWebServiceAutenticacion(FacesContext.getCurrentInstance().getExternalContext()),
-						jsonEnvio);
+						jsonEnvio);*/
+				String jsonRespuesta = ClienteServicioWeb.servicioWebPost("http://10.200.10.15:80/serviciosEducacion-web/resources/ValidacionUsuarioLdapSeguridadesJdc/ValidarUsuarioGeneralObtenerRoles",jsonEnvio);
 				usuario = gson.fromJson(jsonRespuesta, type);
 				
 				if (usuario != null && usuario.getAccesoConcedido() != null && usuario.getAccesoConcedido()) {
@@ -156,9 +157,10 @@ public class LoginControlador extends BaseControlador implements Serializable {
 					Type type = new TypeToken<UsuarioSeg>() {
 					}.getType();
 					String jsonEnvio = gson.toJson(usuario, type);
-					String jsonRespuesta = ClienteServicioWeb.servicioWebPost(ClienteServicioWeb
+					/*String jsonRespuesta = ClienteServicioWeb.servicioWebPost(ClienteServicioWeb
 							.getURLWebServiceAutenticacion(FacesContext.getCurrentInstance().getExternalContext()),
-							jsonEnvio);
+							jsonEnvio);*/
+					String jsonRespuesta = ClienteServicioWeb.servicioWebPost("http://10.200.10.15:80/serviciosEducacion-web/resources/ValidacionUsuarioLdapSeguridadesJdc/ValidarUsuarioGeneralObtenerRoles",jsonEnvio);
 					usuario = gson.fromJson(jsonRespuesta, type);
 
 					

@@ -16,4 +16,6 @@ public interface InstitucEstablecFacadeLocal {
 	
 	List<InstitucEstablec> institucionFindByAmie (String codigoAmie);    
     List<InstitucEstablec> institucionFindByCircuito (Integer idCircuito);
+    
+    List<InstitucEstablec> institucionFindByParroquia (short idParroquia, String sostenimiento);
 }

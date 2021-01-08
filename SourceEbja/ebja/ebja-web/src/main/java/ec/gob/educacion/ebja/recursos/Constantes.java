@@ -54,6 +54,7 @@ public class Constantes {
 	public static final String NEMONICO_DOCUMENTO_MOTIVO = "MOTDOC";
 	public static final String NEMONICO_DISCAPACIDAD_GENERAL = "DISGEN";
 	public static final String NEMONICO_REZAGO_EDUCATIVO = "ANIREZ";
+	public static final String NEMONICO_REZAGO_EDUCATIVO_PCEI = "ANIREZAGPCEI";
 
 	public static final String UNCHECKED = "unchecked";
 	public static final String REGISTRO_ACTIVO = "A";

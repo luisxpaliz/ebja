@@ -105,7 +105,8 @@ public class RolesRecursosControlador extends BaseControlador implements Seriali
         Type type = new TypeToken<Long>() {}.getType();
         Type typeRespuesta = new TypeToken<List<Recurso>>() {}.getType();
         String jsonEnvio = gson.toJson(rol.getCodigo(), type);
-        String jsonRespuesta = ClienteServicioWeb.servicioWebPost(ClienteServicioWeb.getURLWebServiceRecursos(FacesContext.getCurrentInstance().getExternalContext()), jsonEnvio);
+        //String jsonRespuesta = ClienteServicioWeb.servicioWebPost(ClienteServicioWeb.getURLWebServiceRecursos(FacesContext.getCurrentInstance().getExternalContext()), jsonEnvio);
+        String jsonRespuesta = ClienteServicioWeb.servicioWebPost("http://10.200.10.15:80/serviciosEducacion-web/resources/ValidacionUsuarioLdapSeguridadesJdc/ObtenerRecursosDeRol", jsonEnvio);
         recursos = gson.fromJson(jsonRespuesta, typeRespuesta);
 		return recursos;
 	}

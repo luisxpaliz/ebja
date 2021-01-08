@@ -90,5 +90,37 @@ public class InstitucEstablecFacade extends AbstractFacade<InstitucEstablec> imp
 		
 		return listaResultado;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<InstitucEstablec> institucionFindByParroquia (short idParroquia, String sostenimiento){
+		String sql = "";
+		List<InstitucEstablec> listaAux = new ArrayList<>();
+		listaResultado = new ArrayList<>();
+		
+		sql = "select ins"
+				+ " from InstitucEstablec ins"
+				+ " where ins.idCircuitoParroquia.idParroquia.id = :idParroquia"
+				+ " and ins.idInstitucion.sostenimiento.descripcion = :sostenimiento"
+				+ " and ins.estado = '1'"
+				+ " and ins.estadoVigencia = '1' order by ins.idInstitucion.amie asc ";
+		
+		listaAux = em.createQuery(sql).setParameter("idParroquia", idParroquia).setParameter("sostenimiento", sostenimiento).getResultList();
+		
+		if (!listaAux.isEmpty()) {
+			int index = 0;
+			for (InstitucEstablec institucEstablecAux : listaAux) {
+				institucEstablecAux = listaAux.get(index);
+				Hibernate.initialize(institucEstablecAux.getIdCircuitoParroquia().getIdCircuito().getIdDistrito().getIdZona());
+				Hibernate.initialize(institucEstablecAux.getIdCircuitoParroquia().getIdParroquia().getIdCanton().getIdProvincia());
+				Hibernate.initialize(institucEstablecAux.getIdInstitucion());
+				Hibernate.initialize(institucEstablecAux.getIdInstitucion().getSostenimiento());
+				Hibernate.initialize(institucEstablecAux.getIdEstablecimiento());
+				listaResultado.add(institucEstablecAux);
+				index++;
+			}
+		}
+		
+		return listaResultado;
+	}
 
 }
