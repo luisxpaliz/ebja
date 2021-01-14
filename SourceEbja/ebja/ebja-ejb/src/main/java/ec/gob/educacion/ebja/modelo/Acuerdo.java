@@ -45,7 +45,7 @@ public class Acuerdo implements Serializable {
 //	@OneToMany(mappedBy="acuerdo")
 //	private List<ProgramaAcuerdo> programaAcuerdos;
 
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "acuerdos")
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "acuerdos")
 	private Set<ProgramaEbja> programaEbja; 
 	
 	public Acuerdo() {

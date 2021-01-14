@@ -6,6 +6,7 @@ import javax.persistence.*;
 import ec.gob.educacion.ebja.modelo.zeus.Catalogo;
 import ec.gob.educacion.ebja.modelo.zeus.Etnia;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="registro_estudiante", schema = "ebja")
@@ -25,6 +26,9 @@ public class RegistroEstudiante implements Serializable {
 
 	@Column(name="correo_electronico")
 	private String correoElectronico;
+	
+	@Column(name="memorando")
+	private String memorando;
 
 	private Integer edad;
 
@@ -130,6 +134,10 @@ public class RegistroEstudiante implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="id_pais", nullable=true)
 	private Pais pais;
+	
+	//bi-directional many-to-one association to Matricula
+	@OneToMany(mappedBy="registroEstudiante")
+	private List<Estudiante> estudiante;
 
 	public RegistroEstudiante() {
 	}
@@ -381,4 +389,23 @@ public class RegistroEstudiante implements Serializable {
 	public void setMotivoNoMatricula(String motivoNoMatricula) {
 		this.motivoNoMatricula = motivoNoMatricula;
 	}
+
+	public List<Estudiante> getEstudiante() {
+		return estudiante;
+	}
+
+	public void setEstudiante(List<Estudiante> estudiante) {
+		this.estudiante = estudiante;
+	}
+
+	public String getMemorando() {
+		return memorando;
+	}
+
+	public void setMemorando(String memorando) {
+		this.memorando = memorando;
+	}
+	
+	
+	
 }

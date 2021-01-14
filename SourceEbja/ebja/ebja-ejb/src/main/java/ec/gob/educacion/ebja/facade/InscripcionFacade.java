@@ -37,7 +37,7 @@ public class InscripcionFacade extends AbstractFacade<Inscripcion> implements In
     }
     
     public boolean buscarInscripcionPorOferta(String nemonico) {
-    	return em.createQuery("SELECT i FROM Inscripcion i where i.programaEbja.nemonico = :nem ").setParameter("nem", nemonico).getResultList().isEmpty();
+    	return em.createQuery("SELECT i FROM Inscripcion i where i.programaGrado.programaEbja.nemonico = :nem ").setParameter("nem", nemonico).getResultList().isEmpty();
     	
     }
 

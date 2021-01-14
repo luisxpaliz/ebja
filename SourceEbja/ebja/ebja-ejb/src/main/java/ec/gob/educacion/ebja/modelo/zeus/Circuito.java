@@ -72,11 +72,11 @@ public class Circuito implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaMigracion;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCircuito", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCircuito", fetch = FetchType.EAGER)
     private List<CircuitoParroquia> circuitoParroquiaList;
     
     @JoinColumn(name = "id_distrito", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Distrito idDistrito;
 
     public Circuito() {

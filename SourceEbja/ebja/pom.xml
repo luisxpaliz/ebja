@@ -60,18 +60,4 @@
 	</dependency>
      
   </dependencies>
-  
- 	<scm>
-		<connection>scm:git:git@10.200.4.57:git/DNEEI-EBJA.git</connection>
-		<tag>HEAD</tag>
-	</scm>
-
-	<distributionManagement>
-		<repository>
-			<id>nexus</id>
-			<url>http://10.200.4.195:8081/repository/maven-releases/</url>
-		</repository>
-	</distributionManagement>
- 
-  
 </project>

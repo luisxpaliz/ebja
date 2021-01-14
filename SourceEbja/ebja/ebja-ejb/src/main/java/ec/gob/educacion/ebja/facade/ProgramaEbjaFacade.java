@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import ec.gob.educacion.ebja.facade.local.ProgramaEbjaFacadeLocal;
+import ec.gob.educacion.ebja.modelo.GrupoFasePrograma;
 import ec.gob.educacion.ebja.modelo.ProgramaEbja;
 import ec.gob.educacion.ebja.recursos.Constantes;
 
@@ -16,6 +17,7 @@ import ec.gob.educacion.ebja.recursos.Constantes;
 public class ProgramaEbjaFacade extends AbstractFacade<ProgramaEbja> implements ProgramaEbjaFacadeLocal {
 
 	private List<ProgramaEbja> listaProgramaEbja;
+	private List<GrupoFasePrograma> listaGrupoFase;
 	private ProgramaEbja programa;
 	private boolean existeRegistro =false;
 
@@ -38,6 +40,13 @@ public class ProgramaEbjaFacade extends AbstractFacade<ProgramaEbja> implements 
 		listaProgramaEbja = em.createNamedQuery("ProgramaEbja.findAllActive").getResultList();
 		return listaProgramaEbja;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ProgramaEbja> findAllActiveExt() {
+		listaProgramaEbja = em.createNamedQuery("ProgramaEbja.findAllActiveExt").getResultList();
+		return listaProgramaEbja;
+	}
 
 	@Override
 	protected EntityManager getEntityManager() {
@@ -51,8 +60,38 @@ public class ProgramaEbjaFacade extends AbstractFacade<ProgramaEbja> implements 
 	}
 	
 	@Override
-	public List<ProgramaEbja> obtenerProgramaEbjaGrupoFase(long idGrupoFase) {
-		listaProgramaEbja  =  em.createNamedQuery("ProgramaEbja.findByFaseGrupo").setParameter("idFaseGrupo", idGrupoFase).getResultList();
+	public List<ProgramaEbja> obtenerProgramaEbjaGrupoFase(long idGrupoFase, long idTipoGrupoFase) {
+		listaProgramaEbja  =  em.createNamedQuery("ProgramaEbja.findByFaseGrupo").setParameter("idFaseGrupo", idGrupoFase).setParameter("idTipoGrupoFase", idTipoGrupoFase).getResultList();
+		return listaProgramaEbja;
+	}
+	
+	@Override
+	public List<ProgramaEbja> obtenerProgramaEbjaGrupoFaseExtraordinaria(long idGrupoFase) {
+		listaProgramaEbja  =  em.createNamedQuery("ProgramaEbja.findByFaseGrupoExtraordinaria").setParameter("idFaseGrupo", idGrupoFase).getResultList();
+		return listaProgramaEbja;
+	}
+	
+	@Override
+	public List<ProgramaEbja> obtenerProgramaEbjaGrupoFaseExtraordinariaNemonico(String nemonicoGrupoFase) {
+		listaProgramaEbja  =  em.createNamedQuery("ProgramaEbja.findByFaseGrupoExtraordinariaNemonico").setParameter("nemonico", nemonicoGrupoFase).getResultList();
+		return listaProgramaEbja;
+	}
+	
+	@Override
+	public List<GrupoFasePrograma> obtenerProgramaEbjaGrupoFase(String nemonicoGrupoFase) {
+		listaGrupoFase  =  em.createNamedQuery("ProgramaEbja.findByProgramaEbjaFase").setParameter("nemonico", nemonicoGrupoFase).getResultList();
+		return listaGrupoFase;
+	}
+	
+	@Override
+	public List<ProgramaEbja> obtenerProgramaEbjaGrupoFaseOrdinaria(long idGrupoFase, long idTipoGrupoFase) {
+		listaProgramaEbja  =  em.createNamedQuery("ProgramaEbja.findByFaseGrupo").setParameter("idFaseGrupo", idGrupoFase).setParameter("idTipoGrupoFase", idTipoGrupoFase).getResultList();
+		return listaProgramaEbja;
+	}
+	
+	@Override
+	public List<ProgramaEbja> obtenerProgramaEbjaNinguno(){
+		listaProgramaEbja  =  em.createNamedQuery("ProgramaEbja.findNinguno").getResultList();
 		return listaProgramaEbja;
 	}
 	
@@ -97,6 +136,14 @@ public class ProgramaEbjaFacade extends AbstractFacade<ProgramaEbja> implements 
 
 		return listaProgramaEbja;
 	}
+	
+	
+	@Override
+	public GrupoFasePrograma buscarFaseProgramaPorProgramaEbja(String programaEbja) {
+		String sql = "SELECT p.grupoFasePrograma FROM ProgramaEbja p where p.nemonico =:programaEbja";
+		GrupoFasePrograma tempGrupoFasePrograma =  (GrupoFasePrograma) em.createQuery(sql).setParameter("programaEbja",programaEbja).getSingleResult();
+		return tempGrupoFasePrograma;
+	}
 
 	@Override
 	public ProgramaEbja obtenerProgramaPorNemonico(String nemonico) {
@@ -107,9 +154,11 @@ public class ProgramaEbjaFacade extends AbstractFacade<ProgramaEbja> implements 
 		return tempProgramaEbja.get(0);
 		else {
 		System.out.println("resultado vacio ProgramaPorNemonico");
-		return null;
-		
+		return null;	
 	}
+		
+	
+		
 	}
 	
 	

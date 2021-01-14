@@ -26,13 +26,43 @@
 							<p:column>
 								<div class="userIdMap-Reglas-ebja"></div>
 							</p:column>
-							<p:column styleClass="panelBusqueda-primeraCol-ebja">
-								<h:outputText value=" Seleccione un Oferta: " />
-							</p:column>
+							<p:column styleClass="ebja_global_2ndColBusqueda4objetos_004_2">
+										<h:outputText value=" Tipo Proyecto: " />
+										<p:selectOneMenu id="combListProyecto"
+											value="#{reglasNegocioBean.tipoProyectoSeleccionadoBusqueda}"
+											styleClass="ebja_oferta_cmbCreacionOferta_tipoPrograma_029_3">
+											<f:selectItem itemLabel="Seleccionar Tip. Proyecto" />
+											<f:selectItems
+												value="#{reglasNegocioBean.listaProgramaEducativo}"
+												var="varTipoProyecto"
+												itemLabel="#{varTipoProyecto.nombrePrograma}"
+												itemValue="#{varTipoProyecto.nemonico}"></f:selectItems>
+											<p:ajax execute="@this"
+												update=":#{p:component('combListFase')}"
+												listener="#{reglasNegocioBean.obtenerFasesdeProyectoBusqueda}" />
+										</p:selectOneMenu>
+									</p:column>
+									<p:column styleClass="ebja_global_2ndColBusqueda4objetos_004_2">
+										<h:outputText value=" Tipo Fase: " />
+										<p:selectOneMenu id="combListFase"
+											value="#{reglasNegocioBean.tipoFaseSeleccionadaBusqueda}"
+											styleClass="ebja_oferta_cmbCreacionOferta_tipoPrograma_029_3">
+											<f:selectItem itemLabel="Seleccionar Tip. Proyecto" />
+											<f:selectItems
+												value="#{reglasNegocioBean.listaGrupoFaseProg}"
+												var="varTipoGrupofase"
+												itemLabel="#{varTipoGrupofase.nombre}"
+												itemValue="#{varTipoGrupofase.nemonico}"></f:selectItems>
+											<p:ajax execute="@this"
+												update=":#{p:component('combListModuloReglas')}"
+												listener="#{reglasNegocioBean.obtenerOfertaBusqueda}" />
+										</p:selectOneMenu>
+									</p:column>
 							<p:column styleClass="panelBusqueda-terceraCol-reglas-ebja">
+							<h:outputText value=" Tipo Oferta: " />
 								<p:selectOneMenu id="combListModuloReglas"
 									value="#{reglasNegocioBean.moduloSeleccionado}"
-									styleClass="comboReglaModuloBusqueda-ebja">
+									styleClass="ebja_oferta_cmbCreacionOferta_tipoPrograma_029_3">
 									<f:selectItem itemLabel="Seleccionar Oferta" />
 									<f:selectItems value="#{reglasNegocioBean.listaModulos}"
 										var="varModulo" itemLabel="#{varModulo.nombre}"

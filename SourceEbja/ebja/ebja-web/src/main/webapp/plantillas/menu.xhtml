@@ -9,9 +9,9 @@
 <h:body>
 	<ui:composition>
 		<h:form id="formMenu" >
-			<p:panel style="width:220px" rendered="#{menuBean.menuModelHorizontal != null}" >
+			<p:panel style="width:220px" header="Menú" toggleable="true" toggleOrientation="horizontal" rendered="#{menuBean.menuModelHorizontal != null}"  >
 		        <div >
-				<p:menu model="#{menuBean.menuModelHorizontal}" toggleable="true" styleClass="menubar" style="width:190px"/> 
+				<p:menu model="#{menuBean.menuModelHorizontal}"  styleClass="menubar"/> 
 			</div>
 		    </p:panel>
 		</h:form>

@@ -21,14 +21,11 @@
 		<class>ec.gob.educacion.ebja.modelo.GrupoFasePrograma</class>
 		<class>ec.gob.educacion.ebja.modelo.Inscripcion</class>
 		<class>ec.gob.educacion.ebja.modelo.Malla</class>
-		<class>ec.gob.educacion.ebja.modelo.MallaDocente</class>
 		<class>ec.gob.educacion.ebja.modelo.Matricula</class>
 		<class>ec.gob.educacion.ebja.modelo.Mensaje</class>
 		<class>ec.gob.educacion.ebja.modelo.Modalidad</class>
 		<class>ec.gob.educacion.ebja.modelo.ModeloAsistencia</class>
 		<class>ec.gob.educacion.ebja.modelo.ModeloEvaluacion</class>
-		<class>ec.gob.educacion.ebja.modelo.Nota</class>
-		<class>ec.gob.educacion.ebja.modelo.PlantillaEstudiante</class>
 		<class>ec.gob.educacion.ebja.modelo.PlantillaNota</class>
 		<class>ec.gob.educacion.ebja.modelo.ProgramaEbja</class>
 		<class>ec.gob.educacion.ebja.modelo.ProgramaEducativo</class>

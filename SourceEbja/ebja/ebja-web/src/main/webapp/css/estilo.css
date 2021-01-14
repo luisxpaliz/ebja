@@ -115,8 +115,9 @@ body {
 
 .contenido {
 	background: #F3F3F4;
-	margin-left: 150px;
+	margin-left: 0px;
 	overflow: visible;
+
 }
 
 .padding-contenido {
@@ -505,8 +506,28 @@ body {
 	text-align:center;
 }
 
+.ebja_global_2ndColBusqueda4objetos_004_5{
+	width: 40%;
+}
+
 .ebja_global_2ndColBusqueda4objetos_004{
 	width: 25%;
+}
+
+.ebja_global_2ndColBusqueda4objetos_004_1{
+	width: 25%;
+}
+
+.ebja_global_2ndColBusqueda4objetos_004_2{
+	width: 360px;
+}
+
+.ebja_global_2ndColBusqueda4objetos_004_3{
+	width: 650px;
+}
+
+.ebja_global_2ndColBusqueda4objetos_004_4{
+	width: 150px;
 }
 
 .ebja_global_rdbtnBusqueda4objetos_005{
@@ -516,6 +537,10 @@ body {
 
 .ebja_global_3rdColBusqueda4objetos_006{
 	width: 50%;
+}
+
+.ebja_global_4thColBusqueda4objetos_006_1{
+	width: 60%;
 }
 
 .ebja_global_inpTxtBusqueda4objetos_007{
@@ -538,6 +563,18 @@ body {
 	width: 25%;
 	margin-top: 1%;
 	margin-bottom: 1%;
+}
+
+.ebja_global_btn4objetos_011{
+	width: 40%;
+	margin-top: 1%;
+	margin-bottom: 5%;
+}
+
+.ebja_global_btn4objetos_011_1{
+	width: 60%;
+	margin-top: 1%;
+	margin-bottom: 5%;
 }
 
 
@@ -664,7 +701,64 @@ body {
 }
 
 
+/***************************************************************************************************/
+/********************************-PANTALLA PROGRAMA EDUCATIVO - programaEducativo.xhtml************************/
 
+.ebja_progEdu_tblProgEdu_001 {
+	width: 100%;
+}
+
+.ebja_progEdu_tblProgEdu_1stCol_002 {
+	width: 20%;
+}
+
+.ebja_progEdu_tblProgEdu_2ndCol_003 {
+	width: 40%;
+}
+
+.ebja_progEdu_tblProgEdu_3rdCol_004 {
+	width: 10%;
+}
+
+.ebja_progEdu_tblProgEdu_4thColEditar_005 {
+	width: 10%;
+}
+
+.ebja_progEdu_tblProgEdu_5thColActivar_006 {
+	width: 10%;
+}
+
+.ebja_progEdu_tblProgEdu_6thColInactivar_007 {
+	width: 10%;
+}
+
+.ebja_progEdu_popUpCreacionProgEdu_008 {
+	width: 98%;
+}
+
+.ebja_progEdu_popUpCreacionProgEdu_008 td td {
+	width: 98%;
+}
+
+
+.ebja_progEdu_inpTxtCreacionProgEdu_009{
+	width: 95%;
+	text-align: left;
+}
+
+.ebja_progEdu_inpTxtCreacionProgEdu_010{
+	width: 95%;
+	text-align: left;
+}
+
+.ebja_progEdu_pnlGrdCreacionProgEdu_011 {
+	margin: 0 auto;
+	margin-top: 4%;
+}
+
+.ebja_progEdu_pnlGrdCreacionProgEdu_011 td td {
+	width: 98%;
+}
 
 
 /***************************************************************************************************/
@@ -674,9 +768,33 @@ body {
 .ebja_oferta_pnlOferta_001 {
 	width: 100%;
 }
-.ebja_oferta_tblOferta_002 {
-	width: 210%;
+.ebja_oferta_pnlOferta_001_1 {
+	width: 980px;
 }
+.ebja_oferta_tblOferta_002 {
+	width: 260%;
+}
+.ebja_oferta_tblOferta_002_1 {
+	width: 35%;
+	background-color:#33D1FF;
+}
+
+.ebja_oferta_tblOferta_002_2 {
+	width: 35%;
+	background-color:#FB561D;
+}
+
+.ebja_oferta_tblOferta_002_4 {
+	width: 90%;
+	background-color:#FB561D;
+}
+
+.ebja_oferta_tblOferta_002_3 {
+	width: 35%;
+	background-color:#1DFB31;
+}
+
+
 
 .ebja_oferta_tblOferta_1stCol_003 {
 	width: 15%;
@@ -727,6 +845,38 @@ body {
 
 .ebja_oferta_tblOferta_15thCol_017 {
 	width: 10%;
+}
+
+.ebja_oferta_tblOferta_16thCol_043 {
+	width: 10%;
+}
+.ebja_oferta_tblOferta_17thCol_044 {
+	width: 10%;
+}
+.ebja_oferta_tblOferta_18thCol_045 {
+	width: 10%;
+}
+
+.ebja_oferta_tblOferta_18thCol_045_1 {
+	width: 50px;
+}
+.ebja_oferta_tblOferta_18thCol_045_2 {
+	width: 120px;
+}
+.ebja_oferta_tblOferta_18thCol_045_3 {
+	width: 220px;
+}
+.ebja_oferta_tblOferta_18thCol_045_4 {
+	width: 100px;
+}
+.ebja_oferta_tblOferta_18thCol_045_5 {
+	width: 80px;
+}
+.ebja_oferta_tblOferta_18thCol_045_6 {
+	width: 60px;
+}
+.ebja_oferta_tblOferta_18thCol_045_7 {
+	width: 130px;
 }
 
 .ebja_oferta_pnlGrdOfertaModulo_018  {
@@ -825,14 +975,41 @@ body {
 	
 }
 
-.ebja_oferta_cmbCreacionOferta_tipoPrograma_029 {
-	width: 180px !important;
-	max-width: 180px !important;
-	min-width:  180px !important;
+.ebja_oferta_cmbCreacionOferta_tipoPrograma_029_1 {
+	width: 360px !important;
+	max-width: 360px !important;
+	min-width:  360px !important;
 	text-align: left;
 	autoWidth: false;
 	
 }
+
+.ebja_oferta_cmbCreacionOferta_tipoPrograma_029_3 {
+	width: 250px !important;
+	max-width: 250px !important;
+	min-width:  250px !important;
+	text-align: left;
+	autoWidth: false;
+	
+}
+.ebja_oferta_cmbCreacionOferta_tipoPrograma_029_4 {
+	width: 260px !important;
+	max-width: 260px !important;
+	min-width:  260px !important;
+	text-align: left;
+	autoWidth: false;
+	
+}
+
+.ebja_oferta_cmbCreacionOferta_tipoPrograma_029_5 {
+	width: 150px !important;
+	max-width: 150px !important;
+	min-width:  150px !important;
+	text-align: left;
+	autoWidth: false;
+	
+}
+
 
 .ebja_oferta_cmbCreacionOferta_modalidad_030 {
 	width: 180px !important;
@@ -933,6 +1110,10 @@ body {
 	width: 100%;
 }
 
+.ui-datagrid-no-border .ui-datagrid-content {
+   border: none;
+}
+
 .panelCreacionAcuerdo-ebja {
 	width: 60%;
 	margin-left: 20%;
@@ -1025,6 +1206,12 @@ body {
 	margin-bottom: 1%;
 }
 
+.botonBuscar-ebja_2 {
+	width: 100px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
 .botonBuscar-ebja-a4j {
 	width: 25%;
 	margin-top: 1%;
@@ -1076,6 +1263,10 @@ body {
 
 .tabla-Nombre-ebja {
 	width: 40%;
+}
+
+.tabla-Nombre-Corto-ebja {
+	width: 35%;
 }
 
 .tabla-Estado-ebja {
@@ -1175,9 +1366,9 @@ body {
 
 .comboModuloNuevoNemonico-ebja {
 	
-	width: 250px !important;
-	max-width: 250px !important;
-	min-width:  250px !important;
+	width: 280px !important;
+	max-width: 280px !important;
+	min-width:  280px !important;
 	text-align: left;
 	autoWidth: false;
 }
@@ -1223,6 +1414,12 @@ body {
 	margin-bottom: 0.5%;
 }
 
+.botonBuscar-Estudiante-ebja_v2 {
+	width: 40%;
+	margin-top: 0.5%;
+	margin-bottom: 0.5%;
+}
+
 .calendarFase-ebja {
 	width: 100%;
 	text-align: left;
@@ -1246,6 +1443,10 @@ body {
 
 .panelBusqueda-terceraCol-reglas-ebja {
 	width: 79%;
+}
+
+.panelBusqueda-terceraCol-reglas-ebja_2 {
+	width: 50%;
 }
 
 .panelBusqueda-terceraCol-reglas-ebjaDatos {
@@ -1492,6 +1693,37 @@ body {
 	float: left;
 }
 
+.userIcon-grupoFaseProgr-ebja {
+	background-image: url('../img/acuerdoIcon.png');
+	background-size: 90px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 90px;
+	height: 90px;
+	float: left;
+}
+
+.userIcon-progEducativo-ebja {
+	background-image: url('../img/acuerdoIcon.png');
+	background-size: 90px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 90px;
+	height: 90px;
+	float: left;
+}
+
+.userIcon-ProgramaEducativo-ebja {
+	background-image: url('../img/acuerdoIcon.png');
+	background-size: 90px;
+	background-position: left;
+	background-repeat: no-repeat;
+	width: 90px;
+	height: 90px;
+	float: left;
+}
+
+
 .userIcon-ModeloEvaluacion-ebja {
 	background-image: url('../img/iconModeloEval.png');
 	background-size: 90px;
@@ -1575,6 +1807,17 @@ body {
 	margin-left: 20%
 }
 
+.userIcon-Seleccion-Admin-Docentes-ebja {
+	background-image: url('../img/iconAdminDocentes.png');
+	background-size: 90px;
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 100px;
+	height: 100px;
+	float: left;
+	margin-left: 20%
+}
+
 /*Panel A*/
 
 .panelAEstudianteCol1 {
@@ -1637,6 +1880,9 @@ body {
 .panelBEstudianteCol3 {
 	width: 16%;
 }
+.panelBEstudianteCol3_1 {
+	width: 50%;
+}
 
 .panelBEstudianteCol1Cue {
 	width: 20%;
@@ -1668,7 +1914,64 @@ body {
 	margin-top:8px;
 	margin-left: 5px;
 }
+/********* Estilos pantalla fase grupo *****************/
 
+.ebja_faseGrupo_tblFaseGrupo_001 {
+	width: 100%;
+}
+
+
+.ebja_faseGrupo_tblFaseGrupo_1stCol_002 {
+	width: 20%;
+}
+
+.ebja_faseGrupo_tblFaseGrupo_2ndCol_003 {
+	width: 40%;
+}
+
+.ebja_faseGrupo_tblFaseGrupo_3rdCol_004 {
+	width: 10%;
+}
+
+.ebja_faseGrupo_tblFaseGrupo_4thColEditar_005 {
+	width: 10%;
+}
+
+.ebja_faseGrupo_tblFaseGrupo_5thColActivar_006 {
+	width: 10%;
+}
+
+.ebja_faseGrupo_tblFaseGrupo_6thColInactivar_007 {
+	width: 10%;
+}
+
+.ebja_faseGrupo_popUpCreacionFaseGrupo_008 {
+	width: 98%;
+}
+
+.ebja_faseGrupo_popUpCreacionFaseGrupo_008 td td {
+	width: 98%;
+}
+
+
+.ebja_faseGrupo_inpTxtCreacionFaseGrupo_009{
+	width: 95%;
+	text-align: left;
+}
+
+.ebja_faseGrupo_inpTxtCreacionFaseGrupo_010{
+	width: 95%;
+	text-align: left;
+}
+
+.ebja_faseGrupo_pnlGrdCreacionFaseGrupo_011 {
+	margin: 0 auto;
+	margin-top: 4%;
+}
+
+.ebja_faseGrupo_pnlGrdCreacionFaseGrupo_011 td td {
+	width: 98%;
+}
 
 /* *******Estilos pantalla Evaluacion*********************** */
 
@@ -1843,6 +2146,11 @@ body {
 	
 }
 
+.ebja_labeOferta{
+	width: 70%;
+	text-align:left;
+	margin-left: 20px;
+}
 
 
 

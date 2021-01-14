@@ -7,11 +7,20 @@ import ec.gob.educacion.ebja.modelo.zeus.Paralelo;
 import ec.gob.educacion.ebja.recursos.Constantes;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.transaction.NotSupportedException;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
+
 import org.hibernate.Hibernate;
 
 @Stateless
@@ -24,7 +33,7 @@ public class ProgramaInstitucionFacade extends AbstractFacade<ProgramaInstitucio
 	
 	@PersistenceContext(unitName = "zeusPU")
 	private EntityManager em;
-
+	
 	@Override
 	public EntityManager getEntityManager() {
 		return em;
@@ -86,25 +95,10 @@ public class ProgramaInstitucionFacade extends AbstractFacade<ProgramaInstitucio
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ProgramaInstitucion> findByIdProgramaEbja(Integer idProgramaEbja) {
+	public List<ProgramaInstitucion> findByFase(Integer idFase) {
 		List<ProgramaInstitucion> listaProgramaInstitucion = new ArrayList<ProgramaInstitucion>();
-		List<ProgramaInstitucion> listaProgramaInstitucionAux = new ArrayList<ProgramaInstitucion>();
-		
-		listaProgramaInstitucionAux = em.createNamedQuery("ProgramaInstitucion.findByIdProgramaEbja")
-							.setParameter("idProgramaEbja", idProgramaEbja).getResultList();
-
-		if (!listaProgramaInstitucionAux.isEmpty()) {
-			int index = 0;
-			for (ProgramaInstitucion programaInstitucionAux : listaProgramaInstitucionAux) {
-				programaInstitucionAux = listaProgramaInstitucionAux.get(index);
-				Hibernate.initialize(programaInstitucionAux.getInstitucEstablec().getIdCircuitoParroquia().getIdCircuito().getIdDistrito().getIdZona());
-				Hibernate.initialize(programaInstitucionAux.getInstitucEstablec().getIdCircuitoParroquia().getIdParroquia().getIdCanton().getIdProvincia());
-				Hibernate.initialize(programaInstitucionAux.getInstitucEstablec().getIdInstitucion());
-				Hibernate.initialize(programaInstitucionAux.getInstitucEstablec().getIdEstablecimiento());
-				listaProgramaInstitucion.add(programaInstitucionAux);
-				index = index + 1;
-			}
-		}
+		listaProgramaInstitucion = em.createNamedQuery("ProgramaInstitucion.findById")
+							.setParameter("idFase", idFase).getResultList();
 		
 		return listaProgramaInstitucion;
 	}
@@ -159,6 +153,39 @@ public class ProgramaInstitucionFacade extends AbstractFacade<ProgramaInstitucio
 		
 		return listaResultado;
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ProgramaInstitucion> findByIdInstitucionAmie(String codigoAmie) {
+		String sql = "";
+		List<ProgramaInstitucion> listaAux = new ArrayList<>();
+		listaResultado = new ArrayList<>();
+		
+		sql = "select pi"
+				+ " from ProgramaInstitucion pi"
+				+ " where upper(pi.institucEstablec.idInstitucion.amie) like concat('%',upper(:amie),'%')"
+				+ " and pi.estado = '1'";
+		
+		listaAux = em.createQuery(sql)
+				.setParameter("amie", codigoAmie)
+				.getResultList();
+		
+		if (!listaAux.isEmpty()) {
+			int index = 0;
+			for (ProgramaInstitucion programaInstitucionAux : listaAux) {
+				programaInstitucionAux = listaAux.get(index);
+				Hibernate.initialize(programaInstitucionAux.getInstitucEstablec().getIdCircuitoParroquia().getIdCircuito().getIdDistrito().getIdZona());
+				Hibernate.initialize(programaInstitucionAux.getInstitucEstablec().getIdCircuitoParroquia().getIdParroquia().getIdCanton().getIdProvincia());
+				Hibernate.initialize(programaInstitucionAux.getInstitucEstablec().getIdInstitucion());
+				Hibernate.initialize(programaInstitucionAux.getInstitucEstablec().getIdEstablecimiento());
+				listaResultado.add(programaInstitucionAux);
+				index++;
+			}
+		}
+		
+		return listaResultado;
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -176,6 +203,39 @@ public class ProgramaInstitucionFacade extends AbstractFacade<ProgramaInstitucio
 		listaAux = em.createQuery(sql)
 					 .setParameter("idCircuito", idCircuito)
 					 .setParameter("idProgramaEbja", idProgramaEbja)
+					 .getResultList();
+		
+		if (!listaAux.isEmpty()) {
+			int index = 0;
+			for (ProgramaInstitucion programaInstitucionAux : listaAux) {
+				programaInstitucionAux = listaAux.get(index);
+				Hibernate.initialize(programaInstitucionAux.getInstitucEstablec().getIdCircuitoParroquia().getIdCircuito().getIdDistrito().getIdZona());
+				Hibernate.initialize(programaInstitucionAux.getInstitucEstablec().getIdCircuitoParroquia().getIdParroquia().getIdCanton().getIdProvincia());
+				Hibernate.initialize(programaInstitucionAux.getInstitucEstablec().getIdInstitucion());
+				Hibernate.initialize(programaInstitucionAux.getInstitucEstablec().getIdEstablecimiento());
+				listaResultado.add(programaInstitucionAux);
+				index++;
+			}
+		}
+		
+		return listaResultado;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ProgramaInstitucion> findByIdInstitucionCircuito(Integer idCircuito) {
+		String sql = "";
+		List<ProgramaInstitucion> listaAux = new ArrayList<>();
+		listaResultado = new ArrayList<>();
+		
+		sql = "select pi "
+			+ "  from ProgramaInstitucion pi "
+			+ " where pi.estado = '1' "
+			+ "   and pi.programaEbja.id = :idProgramaEbja "
+			+ "   and pi.institucEstablec.idCircuitoParroquia.idCircuito.id = :idCircuito ";
+		
+		listaAux = em.createQuery(sql)
+					 .setParameter("idCircuito", idCircuito)
 					 .getResultList();
 		
 		if (!listaAux.isEmpty()) {
@@ -303,7 +363,13 @@ public class ProgramaInstitucionFacade extends AbstractFacade<ProgramaInstitucio
 		return listaProgramaInstitucion;
 	}
 	
-	
+
+	@Override
+	public List<ProgramaInstitucion> buscarProgramaInstitucionActivos() {
+		String sql = "SELECT pi FROM ProgramaInstitucion pi where pi.estado = '1'";
+		listaProgramaInstitucion = em.createQuery(sql).getResultList();
+		return listaProgramaInstitucion;
+	}
 	
 	
 	

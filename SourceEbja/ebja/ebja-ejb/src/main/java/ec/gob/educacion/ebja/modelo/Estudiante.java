@@ -45,6 +45,9 @@ public class Estudiante implements Serializable {
 	//bi-directional many-to-one association to Matricula
 	@OneToMany(mappedBy="estudiante")
 	private List<Matricula> matriculas;
+	
+	@OneToMany(mappedBy="estudiante")
+	private List<Agrupacion> agrupacion;
 
 	public Estudiante() {
 	}
@@ -134,4 +137,14 @@ public class Estudiante implements Serializable {
 
 		return matricula;
 	}
+
+	public List<Agrupacion> getAgrupacion() {
+		return agrupacion;
+	}
+
+	public void setAgrupacion(List<Agrupacion> agrupacion) {
+		this.agrupacion = agrupacion;
+	}
+	
+	
 }

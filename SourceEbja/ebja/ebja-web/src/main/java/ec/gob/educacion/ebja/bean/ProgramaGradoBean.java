@@ -1,5 +1,6 @@
 package ec.gob.educacion.ebja.bean;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,13 +15,22 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 import ec.gob.educacion.ebja.controlador.SesionControlador;
+import ec.gob.educacion.ebja.facade.local.AdminAlfabModuloFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.GradoFacadeLocal;
+import ec.gob.educacion.ebja.facade.local.GrupoFaseFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.ProgramaEbjaFacadeLocal;
+import ec.gob.educacion.ebja.facade.local.ProgramaEducativoFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.ProgramaGradoFacadeLocal;
+import ec.gob.educacion.ebja.facade.local.ProgramaInstitucionFacadeLocal;
+import ec.gob.educacion.ebja.modelo.Acuerdo;
+import ec.gob.educacion.ebja.modelo.GrupoFasePrograma;
 import ec.gob.educacion.ebja.modelo.ProgramaEbja;
+import ec.gob.educacion.ebja.modelo.ProgramaEducativo;
 import ec.gob.educacion.ebja.modelo.ProgramaGrado;
+import ec.gob.educacion.ebja.modelo.ProgramaInstitucion;
 import ec.gob.educacion.ebja.modelo.zeus.Grado;
 import ec.gob.educacion.ebja.recursos.Constantes;
+import ec.gob.educacion.ebja.recursos.OpcionSiNo;
 import ec.gob.educacion.ebja.recursos.Util;
 
 @ManagedBean
@@ -35,6 +45,12 @@ public class ProgramaGradoBean {
 	private ProgramaGradoFacadeLocal programaGrado;
 	@EJB
 	private GradoFacadeLocal gradoFacadeLocal;
+	@EJB
+	private ProgramaEducativoFacadeLocal programasEducativos;
+	@EJB
+	private ProgramaInstitucionFacadeLocal programaInstitucion;
+	@EJB
+	private GrupoFaseFacadeLocal grupoFases;
 
 	private List<Object[]> listaProgramaGrado;
 	private List<ProgramaEbja> listaProgramaEbja;
@@ -46,7 +62,16 @@ public class ProgramaGradoBean {
 	private ProgramaGrado programaGradoEntity;
 	private ProgramaGrado programaGradoEdicion;
 	private ProgramaGrado programaGradoEdicionBorrar;
-
+	private ProgramaGrado programaGradoEdicionEliminar;
+	private Integer secuenciaGrado;
+    private Integer secPack;
+    private Integer gradoInicial;
+    private int esVisible;
+    private List<OpcionSiNo> listaSiNO;
+    private String tipoProyectoSeleccionadoBusqueda;
+    private List<ProgramaEducativo> listaProgramaEducativo;
+    private String tipoFaseSeleccionadaBusqueda;
+    private List<GrupoFasePrograma> listaGrupoFaseProg;
 
 	@PostConstruct
 	public void init() {
@@ -56,9 +81,27 @@ public class ProgramaGradoBean {
 	public void setearCrearGrado() {
 		crearOeditar = 1;
 		setProgramaNuevoSeleccionado("Seleccionar Programa");
-		setProgramaGradoSeleccionado("Seleccionar Grado"); 
+		setProgramaGradoSeleccionado("Seleccionar Grado");
+		setEsVisible(3);
+		setGradoInicial(0);
+		setSecuenciaGrado(0);
+		setSecPack(0);
+		
 	}
-
+	
+	public void obtenerFasesdeProyectoBusqueda() {
+		
+		if(tipoProyectoSeleccionadoBusqueda.isEmpty()) {
+			listaGrupoFaseProg = new ArrayList<GrupoFasePrograma>();
+		}else {
+			listaGrupoFaseProg = grupoFases.buscarGrupoFaseProgActInternosXProyecto(tipoProyectoSeleccionadoBusqueda);
+		}
+	}
+	
+	public void obtenerOfertaBusqueda() {
+		listaProgramaEbja = programasEbja.obtenerProgramaEbjaGrupoFaseExtraordinariaNemonico(tipoFaseSeleccionadaBusqueda);
+	}
+	
 	public void buscarGrado() {
 		
 		if (programaNuevoSeleccionado == null && programaSeleccionado == null) {
@@ -77,8 +120,13 @@ public class ProgramaGradoBean {
 	}
 
 	public void consultarProgramaEbjaGrado() {
-		listaProgramaEbja = programasEbja.findAllActive();
+		listaProgramaEducativo = new ArrayList();
+		
 		listaGrado = gradoFacadeLocal.obtenerGradoEbja();
+		listaSiNO = new ArrayList<>();
+		listaSiNO.add(new OpcionSiNo("Sí", "1"));
+		listaSiNO.add(new OpcionSiNo("NO", "0"));
+		listaProgramaEducativo = programasEducativos.buscarTodosProgramaEducativoActivos();
 	}
 
 	public void ejecutarCrearOEditarRegistro() {
@@ -118,10 +166,14 @@ public class ProgramaGradoBean {
 		programaGradoEntity.setIpUsuario(sesionControlador.getIpAdressLocal());
 		programaGradoEntity.setIdUsuarioCreacion(sesionControlador.getUsuarioSesion().getId().intValue());
 		programaGradoEntity.setEstado("1");
+		programaGradoEntity.setIdpack(secPack);
+		programaGradoEntity.setVisible(esVisible);
+		programaGradoEntity.setGradoInicial(gradoInicial);
+		programaGradoEntity.setSecuenciaGrado(secuenciaGrado);
 		ProgramaEbja programaEbja = programasEbja.obtenerProgramaEbja(programaNuevoSeleccionado);
 		programaGradoEntity.setProgramaEbja(programaEbja);
 		Grado grado = gradoFacadeLocal.obtenerGrado(programaGradoSeleccionado);
-		//programaGradoEntity.setGrado(grado);
+		programaGradoEntity.setGrado(grado);
 	}
 
 	public void editarRegla() {
@@ -129,7 +181,11 @@ public class ProgramaGradoBean {
 		try {
 			
 			programaGradoEdicion.setProgramaEbja(programasEbja.obtenerProgramaEbja(programaNuevoSeleccionado));
-			//programaGradoEdicion.setGrado(gradoFacadeLocal.obtenerGrado(programaGradoSeleccionado));
+			programaGradoEdicion.setGrado(gradoFacadeLocal.obtenerGrado(programaGradoSeleccionado));
+			programaGradoEdicion.setIdpack(secPack);
+			programaGradoEdicion.setSecuenciaGrado(secuenciaGrado);
+			programaGradoEdicion.setGradoInicial(gradoInicial);
+			programaGradoEdicion.setVisible(esVisible);
 			programaGrado.edit(programaGradoEdicion);
 			buscarGradoGuardado();
 			FacesContext.getCurrentInstance().addMessage("frmForm:messagePagGrado",
@@ -145,7 +201,11 @@ public class ProgramaGradoBean {
 		setearGrado();
 		this.programaGradoEdicion = ((ProgramaGrado) (object[0]));
 	    setProgramaNuevoSeleccionado(programaGradoEdicion.getProgramaEbja().getNemonico());
-		//setProgramaGradoSeleccionado(programaGradoEdicion.getGrado().getNemonico()); 
+		setEsVisible(programaGradoEdicion.getVisible());
+		setGradoInicial(programaGradoEdicion.getGradoInicial());
+		setSecPack(programaGradoEdicion.getIdpack());
+		setSecuenciaGrado(programaGradoEdicion.getSecuenciaGrado());
+		setProgramaGradoSeleccionado(programaGradoEdicion.getGrado().getNemonico());
 	}
 
 	public void borrarGrado() {
@@ -168,6 +228,39 @@ public class ProgramaGradoBean {
 					new FacesMessage(FacesMessage.SEVERITY_FATAL, Constantes.REGISTRO_BBDD_INACTIVO_ERROR, ""));
 		}
 	}
+	
+		public void eliminarGradoLogico() {
+		
+		if (buscarDependenciaPorCodigoProgramaEbja(programaGradoEdicionBorrar)) {
+			FacesContext.getCurrentInstance().addMessage("frmForm:messageAcuerdo", new FacesMessage(
+					FacesMessage.SEVERITY_FATAL,
+					"No se puede eliminar el registro, porque existen datos relacionados en Ofertas Educativas", ""));
+		} else {
+			this.programaGradoEdicionBorrar.setEstado("3");
+			programaGrado.edit(programaGradoEdicionBorrar);
+			buscarGradoActivado();
+			FacesContext.getCurrentInstance().addMessage("frmForm:messagePagGrado",
+					new FacesMessage(FacesMessage.SEVERITY_INFO, Constantes.REGISTRO_BBDD_ELIMINO_EXITOSAMENTE, ""));
+		}
+	}
+		
+		public boolean buscarDependenciaPorCodigoProgramaEbja(ProgramaGrado tmpProgramaGrado) {
+			
+			boolean tmpcoincidenciaAcuerdo = false;
+			for(ProgramaInstitucion tmpProgInst: programaInstitucion.buscarProgramaInstitucionActivos()) {
+			      // if (tmpProgInst.getProgramaGrado().getId() == tmpProgramaGrado.getId()) {
+				if (tmpProgInst.getId() == tmpProgramaGrado.getId()) {
+			    	   tmpcoincidenciaAcuerdo = true;
+			    	   break;
+			       }
+				
+				if(tmpcoincidenciaAcuerdo == true) {
+			    	   break;
+			    }
+			}
+			return tmpcoincidenciaAcuerdo;
+		}
+	
 
 	public void activarGrado() {
 		try {
@@ -194,6 +287,10 @@ public class ProgramaGradoBean {
 	}
 
 	public void gradoSeleccionadoBorrar(Object[] object) {
+		this.programaGradoEdicionBorrar = ((ProgramaGrado) (object[0]));
+	}
+	
+	public void gradoSeleccionadoEliminar(Object[] object) {
 		this.programaGradoEdicionBorrar = ((ProgramaGrado) (object[0]));
 	}
 
@@ -264,4 +361,89 @@ public class ProgramaGradoBean {
 	public void setProgramaGradoEdicion(ProgramaGrado programaGradoEdicion) {
 		this.programaGradoEdicion = programaGradoEdicion;
 	}
+
+	public Integer getSecuenciaGrado() {
+		return secuenciaGrado;
+	}
+
+	public void setSecuenciaGrado(Integer secuenciaGrado) {
+		this.secuenciaGrado = secuenciaGrado;
+	}
+
+	public Integer getSecPack() {
+		return secPack;
+	}
+
+	public void setSecPack(Integer secPack) {
+		this.secPack = secPack;
+	}
+
+	public Integer getGradoInicial() {
+		return gradoInicial;
+	}
+
+	public void setGradoInicial(Integer gradoInicial) {
+		this.gradoInicial = gradoInicial;
+	}
+
+	public int getEsVisible() {
+		return esVisible;
+	}
+
+	public void setEsVisible(int esVisible) {
+		this.esVisible = esVisible;
+	}
+
+	public List<OpcionSiNo> getListaSiNO() {
+		return listaSiNO;
+	}
+
+	public void setListaSiNO(List<OpcionSiNo> listaSiNO) {
+		this.listaSiNO = listaSiNO;
+	}
+
+	public ProgramaGrado getProgramaGradoEdicionEliminar() {
+		return programaGradoEdicionEliminar;
+	}
+
+	public void setProgramaGradoEdicionEliminar(ProgramaGrado programaGradoEdicionEliminar) {
+		this.programaGradoEdicionEliminar = programaGradoEdicionEliminar;
+	}
+
+	public String getTipoProyectoSeleccionadoBusqueda() {
+		return tipoProyectoSeleccionadoBusqueda;
+	}
+
+	public void setTipoProyectoSeleccionadoBusqueda(String tipoProyectoSeleccionadoBusqueda) {
+		this.tipoProyectoSeleccionadoBusqueda = tipoProyectoSeleccionadoBusqueda;
+	}
+
+	public List<ProgramaEducativo> getListaProgramaEducativo() {
+		return listaProgramaEducativo;
+	}
+
+	public void setListaProgramaEducativo(List<ProgramaEducativo> listaProgramaEducativo) {
+		this.listaProgramaEducativo = listaProgramaEducativo;
+	}
+
+	public String getTipoFaseSeleccionadaBusqueda() {
+		return tipoFaseSeleccionadaBusqueda;
+	}
+
+	public void setTipoFaseSeleccionadaBusqueda(String tipoFaseSeleccionadaBusqueda) {
+		this.tipoFaseSeleccionadaBusqueda = tipoFaseSeleccionadaBusqueda;
+	}
+
+	public List<GrupoFasePrograma> getListaGrupoFaseProg() {
+		return listaGrupoFaseProg;
+	}
+
+	public void setListaGrupoFaseProg(List<GrupoFasePrograma> listaGrupoFaseProg) {
+		this.listaGrupoFaseProg = listaGrupoFaseProg;
+	}
+	
+	
+	
+	
+	
 }

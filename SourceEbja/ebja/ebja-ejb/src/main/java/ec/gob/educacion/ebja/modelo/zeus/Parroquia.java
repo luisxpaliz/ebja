@@ -3,6 +3,8 @@ package ec.gob.educacion.ebja.modelo.zeus;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -69,11 +71,11 @@ public class Parroquia implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaMigracion;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idParroquia", fetch = FetchType.LAZY)
-    private List<CircuitoParroquia> circuitoParroquiaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idParroquia", fetch = FetchType.EAGER)
+    private Set<CircuitoParroquia> circuitoParroquiaList;
     
     @JoinColumn(name = "id_canton", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Canton idCanton;
 
     public Parroquia() {
@@ -148,11 +150,11 @@ public class Parroquia implements Serializable {
     }
 
     @XmlTransient
-    public List<CircuitoParroquia> getCircuitoParroquiaList() {
+    public Set<CircuitoParroquia> getCircuitoParroquiaList() {
         return circuitoParroquiaList;
     }
 
-    public void setCircuitoParroquiaList(List<CircuitoParroquia> circuitoParroquiaList) {
+    public void setCircuitoParroquiaList(Set<CircuitoParroquia> circuitoParroquiaList) {
         this.circuitoParroquiaList = circuitoParroquiaList;
     }
 

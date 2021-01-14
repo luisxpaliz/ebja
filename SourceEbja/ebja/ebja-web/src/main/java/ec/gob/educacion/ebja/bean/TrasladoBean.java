@@ -398,7 +398,7 @@ public class TrasladoBean extends BaseControlador implements Serializable {
 	
 	public void procesarCancelar() {
 		//Actualizar el Check.
-		programaInstitucion.setEstadoProceso(false);
+		//programaInstitucion.setEstadoProceso(false);
 		listaProgramaInstitucion.set(indice, programaInstitucion);
 	}
 	

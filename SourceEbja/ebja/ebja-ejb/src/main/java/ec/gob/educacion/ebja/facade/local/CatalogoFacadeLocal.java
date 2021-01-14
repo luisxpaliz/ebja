@@ -39,6 +39,7 @@ public interface CatalogoFacadeLocal {
     List<TipoPrograma> listaTipoPrograma();
     List<Area> listaArea();
     List<Materia> listaMateria();
+    List<Pais> listaPaisUbicacionEcuador();
     
     Area ObtenerArea(String idArea);
     Materia ObtenerMateria(String idMateria);

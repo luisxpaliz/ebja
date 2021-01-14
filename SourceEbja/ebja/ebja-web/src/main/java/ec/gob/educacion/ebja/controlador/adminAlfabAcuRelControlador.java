@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+
+import ec.gob.educacion.ebja.facade.local.AdminAlfabAcuRelFacadeJTALocal;
 import ec.gob.educacion.ebja.facade.local.AdminAlfabAcuRelFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.AdminAlfabModuloFacadeLocal;
 import ec.gob.educacion.ebja.modelo.Acuerdo;
@@ -18,6 +20,7 @@ import ec.gob.educacion.ebja.modelo.ProgramaEbja;
 import ec.gob.educacion.ebja.recursos.Constantes;
 import ec.gob.educacion.ebja.recursos.Util;
 import ec.gob.educacion.ebja.controlador.BaseControlador;
+import ec.gob.educacion.ebja.controlador.SesionControlador;
 
 @ManagedBean
 @ViewScoped
@@ -43,6 +46,8 @@ public class adminAlfabAcuRelControlador extends BaseControlador implements Seri
 	private SesionControlador sesionControlador;
 	@EJB
 	private AdminAlfabAcuRelFacadeLocal acuerdos;
+	@EJB
+	private AdminAlfabAcuRelFacadeJTALocal acuerdosJTA;
 
 	public adminAlfabAcuRelControlador() {
 		listaAcuerdos = new ArrayList<Object[]>();

@@ -17,9 +17,11 @@ public abstract interface ProgramaInstitucionFacadeLocal {
 	ProgramaInstitucion find(Object id);
 	List<ProgramaInstitucion> findAll();
 	List<ProgramaInstitucion> findRange(int[] range);
-	List<ProgramaInstitucion> findByIdProgramaEbja(Integer idProgramaEbja);
+	List<ProgramaInstitucion> findByFase(Integer idFase);
 	List<ProgramaInstitucion> findByIdProgramaEbjaAmie(Integer idProgramaEbja, String codigoAmie);
+	List<ProgramaInstitucion> findByIdInstitucionAmie(String codigoAmie);
 	List<ProgramaInstitucion> findByIdProgramaEbjaCircuito(Integer idProgramaEbja, Integer idCircuito);
+	List<ProgramaInstitucion> findByIdInstitucionCircuito(Integer idCircuito);
 	List<ProgramaInstitucion> findByIdProgramaEbjaParroquia(Integer idProgramaEbja, Short idParroquia);
 	int count();
 	
@@ -32,5 +34,6 @@ public abstract interface ProgramaInstitucionFacadeLocal {
 	List<ProgramaEbja> buscarProgramaEbjaInstitucion(String amie);
 	List<Paralelo> buscarParaleloInstitucion (String amie, String nemonico);
 	List<ProgramaInstitucion> buscarProgramaInstitucion(String amie, String nemonico);
+	List<ProgramaInstitucion> buscarProgramaInstitucionActivos();
 
 }

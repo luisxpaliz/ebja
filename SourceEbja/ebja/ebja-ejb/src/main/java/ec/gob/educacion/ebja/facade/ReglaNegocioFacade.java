@@ -41,6 +41,14 @@ public class ReglaNegocioFacade extends AbstractFacade<ReglaNegocio> implements 
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Object[]> findByProgramaEbjaUnique(String nemonico){
+		sql = "";
+		sql = "select rn, c.nombre from ReglaNegocio rn, CatalogoEbja c where  rn.estado = c.nemonico and rn.programaEbja.nemonico=:nem";
+		listaObjectResultado = em.createQuery(sql).setParameter("nem", nemonico).getResultList();
+		return listaObjectResultado;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<ReglaNegocio> findByProgramaEbjaFaseValidacion (String nemonicoPrograma,String nemonicoFase){
 		
 		sql = "";

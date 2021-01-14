@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.beanutils.BeanUtils;
 import org.primefaces.context.RequestContext;
 
-import com.itextpdf.text.log.SysoCounter;
+//import com.itextpdf.text.log.SysoCounter;
 
 import ec.gob.educacion.ebja.controlador.BaseControlador;
 import ec.gob.educacion.ebja.dto.RegistroEstudianteDTO;

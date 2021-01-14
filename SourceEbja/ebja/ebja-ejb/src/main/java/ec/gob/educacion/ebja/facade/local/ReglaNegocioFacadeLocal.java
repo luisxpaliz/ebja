@@ -17,6 +17,7 @@ public interface ReglaNegocioFacadeLocal {
     List<ReglaNegocio> findAll();
     List<ReglaNegocio> findAllActive();
     List<Object[]> findByProgramaEbja(String nemonico);
+    List<Object[]> findByProgramaEbjaUnique(String nemonico);
     
     boolean buscarDependenciaPorCodigoReglaNegocio(String id);
 	  

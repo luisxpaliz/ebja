@@ -8,8 +8,7 @@ public class Constantes {
 	public static final String URL_SERVICIO_WEB_VALIDAR_USUARIO = "/serviciosEducacion-web/resources/ValidacionUsuarioLdapSeguridadesJdc/ValidarUsuarioGeneralObtenerRoles";
 	public static final String URL_SERVICIO_WEB_RECURSOS_USUARIO = "/serviciosEducacion-web/resources/ValidacionUsuarioLdapSeguridadesJdc/ObtenerRecursosDeRol";
 	public static final String ERROR_BBDD_CODIGO_DUPLICADO = "Error al guardar el registro por Código Duplicado";
-	public static final String ERROR_BBDD_CODIGO_DUPLICADO_EDITAR = "Error al editar el registro por Código Duplicado";
-	public static final String ERROR_BBDD_REGISTRO_DUPLICADO = "Error al guardar el registro por Duplicidad";
+	public static final String ERROR_BBDD_CODIGO_DUPLICADO_EDITAR = "Error al editar el registro por Código Duplicado";public static final String ERROR_BBDD_REGISTRO_DUPLICADO = "Error al guardar el registro por Duplicidad";
 	public static final String ERROR_BBDD_GUARDAR_REGISTRO = "Hubo un error al guardar el registro";
 	public static final String REGISTRO_BBDD_GUARDADO_EXITOSO= "El registro se guardó exitosamente";
 	public static final String REGISTRO_BBDD_ACTIVO ="Actualmente el registro se encuentra activo";
@@ -26,15 +25,17 @@ public class Constantes {
 	public static final String REGISTRO_BBDD_EDITO_ERROR="Hubo un error al editar el registro";
 	public static final String REGISTRO_BBDD_CAMPOS_VACIOS="Existen campos vacios en el registro";
 	public static final String REGISTRO_BBDD_REGISTROYAEXISTENTE="Ya se encuentra registrada la información";
+	public static final String REGISTRO_REGLA_NEGOCIO_VALIDACION="La Oferta Educativa no se encuentra dentro de la Fase de Inscripción y/o el día de hoy no se encuentra dentro del rango de la Fase de Inscripción";
+	public static final String ERROR_CORREO = "El Correo Electrónico es obligatorio para esta oferta ";
 	
 	//LOCAl
 	//public static final String SERVIDOR_AD = "ldap://10.2.30.71:389";
 	//DESARROLLO
-	//public static final String SERVIDOR_AD = "ldap://181.113.66.51:389";
+	public static final String SERVIDOR_AD = "ldap://181.113.66.51:389";
 	//PREPRODUCCION
 	//public static final String SERVIDOR_AD = "ldap://10.200.6.103:389";
 	//PRODUCCION
-	public static final String SERVIDOR_AD = "ldap://10.0.2.10:389";
+	//public static final String SERVIDOR_AD = "ldap://10.0.2.10:389";
 
 	//Nemonico de Catalogo.
 	public static final String NEMONICO_AREA_CONOCIMIENTO_MATERIAS_DISCRECION = "MATDISAREA";
@@ -96,13 +97,13 @@ public class Constantes {
 	public static final Integer TIPO_PROCESO_CASO_ESPECIAL_MIGRACION_EXAMEN = 39;
 	public static final Integer TIPO_PROCESO_CASO_ESPECIAL_REINSERCION_EXAMEN = 59;
 	
-	//Fechas máximas de Inscripción para los niveles Primero de Básica y Educación Inicial
-	public static final String FECHA_MÁXIMA_INSCRIPCION_EDUCACION_INICIAL = "05-05-2014";
-	public static final String FECHA_MÁXIMA_INSCRIPCION_PRIMERO_BASICA = "01-11-2014";
+	//Fechas mÃ¡ximas de InscripciÃ³n para los niveles Primero de BÃ¡sica y EducaciÃ³n Inicial
+	public static final String FECHA_MAXIMA_INSCRIPCION_EDUCACION_INICIAL = "05-05-2014";
+	public static final String FECHA_MAXIMA_INSCRIPCION_PRIMERO_BASICA = "01-11-2014";
 
 	//Niveles de estudio
-	public static final String NIVEL_EDUC_INICIAL_GRUPO3 = "Educación Inicial";
-	public static final String NIVEL_PRIMERO_BASICA = "Primer año Básica";
+	public static final String NIVEL_EDUC_INICIAL_GRUPO3 = "EducaciÃ³n Inicial";
+	public static final String NIVEL_PRIMERO_BASICA = "Primer aÃ±o BÃ¡sica";
 	public static final Integer CODIGO_NIVEL_EDUCACION_INICIAL_GRUPO3=43;	
 	public static final Integer CODIGO_NIVEL_EDUCACION_INICIAL_GRUPO4=44;
 	public static final Integer CODIGO_NIVEL_PRIMERO_BASICA=45;
@@ -110,14 +111,14 @@ public class Constantes {
 	//Para acceder remotamente si estan en un mismo servidor
 	public static final String URL_SEGURIDADES = "seguridades-educacion-ear/seguridades-educacion-ejb";
 	
-	//Opciones página Mapa
+	//Opciones pÃ¡gina Mapa
 	public static final String TIPO_VIVIENDA = "TIVI";
 	public static final String FORMA_VIVIENDA = "FOVI";
 	public static final String CLASE_VIVIENDA = "CLVI";
 	public static final String URBANO = "URBANA";
 	public static final String AREA = "AREA";
 	
-	//Códigos
+	//CÃ³digos
 	public static final String NUMERO_INICIAL_CELULAR = "09";
 	public static final String NEMONICO_SEDE = "SEDE";
 	public static final String NEMONICO_BATCH = "BATH";
@@ -132,12 +133,12 @@ public class Constantes {
 	public static final Integer CODIGO_PARENTESCO_AUTOREPRESENTACION = 60;
 	public static final Integer CODIGO_PARENTESCO_OTRO = 86;
 
-	// tamaño archivos
+	// tamaÃ±o archivos
 	public static final int TAMANIO_MEGA = 1048576;
 	public static final int CANTIDAD_MEGA = 2;
 	public static final String MENSAJE_TAMANIO_MEGA = "El archivo seleccionado a sobrepasado el tamaño máximo de ";
 	
-	//Años mínimos.
+	//AÃ±os mÃ­nimos.
 	public static final int ANIO_MINIMO = 15;
 	//Rangos grados.
 	public static final int RANGO_GRADO_MINIMO = 11;
@@ -149,36 +150,38 @@ public class Constantes {
 	public static final String NEMONICO_RE_ASIGNACION = "ME-FASE-05";
 	public static final String NEMONICO_TRASLADO = "ME-FASE-09";
 
-	// Nemonicos Formularios, relacionado con los mensajes de las páginas.
+	// Nemonicos Formularios, relacionado con los mensajes de las pÃ¡ginas.
 	public static final String NEMONICO_INSCRIPCION_FORMULARIO = "INSCR";
 	public static final String NEMONICO_ASIGNACION_AUTOMATICA = "ASGAU";
 	public static final String NEMONICO_ASIGNACION_MANUAL = "ASGMA";
 	
-	// De la fase de inscripción.
-	public static final String TITULO_PAGINA_INSCRIPCION = "Formulario de Inscripción Ofertas Educativas Extraordinarias";
+	// De la fase de inscripciÃ³n.
+	public static final String TITULO_PAGINA_INSCRIPCION = "Ofertas Educativas Extraordinarias para Jovenes y Adultos (Escolaridad Inconclusa)";
 	public static final String CAMPOS_OBLIGATORIOS = "Los campos con * son obligatorios. ";
 	public static final String ERROR_NUMERO_CEDULA = "Error: Número de Cédula incorrecto. ";
-	public static final String ERROR_NUMERO_CEDULA1 = "Error: El número de documento, no está registrado. ";
+	public static final String ERROR_INSCRIPCION_FALLECIDO = "Error: El aspirante tiene un estado FALLECIDO. ";
+	public static final String ERROR_NUMERO_CEDULA1 = "Error: El número de documento, no está¡ registrado. ";
 	public static final String ERROR_EDAD = "Error: La edad del estudiante no corresponde a la requerida en la Oferta. ";
 	public static final String DOCUMENTO_CARGO = "El documento se cargo correctamente. ";
 	public static final String DOCUMENTO_NO_CARGO = "Error: El documento no se cargo. ";
 	public static final String INSCRIPCION_REGISTRADA = "La inscripción se encuentra registrada. Por favor verifique. ";
 	public static final String PRESENTAR_DOCUMENTACION = "No se ha registrado la inscripción, el aspirante debe presentar la documentación completa.";
-	public static final String DEBE_TENER_IDENTIFICACION = "El aspirante debe presentar su identificación.";
+	public static final String DEBE_TENER_IDENTIFICACION = "El aspirante debe presentar su identificaciÃ³n.";
 	public static final String NO_GUARDO_INSCRIPCION = "No se guardó la Inscripción... Datos incorrectos... Contactarse con el Administrador!";
 	public static final String NO_EXISTE_REGLA_NEGOCIO = "No existe reglas de negocio de la Oferta.";
-	public static final String FECHA_FASE_FUERA_RANGO = "Fechas de la FASE fuera de rango.";
+	public static final String FECHA_FASE_FUERA_RANGO = "Fechas de la FASE se encuentran fuera de rango.";
 	public static final String MENSAJE_CONTINUAR = "Por favor, re-ingresar Oferta Educativa y Documento Presentado para <<Continuar>>";
+	public static final String INSCRIPCION_PENDIENTE = "La inscripción se queda pendiente hasta que presente los documentos requeridos";
 
-	//Condición de Fallecido.
-	public static final String CONDICION_FALLECIDO_MSG = "El número de documento, tiene condición de fallecido. ";
+	//CondiciÃ³n de Fallecido.
+	public static final String CONDICION_FALLECIDO_MSG = "El nÃºmero de documento, tiene condiciÃ³n de fallecido. ";
 	public static final Integer CONDICION_FALLECIDO_INT = 7;
 	
 	// seguridades
 	public static final String PREFIJO_APLICACION_EBJA_WEB = "SGE";
 	public static final String ESTILO_DEFECTO_SUB_MENU_VERTICAL = "button-menu-style";
 	public static final String ESTILO_DEFECTO_ITEM_MENU_VERTICAL = "button-submenu-style";
-	public static final String NOMBRE_DEFECTO_SUB_MENU = "Default subMenú";
+	public static final String NOMBRE_DEFECTO_SUB_MENU = "Default subMenÃº";
 	public static final String NOMBRE_DEFECTO_ITEM_MENU = "Default item";
 	public static final String ICONO_DEFECTO_MENU = "ui-icon-tag";
 	public static final String PAGINA_DEFECTO_MENU = "/faces/paginas/principal.xhtml";
@@ -199,13 +202,13 @@ public class Constantes {
 	public static final String NO_GENERO_ARCHIVO = "No se generó el archivo. ";
 	public static final String NO_EXISTE_INSTITUCIONES = "No existe instituciones para la Oferta o seleccionadas. ";
 	public static final String PROBLEMAS_BASE_DATOS = "Problemas en BASE DE DATOS, contactese con el administrador.";
-	public static final String TEXTO_IMAGEN_INCORRECTO = "El texto de la Imágen es incorrecto.";
+	public static final String TEXTO_IMAGEN_INCORRECTO = "El texto de la Imagen es incorrecto.";
 	public static final String INGRESE_DATOS = "Ingrese los datos solicitados.";
 	public static final String ESTUDIANTE_NO_MATRICULADO = "Estudiante no está matriculado.";
 	public static final String CUPO_NO_EXISTE = "Cupo no disponible en la Institución.";
 	public static final String CUE_NO_EXISTE = "Código CUE no existe.";
 	
-	// De la fase de asignación automática y manual.
+	// De la fase de asignaciÃ³n automÃ¡tica y manual.
 	public static final String TITULO_PAGINA_ASIGNACION_AUTOMATICA = "Asignación/Matrícula Automática - Estudiante - Institución";
 	public static final String TITULO_PAGINA_ASIGNACION_MANUAL = "Asignación/Matrícula Manual - Estudiante - Institución";
 	public static final int NUMERO_PROVINCIAS_ECUADOR = 24;

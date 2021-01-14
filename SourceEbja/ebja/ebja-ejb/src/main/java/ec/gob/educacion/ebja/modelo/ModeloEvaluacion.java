@@ -45,9 +45,9 @@ public class ModeloEvaluacion implements Serializable {
 	@Column(name="porcentaje_examen")
 	private Integer porcentajeExamen;
 
-	//bi-directional many-to-one association to Nota
+	//bi-directional many-to-one association to PlantillaNota
 	@OneToMany(mappedBy="modeloEvaluacion")
-	private List<Notas> notas;
+	private List<PlantillaNota> plantillaNotas;
 
 	public ModeloEvaluacion() {
 	}
@@ -123,27 +123,26 @@ public class ModeloEvaluacion implements Serializable {
 	public void setPorcentajeExamen(Integer porcentajeExamen) {
 		this.porcentajeExamen = porcentajeExamen;
 	}
-
-	public List<Notas> getNotas() {
-		return this.notas;
+	public List<PlantillaNota> getPlantillaNotas() {
+		return this.plantillaNotas;
 	}
 
-	public void setNotas(List<Notas> notas) {
-		this.notas = notas;
+	public void setPlantillaNotas(List<PlantillaNota> plantillaNotas) {
+		this.plantillaNotas = plantillaNotas;
 	}
 
-	public Notas addNota(Notas nota) {
-		getNotas().add(nota);
-		nota.setModeloEvaluacion(this);
+	public PlantillaNota addPlantillaNota(PlantillaNota plantillaNota) {
+		getPlantillaNotas().add(plantillaNota);
+		plantillaNota.setModeloEvaluacion(this);
 
-		return nota;
+		return plantillaNota;
 	}
 
-	public Notas removeNota(Notas nota) {
-		getNotas().remove(nota);
-		nota.setModeloEvaluacion(null);
+	public PlantillaNota removePlantillaNota(PlantillaNota plantillaNota) {
+		getPlantillaNotas().remove(plantillaNota);
+		plantillaNota.setModeloEvaluacion(null);
 
-		return nota;
+		return plantillaNota;
 	}
 
 }

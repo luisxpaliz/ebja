@@ -18,9 +18,10 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
-
+import ec.gob.educacion.ebja.facade.local.AdminAlfabAcuRelFacadeJTALocal;
 import ec.gob.educacion.ebja.facade.local.AdminAlfabAcuRelFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.AdminAlfabModuloFacadeLocal;
+import ec.gob.educacion.ebja.facade.local.GrupoFaseFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.InscripcionFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.ModalidadFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.ProgramaEducativoFacadeLocal;
@@ -28,6 +29,8 @@ import ec.gob.educacion.ebja.facade.local.ProgramaGradoFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.ReglaNegocioFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.TipoProgramaFacadeLocal;
 import ec.gob.educacion.ebja.modelo.Acuerdo;
+import ec.gob.educacion.ebja.modelo.AcuerdoJTA;
+import ec.gob.educacion.ebja.modelo.GrupoFasePrograma;
 import ec.gob.educacion.ebja.modelo.Modalidad;
 import ec.gob.educacion.ebja.modelo.ProgramaEbja;
 import ec.gob.educacion.ebja.modelo.ProgramaEducativo;
@@ -52,22 +55,29 @@ public class adminAlfabModuloControlador extends BaseControlador implements Seri
 	private Date fechaFin;
 	private Date fechaInicioClases;
 	private Acuerdo acuerdo;
-	private List<Acuerdo> listaAcuerdos;
+	private List<AcuerdoJTA> listaAcuerdos;
 	private List<Modalidad> listaModalidad;
 	private ProgramaEbja nuevoModulo;
 	private Integer edadMinima;
+	private Integer secPrograma;
+	private Integer secInscripcion;
 	private Integer regazoMinimo;
 	private String acuerdoSeleccionado;
 	private String modalidadSeleccionada;
 	private int coberturaExtrajera;
+	private int esPack;
+	private int esVisible;
 	private Modalidad modalidadValidar;
 	private Acuerdo acuerdoValidar;
 	private TipoPrograma tipoProgramaValidar;
 	private ProgramaEducativo tipoProyectoValidar;
+	private GrupoFasePrograma tipoGrupoFaseProgValidar;
 	private List<OpcionSiNo> listaSiNO;
 	private List<TipoPrograma> listaTipoProgramas;
 	private String tipoProgramaSeleccionado;
 	private String tipoProyectoSeleccionado;
+	private String tipoFaseSeleccionada;
+	private String tipoFaseSeleccionadaBusqueda;
 	private Acuerdo acuerdoLista;
 	private List<Acuerdo> listaAcuerdosAnadirEditar;
 	private ProgramaEbja moduloInactivar;
@@ -75,7 +85,9 @@ public class adminAlfabModuloControlador extends BaseControlador implements Seri
 	private ProgramaEbja modulo; 
 	private List<ProgramaEbja> listaProgramaEbjaActivos;
 	private List<Boolean> tmpAcuerdoRepetido;
-	private List<ProgramaEducativo> listaProgramaEducativo; 
+	private List<ProgramaEducativo> listaProgramaEducativo;
+	private List<GrupoFasePrograma> listaGrupoFaseProg;
+	private String tipoProyectoSeleccionadoBusqueda;
 
 	@EJB
 	private AdminAlfabModuloFacadeLocal modulos;
@@ -95,6 +107,10 @@ public class adminAlfabModuloControlador extends BaseControlador implements Seri
 	private InscripcionFacadeLocal inscripcionFacadeLocal;
 	@EJB
 	private ProgramaEducativoFacadeLocal programasEducativos;
+	@EJB
+	private GrupoFaseFacadeLocal grupoFases;
+	@EJB
+	private AdminAlfabAcuRelFacadeJTALocal recursoAcuerdoJTA;
 
 
 	@PostConstruct
@@ -113,6 +129,7 @@ public class adminAlfabModuloControlador extends BaseControlador implements Seri
 		acuerdoLista = new Acuerdo();
 		tmpAcuerdoRepetido = new ArrayList();
 		listaProgramaEducativo = new ArrayList();
+		listaGrupoFaseProg = new ArrayList();
 
 	}
 	
@@ -191,7 +208,7 @@ public class adminAlfabModuloControlador extends BaseControlador implements Seri
 					crearRegistroModulo();
 				else
 					editarModulo();
-			buscarModulo();
+				    buscarModuloProyecto();
 			} else {
 				FacesContext.getCurrentInstance().addMessage("frmForm:messageModulo",
 						new FacesMessage(FacesMessage.SEVERITY_ERROR,Constantes.REGISTRO_BBDD_CAMPOS_VACIOS, ""));
@@ -357,12 +374,17 @@ public class adminAlfabModuloControlador extends BaseControlador implements Seri
 		setFechaInicioClases(new Date());
 		setFechaFin(new Date());
 		setEdadMinima(0);
+		setSecInscripcion(0);
+		setSecPrograma(0);
 		setRegazoMinimo(0);
 		setAcuerdoSeleccionado("");
 		setTipoProgramaSeleccionado("");
 		setTipoProyectoSeleccionado("");
 		setModalidadSeleccionada("");
+		setTipoFaseSeleccionada("");
 		setCoberturaExtrajera(3);
+		setEsPack(3);
+		setEsVisible(3);
 		getListaAcuerdosAnadir().clear();
 		setTipoProyectoSeleccionado("");
 
@@ -373,15 +395,42 @@ public class adminAlfabModuloControlador extends BaseControlador implements Seri
 	}
 
 	public void consultarAcuerdosModalidad() {
-		listaAcuerdos = recursoAcuerdo.buscarTodosAcuerdosActivos();
+		listaAcuerdos = recursoAcuerdoJTA.buscarTodosAcuerdosActivosJTA();
 		listaModalidad = recursoModalidad.buscarTodasModalidadesActivas();
-		listaProgramaEbjaActivos =  modulos.buscarProgramaEbjaActivos();
+		listaProgramaEbjaActivos =  modulos.buscarProgramaEbjaActivosNat();
 		listaProgramaEducativo = programasEducativos.buscarTodosProgramaEducativoActivos();
 		listaTipoProgramas = tipoPrograma.findAll();
 		listaSiNO.add(new OpcionSiNo("Sí", "1"));
 		listaSiNO.add(new OpcionSiNo("NO", "0"));
 		setCoberturaExtrajera(3);
+		setEsPack(3);
+		setEsVisible(3);
 	}
+	
+	public void obtenerFasesdeProyecto() {
+		
+		if(tipoProyectoSeleccionado.isEmpty()) {
+			listaGrupoFaseProg = new ArrayList<GrupoFasePrograma>();
+		}else {
+			listaGrupoFaseProg = grupoFases.buscarGrupoFaseProgActInternosXProyecto(tipoProyectoSeleccionado);
+		}	
+	}
+	
+		public void obtenerFasesdeProyectoBusqueda() {
+		
+		if(tipoProyectoSeleccionadoBusqueda.isEmpty()) {
+			listaGrupoFaseProg = new ArrayList<GrupoFasePrograma>();
+		}else {
+			listaGrupoFaseProg = grupoFases.buscarGrupoFaseProgActInternosXProyecto(tipoProyectoSeleccionadoBusqueda);
+		}	
+	}
+		
+		public void buscarModuloProyecto() {
+
+			listaModulos = modulos.findByFase(tipoFaseSeleccionadaBusqueda);
+
+		}
+
 
 	public void moduloSeleccionadoActivar(Object[] object) {
 		this.modulo = (ProgramaEbja) (object[0]);
@@ -395,25 +444,32 @@ public class adminAlfabModuloControlador extends BaseControlador implements Seri
 		nuevoModulo.setIpUsuario(sesionControlador.getIpAdressLocal());
 		nuevoModulo.setFechaCreacion(new Timestamp(System.currentTimeMillis()));
 		nuevoModulo.setEdadMinima(edadMinima);
+		nuevoModulo.setSecInscripcion(secInscripcion);
+		nuevoModulo.setSecuenciaPrograma(secPrograma);
 		nuevoModulo.setRezagoMinimo(regazoMinimo);
 		nuevoModulo.setFechaInicio(new Timestamp(fechaInicio.getTime()));
 		nuevoModulo.setFechaFin(new Timestamp(fechaFin.getTime()));
 		nuevoModulo.setFechaInicioClases(new Timestamp(fechaInicioClases.getTime()));
+		nuevoModulo.setVisible(esVisible);
+		nuevoModulo.setEsPack(esPack);
 		tipoProgramaValidar = tipoPrograma.ObtenerPrograma(tipoProgramaSeleccionado);
 		nuevoModulo.setTipoPrograma(tipoProgramaValidar);
 		tipoProyectoValidar = programasEducativos.findByCodigoSoloProgramaEducativo(tipoProyectoSeleccionado);
+		tipoGrupoFaseProgValidar = grupoFases.findByCodigoSoloGrupoFasePrograma(tipoFaseSeleccionada);
 		//nuevoModulo.setProgramaEducativo(tipoProyectoValidar);
 		modalidadValidar = (Modalidad) (recursoModalidad.findByCodigo(modalidadSeleccionada).get(0));
 		nuevoModulo.setModalidad(modalidadValidar);
+		nuevoModulo.setGrupoFasePrograma(tipoGrupoFaseProgValidar);
 		nuevoModulo.setEstado("1"); // Activo
 		nuevoModulo.setCobertura(String.valueOf(getCoberturaExtrajera()));
 		nuevoModulo.setAcuerdos(new HashSet(listaAcuerdosAnadir));
 		setAcuerdoSeleccionado("");
 		setTipoProgramaSeleccionado("");
-		setTipoProyectoSeleccionado("");
+		setTipoFaseSeleccionada("");
 		setModalidadSeleccionada("");
 		setCoberturaExtrajera(3);
-		
+		setEsPack(3);
+		setEsVisible(3);
 		
 
 	}
@@ -424,15 +480,20 @@ public class adminAlfabModuloControlador extends BaseControlador implements Seri
 		setNombre(modulo.getNombre());
 		setNemonico(modulo.getNemonico());
 		setEdadMinima(modulo.getEdadMinima());
+		setSecInscripcion(modulo.getSecInscripcion());
+		setSecPrograma(modulo.getSecuenciaPrograma());
 		setRegazoMinimo(modulo.getRezagoMinimo());
 		setFechaInicio(modulo.getFechaInicio());
 		setFechaFin(modulo.getFechaFin());
 		setFechaInicioClases(modulo.getFechaInicioClases());
 		setListaAcuerdosAnadir(modulo.getAcuerdos());
 		setTipoProgramaSeleccionado(modulo.getTipoPrograma().getNemonico());
-		//setTipoProyectoSeleccionado(modulo.getProgramaEducativo().getNemonico());
+		setTipoFaseSeleccionada(modulo.getGrupoFasePrograma().getNemonico()); 
+		setTipoProyectoSeleccionado(modulo.getGrupoFasePrograma().getProgramaEducativo().getNemonico());
 		setModalidadSeleccionada(modulo.getModalidad().getNemonico());
 		setCoberturaExtrajera(Integer.parseInt(modulo.getCobertura()));
+		setEsPack(modulo.getEsPack());
+		setEsVisible(modulo.getVisible());
 
 	}
 
@@ -642,6 +703,8 @@ public class adminAlfabModuloControlador extends BaseControlador implements Seri
 			modulo.setNombre(nombre);
 			modulo.setNemonico(nemonico);
 			modulo.setEdadMinima(edadMinima);
+			modulo.setSecInscripcion(secInscripcion);
+			modulo.setSecuenciaPrograma(secPrograma);
 			modulo.setRezagoMinimo(regazoMinimo);
 			modulo.setFechaInicio(new Timestamp(fechaInicio.getTime()));
 			modulo.setFechaFin(new Timestamp(fechaFin.getTime()));
@@ -651,6 +714,9 @@ public class adminAlfabModuloControlador extends BaseControlador implements Seri
 			//modulo.setProgramaEducativo(programasEducativos.findByCodigoSoloProgramaEducativo(tipoProyectoSeleccionado));
 			modulo.setCobertura(String.valueOf(getCoberturaExtrajera()));
 			modulo.setAcuerdos(new HashSet(listaAcuerdosAnadir));
+			modulo.setEsPack(esPack);
+			modulo.setVisible(esVisible);
+			modulo.setSecuenciaPrograma(secPrograma);
 			
 			if (!validarRegistroExistentes((Modalidad) (recursoModalidad.findByCodigo(modalidadSeleccionada).get(0)), 
 					modulo.getAcuerdos(),
@@ -797,11 +863,12 @@ public class adminAlfabModuloControlador extends BaseControlador implements Seri
 		this.acuerdo = acuerdo;
 	}
 
-	public List<Acuerdo> getListaAcuerdos() {
+
+	public List<AcuerdoJTA> getListaAcuerdos() {
 		return listaAcuerdos;
 	}
 
-	public void setListaAcuerdos(List<Acuerdo> listaAcuerdos) {
+	public void setListaAcuerdos(List<AcuerdoJTA> listaAcuerdos) {
 		this.listaAcuerdos = listaAcuerdos;
 	}
 
@@ -940,6 +1007,70 @@ public class adminAlfabModuloControlador extends BaseControlador implements Seri
 	public void setModuloEliminar(ProgramaEbja moduloEliminar) {
 		this.moduloEliminar = moduloEliminar;
 	}
+
+	public String getTipoFaseSeleccionada() {
+		return tipoFaseSeleccionada;
+	}
+
+	public void setTipoFaseSeleccionada(String tipoFaseSeleccionada) {
+		this.tipoFaseSeleccionada = tipoFaseSeleccionada;
+	}
+
+	public List<GrupoFasePrograma> getListaGrupoFaseProg() {
+		return listaGrupoFaseProg;
+	}
+
+	public void setListaGrupoFaseProg(List<GrupoFasePrograma> listaGrupoFaseProg) {
+		this.listaGrupoFaseProg = listaGrupoFaseProg;
+	}
+
+	public int getEsPack() {
+		return esPack;
+	}
+
+	public void setEsPack(int esPack) {
+		this.esPack = esPack;
+	}
+
+	public int getEsVisible() {
+		return esVisible;
+	}
+
+	public void setEsVisible(int esVisible) {
+		this.esVisible = esVisible;
+	}
+
+	public Integer getSecPrograma() {
+		return secPrograma;
+	}
+
+	public void setSecPrograma(Integer secPrograma) {
+		this.secPrograma = secPrograma;
+	}
+
+	public Integer getSecInscripcion() {
+		return secInscripcion;
+	}
+
+	public String getTipoFaseSeleccionadaBusqueda() {
+		return tipoFaseSeleccionadaBusqueda;
+	}
+
+	public void setTipoFaseSeleccionadaBusqueda(String tipoFaseSeleccionadaBusqueda) {
+		this.tipoFaseSeleccionadaBusqueda = tipoFaseSeleccionadaBusqueda;
+	}
+
+	public void setSecInscripcion(Integer secInscripcion) {
+		this.secInscripcion = secInscripcion;
+	}
+
+	public String getTipoProyectoSeleccionadoBusqueda() {
+		return tipoProyectoSeleccionadoBusqueda;
+	}
+
+	public void setTipoProyectoSeleccionadoBusqueda(String tipoProyectoSeleccionadoBusqueda) {
+		this.tipoProyectoSeleccionadoBusqueda = tipoProyectoSeleccionadoBusqueda;
+	}	
 	
 	
 

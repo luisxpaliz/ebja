@@ -32,72 +32,76 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "programa_ebja", schema = "ebja")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "ProgramaEbja.findAll", query = "SELECT c FROM ProgramaEbja c ")
-    , @NamedQuery(name = "ProgramaEbja.findAllActive", query = "SELECT c FROM ProgramaEbja c where c.estado = '1' order by c.id ")
-    , @NamedQuery(name = "ProgramaEbja.findById", query = "SELECT c FROM ProgramaEbja c WHERE c.id = :id") 
-    , @NamedQuery(name="ProgramaEbja.findByCodigo", query="SELECT c FROM ProgramaEbja c WHERE c.nemonico = :nemonico")
-    , @NamedQuery(name="ProgramaEbja.findByNombre", query="SELECT c FROM ProgramaEbja c WHERE c.nombre = :nombre")
-    , @NamedQuery(name = "ProgramaEbja.findByIdUsuarioCreacion", query = "SELECT c FROM ProgramaEbja c WHERE c.idUsuarioCreacion = :idUsuarioCreacion")
-    , @NamedQuery(name = "ProgramaEbja.findByFechaCreacion", query = "SELECT c FROM ProgramaEbja c WHERE c.fechaCreacion = :fechaCreacion")
-    , @NamedQuery(name = "ProgramaEbja.findByFaseGrupo", query = "SELECT c FROM ProgramaEbja c WHERE c.grupoFasePrograma.idGrupoFaseNotas = :idFaseGrupo and c.estado ='1' ")
-    , @NamedQuery(name = "ProgramaEbja.findByEstado", query = "SELECT c FROM ProgramaEbja c WHERE c.estado = :estado")})
-public class ProgramaEbja implements Serializable {
+@NamedQueries({ @NamedQuery(name = "ProgramaEbja.findAll", query = "SELECT c FROM ProgramaEbja c "),
+		@NamedQuery(name = "ProgramaEbja.findAllActive", query = "SELECT c FROM ProgramaEbja c where c.estado = '1' order by c.id "),
+		@NamedQuery(name = "ProgramaEbja.findAllActiveExt", query = "SELECT c FROM ProgramaEbja c where c.estado = '1' and c.grupoFasePrograma.faseExterna = 0 and c.nemonico not like '%NIN%' order by c.id "),
+		@NamedQuery(name = "ProgramaEbja.findById", query = "SELECT c FROM ProgramaEbja c WHERE c.id = :id"),
+		@NamedQuery(name = "ProgramaEbja.findByCodigo", query = "SELECT c FROM ProgramaEbja c WHERE c.nemonico = :nemonico"),
+		@NamedQuery(name = "ProgramaEbja.findByNombre", query = "SELECT c FROM ProgramaEbja c WHERE c.nombre = :nombre"),
+		@NamedQuery(name = "ProgramaEbja.findByIdUsuarioCreacion", query = "SELECT c FROM ProgramaEbja c WHERE c.idUsuarioCreacion = :idUsuarioCreacion"),
+		@NamedQuery(name = "ProgramaEbja.findByFechaCreacion", query = "SELECT c FROM ProgramaEbja c WHERE c.fechaCreacion = :fechaCreacion"),
+		@NamedQuery(name = "ProgramaEbja.findByFaseGrupo", query = "SELECT c FROM ProgramaEbja c WHERE c.grupoFasePrograma.idGrupoFaseNotas = :idFaseGrupo and c.tipoGrupoFase =:idTipoGrupoFase and c.estado ='1' "),
+		@NamedQuery(name = "ProgramaEbja.findByFaseGrupoExtraordinaria", query = "SELECT c FROM ProgramaEbja c WHERE c.grupoFasePrograma.idGrupoFaseNotas = :idFaseGrupo and c.tipoGrupoFase =:idFaseGrupo and c.estado ='1' order by c.secuenciaPrograma "),
+		@NamedQuery(name = "ProgramaEbja.findByFaseGrupoExtraordinariaNemonico", query = "SELECT c FROM ProgramaEbja c WHERE c.grupoFasePrograma.nemonico = :nemonico and c.estado ='1' order by c.secuenciaPrograma "),
+		@NamedQuery(name = "ProgramaEbja.findByProgramaEbjaFase", query = "SELECT c.grupoFasePrograma FROM ProgramaEbja c WHERE c.nemonico = :nemonico and c.estado ='1'"),
+		@NamedQuery(name = "ProgramaEbja.findNinguno", query = "SELECT c FROM ProgramaEbja c WHERE c.nemonico like '%NIN%' and c.estado ='1' "),
+		@NamedQuery(name = "ProgramaEbja.findByEstado", query = "SELECT c FROM ProgramaEbja c WHERE c.estado = :estado") })
+public class ProgramaEbja implements Serializable, Cloneable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @SequenceGenerator(name = "modulo_generador", sequenceName = "ebja.programa_ebja_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "modulo_generador")
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
-    
-    @Column(name = "edad_minima")
+	private static final long serialVersionUID = 1L;
+	@Id
+	@SequenceGenerator(name = "modulo_generador", sequenceName = "ebja.programa_ebja_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "modulo_generador")
+	@Basic(optional = false)
+	@Column(name = "id")
+	private Integer id;
+
+	@Column(name = "edad_minima")
 	private Integer edadMinima;
 
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "estado")
-    private String estado;
+	@Basic(optional = false)
+	@NotNull
+	@Column(name = "estado")
+	private String estado;
 
-    @Temporal(TemporalType.TIMESTAMP)
-	@Column(name="fecha_creacion")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "fecha_creacion")
 	private Date fechaCreacion;
-	
-	@Column(name="id_usuario_creacion")
+
+	@Column(name = "id_usuario_creacion")
 	private Integer idUsuarioCreacion;
-	
-	@Column(name="ip_usuario")
+
+	@Column(name = "ip_usuario")
 	private String ipUsuario;
-	
-	@Column(name="visible")
+
+	@Column(name = "visible")
 	private Integer visible;
 
 	@Basic(optional = false)
-    @NotNull
+	@NotNull
 	@Column(name = "fecha_fin")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaFin;
 
 	@Basic(optional = false)
-    @NotNull
-    @Column(name = "fecha_inicio")
-    @Temporal(TemporalType.TIMESTAMP)
+	@NotNull
+	@Column(name = "fecha_inicio")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaInicio;
-	
+
 	@Basic(optional = false)
-    @NotNull
-	@Column(name="fecha_inicio_clases")
+	@NotNull
+	@Column(name = "fecha_inicio_clases")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaInicioClases;
 
 	private String nemonico;
 
 	private String nombre;
-	
+
 	@Column(name = "secuencia_programa")
 	private Integer secuenciaPrograma;
-	
+
 	@Column(name = "es_pack")
 	private Integer esPack;
 
@@ -106,87 +110,77 @@ public class ProgramaEbja implements Serializable {
 
 	@Column(name = "secuencia_inscripcion")
 	private Integer SecInscripcion;
-	
+
+	@Column(name = "tipo_grupo_fase")
+	private long tipoGrupoFase;
+
 	private String cobertura;
 
-	//bi-directional many-to-one association to Mensaje
-	@OneToMany(mappedBy="programaEbja")
-	private List<Mensaje> mensajes;
-
-	//bi-directional many-to-one association to ModeloAsistencia
-	@OneToMany(mappedBy="programaEbja")
-	private List<ModeloAsistencia> modeloAsistencias;
+	// bi-directional many-to-one association to Mensaje
+	@OneToMany(mappedBy = "programaEbja",fetch = FetchType.EAGER)
+	private Set<Mensaje> mensajes;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-	@JoinTable(name = "programa_acuerdo", schema = "ebja", joinColumns = { 
-			@JoinColumn(name = "id_programa_ebja", nullable = false, updatable = false) }, 
-			inverseJoinColumns = { @JoinColumn(name = "id_acuerdo", 
-					nullable = false, updatable = false) })
+	@JoinTable(name = "programa_acuerdo", schema = "ebja", joinColumns = {
+			@JoinColumn(name = "id_programa_ebja", nullable = false, updatable = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "id_acuerdo", nullable = false, updatable = false) })
 	private Set<Acuerdo> acuerdos;
 
-	//bi-directional many-to-one association to Modalidad
+	// bi-directional many-to-one association to Modalidad
 	@ManyToOne
-	@JoinColumn(name="id_modalidad")
+	@JoinColumn(name = "id_modalidad")
 	private Modalidad modalidad;
 
-	//bi-directional many-to-one association to TipoPrograma
-	@ManyToOne
-	@JoinColumn(name="id_tipo_programa")
+	// bi-directional many-to-one association to TipoPrograma
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_tipo_programa")
 	private TipoPrograma tipoPrograma;
 
-	//bi-directional many-to-one association to ProgramaGrado
-	@OneToMany(mappedBy="programaEbja")
+	// bi-directional many-to-one association to ProgramaGrado
+	@OneToMany(mappedBy = "programaEbja", fetch = FetchType.EAGER, cascade = CascadeType.MERGE )
 	private List<ProgramaGrado> programaGrados;
 
-	//bi-directional many-to-one association to ReglaNegocio
-	@OneToMany(mappedBy="programaEbja")
-	private List<ReglaNegocio> reglaNegocios;	
-	
+	// bi-directional many-to-one association to ReglaNegocio
+	@OneToMany(mappedBy = "programaEbja",fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
+	private Set<ReglaNegocio> reglaNegocios;
+
 	@ManyToOne
-	@JoinColumn(name="id_grupo_fase_programa")
+	@JoinColumn(name = "id_grupo_fase_programa")
 	private GrupoFasePrograma grupoFasePrograma;
 
 	@Transient
 	private String nombreProgramaModalidad;
 	
-    public ProgramaEbja() {
-    }
 
-    public ProgramaEbja(Integer id) {
-        this.id = id;
-    }
+	public ProgramaEbja() {
+	}
 
-    public ProgramaEbja(Integer id, 
-    					Integer edadMinima, 
-    					Date fechaFin, 
-    					Date fechaInicio,
-    					String nemonico,
-    					String nombre,
-    					Integer rezagoMinimo,
-    					int idUsuarioCreacion, 
-    					Date fechaCreacion, 
-    					String estado,
-    					Modalidad modalidad) {
-        this.id = id;
-        this.edadMinima = edadMinima;
-        this.fechaFin = fechaFin;
-        this.fechaInicio = fechaInicio;
-        this.nemonico = nemonico;
-        this.nombre = nombre;
-        this.rezagoMinimo = rezagoMinimo;
-        this.idUsuarioCreacion = idUsuarioCreacion;
-        this.fechaCreacion = fechaCreacion;
-        this.estado = estado;
-        this.modalidad = modalidad;
-    }
+	public ProgramaEbja(Integer id) {
+		this.id = id;
+	}
 
-    public Integer getId() {
-        return id;
-    }
+	public ProgramaEbja(Integer id, Integer edadMinima, Date fechaFin, Date fechaInicio, String nemonico, String nombre,
+			Integer rezagoMinimo, int idUsuarioCreacion, Date fechaCreacion, String estado, Modalidad modalidad) {
+		this.id = id;
+		this.edadMinima = edadMinima;
+		this.fechaFin = fechaFin;
+		this.fechaInicio = fechaInicio;
+		this.nemonico = nemonico;
+		this.nombre = nombre;
+		this.rezagoMinimo = rezagoMinimo;
+		this.idUsuarioCreacion = idUsuarioCreacion;
+		this.fechaCreacion = fechaCreacion;
+		this.estado = estado;
+		this.modalidad = modalidad;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public Integer getEdadMinima() {
 		return edadMinima;
@@ -235,7 +229,7 @@ public class ProgramaEbja implements Serializable {
 	public void setRezagoMinimo(Integer rezagoMinimo) {
 		this.rezagoMinimo = rezagoMinimo;
 	}
-	
+
 	public TipoPrograma getTipoPrograma() {
 		return tipoPrograma;
 	}
@@ -243,7 +237,7 @@ public class ProgramaEbja implements Serializable {
 	public void setTipoPrograma(TipoPrograma tipoPrograma) {
 		this.tipoPrograma = tipoPrograma;
 	}
-	
+
 	public String getEstado() {
 		return estado;
 	}
@@ -251,7 +245,7 @@ public class ProgramaEbja implements Serializable {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	
+
 	public Date getFechaCreacion() {
 		return this.fechaCreacion;
 	}
@@ -267,7 +261,7 @@ public class ProgramaEbja implements Serializable {
 	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
 		this.idUsuarioCreacion = idUsuarioCreacion;
 	}
-	
+
 	public String getIpUsuario() {
 		return this.ipUsuario;
 	}
@@ -301,11 +295,11 @@ public class ProgramaEbja implements Serializable {
 		this.nombreProgramaModalidad = nombreProgramaModalidad;
 	}
 
-	public List<Mensaje> getMensajes() {
+	public Set<Mensaje> getMensajes() {
 		return this.mensajes;
 	}
 
-	public void setMensajes(List<Mensaje> mensajes) {
+	public void setMensajes(Set<Mensaje> mensajes) {
 		this.mensajes = mensajes;
 	}
 
@@ -323,29 +317,6 @@ public class ProgramaEbja implements Serializable {
 		return mensaje;
 	}
 
-	public List<ModeloAsistencia> getModeloAsistencias() {
-		return this.modeloAsistencias;
-	}
-
-	public void setModeloAsistencias(List<ModeloAsistencia> modeloAsistencias) {
-		this.modeloAsistencias = modeloAsistencias;
-	}
-
-	public ModeloAsistencia addModeloAsistencia(ModeloAsistencia modeloAsistencia) {
-		getModeloAsistencias().add(modeloAsistencia);
-		modeloAsistencia.setProgramaEbja(this);
-
-		return modeloAsistencia;
-	}
-
-	public ModeloAsistencia removeModeloAsistencia(ModeloAsistencia modeloAsistencia) {
-		getModeloAsistencias().remove(modeloAsistencia);
-		modeloAsistencia.setProgramaEbja(null);
-
-		return modeloAsistencia;
-	}
-
-
 	public Date getFechaInicioClases() {
 		return fechaInicioClases;
 	}
@@ -353,8 +324,6 @@ public class ProgramaEbja implements Serializable {
 	public void setFechaInicioClases(Date fechaInicioClases) {
 		this.fechaInicioClases = fechaInicioClases;
 	}
-
-	
 
 	public List<ProgramaGrado> getProgramaGrados() {
 		return this.programaGrados;
@@ -385,7 +354,6 @@ public class ProgramaEbja implements Serializable {
 	public List<Acuerdo> getAcuerdos() {
 		return acuerdos.stream().collect(Collectors.toList());
 	}
-	
 
 	public GrupoFasePrograma getGrupoFasePrograma() {
 		return grupoFasePrograma;
@@ -395,11 +363,11 @@ public class ProgramaEbja implements Serializable {
 		this.grupoFasePrograma = grupoFasePrograma;
 	}
 
-	public List<ReglaNegocio> getReglaNegocios() {
+	public Set<ReglaNegocio> getReglaNegocios() {
 		return this.reglaNegocios;
 	}
 
-	public void setReglaNegocios(List<ReglaNegocio> reglaNegocios) {
+	public void setReglaNegocios(Set<ReglaNegocio> reglaNegocios) {
 		this.reglaNegocios = reglaNegocios;
 	}
 
@@ -416,31 +384,37 @@ public class ProgramaEbja implements Serializable {
 
 		return reglaNegocio;
 	}
-	
+
 	@Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
+	public int hashCode() {
+		int hash = 0;
+		hash += (id != null ? id.hashCode() : 0);
+		return hash;
+	}
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ProgramaEbja)) {
-            return false;
-        }
-        ProgramaEbja other = (ProgramaEbja) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
+	@Override
+	public boolean equals(Object object) {
+		// TODO: Warning - this method won't work in the case the id fields are not set
+		if (!(object instanceof ProgramaEbja)) {
+			return false;
+		}
+		ProgramaEbja other = (ProgramaEbja) object;
+		if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+			return false;
+		}
+		return true;
+	}
 
-    @Override
-    public String toString() {
-        return "ec.gob.educacion.ebja.modelo.ProgramaEbja[ id=" + id + " ]";
-    }
+	public Object clone() throws CloneNotSupportedException {
+		// Assign the shallow copy to new reference variable t
+		ProgramaEbja p = (ProgramaEbja) super.clone();
+		return p;
+	}
+
+	@Override
+	public String toString() {
+		return "ec.gob.educacion.ebja.modelo.ProgramaEbja[ id=" + id + " ]";
+	}
 
 	public Integer getSecuenciaPrograma() {
 		return secuenciaPrograma;
@@ -474,6 +448,12 @@ public class ProgramaEbja implements Serializable {
 		this.visible = visible;
 	}
 
-	
-    
+	public long getTipoGrupoFase() {
+		return tipoGrupoFase;
+	}
+
+	public void setTipoGrupoFase(long tipoGrupoFase) {
+		this.tipoGrupoFase = tipoGrupoFase;
+	}
+
 }

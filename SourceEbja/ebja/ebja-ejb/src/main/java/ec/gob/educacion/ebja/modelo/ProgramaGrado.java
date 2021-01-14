@@ -40,7 +40,6 @@ public class ProgramaGrado implements Serializable {
 	
 	@Column(name="grado_inicial")
 	private Integer gradoInicial;
-		
 	
 	@Column(name="secuencia_grado")
 	private Integer secuenciaGrado;
@@ -54,17 +53,24 @@ public class ProgramaGrado implements Serializable {
 	@JoinColumn(name="id_programa_ebja")
 	private ProgramaEbja programaEbja;
 	
+	//bi-directional many-to-one association to ProgramaEbja
+    @ManyToOne
+	@JoinColumn(name="id_mensaje_reporte")
+	private MensajeReporte mensajeReporte;
+	
 	//bi-directional many-to-one association to Malla
 	@OneToMany(mappedBy="programaGrado")
 	private List<Malla> mallas;
 	
 	//bi-directional many-to-one association to ProgramaInstitucion
 	@OneToMany(mappedBy="programaGrado")
-	private List<ProgramaInstitucion> programaInstituciones;
-	
-	//bi-directional many-to-one association to ProgramaInstitucion
-	@OneToMany(mappedBy="programaGrado")
 	private List<Inscripcion> Inscripciones;
+	
+	@Column(name="oferta_siguiente")
+	private Integer ofertaSiguiente;
+	
+	@Column(name="visible_combo_grado_probado")
+	private Integer visbleGradoAprobado;
 
 	public ProgramaGrado() {
 	}
@@ -117,14 +123,6 @@ public class ProgramaGrado implements Serializable {
 		this.ipUsuario = ipUsuario;
 	}
 
-	public List<ProgramaInstitucion> getProgramaInstituciones() {
-		return programaInstituciones;
-	}
-
-	public void setProgramaInstituciones(List<ProgramaInstitucion> programaInstituciones) {
-		this.programaInstituciones = programaInstituciones;
-	}
-
 	public List<Inscripcion> getInscripciones() {
 		return Inscripciones;
 	}
@@ -174,9 +172,29 @@ public class ProgramaGrado implements Serializable {
 		this.visible = visible;
 	}
 
-	
+	public Integer getOfertaSiguiente() {
+		return ofertaSiguiente;
+	}
 
-	
-	
+	public void setOfertaSiguiente(Integer ofertaSiguiente) {
+		this.ofertaSiguiente = ofertaSiguiente;
+	}
+
+	public MensajeReporte getMensajeReporte() {
+		return mensajeReporte;
+	}
+
+	public void setMensajeReporte(MensajeReporte mensajeReporte) {
+		this.mensajeReporte = mensajeReporte;
+	}
+
+	public Integer getVisbleGradoAprobado() {
+		return visbleGradoAprobado;
+	}
+
+	public void setVisbleGradoAprobado(Integer visbleGradoAprobado) {
+		this.visbleGradoAprobado = visbleGradoAprobado;
+	}
+
 
 }

@@ -38,17 +38,13 @@ public class DocenteCurso implements Serializable {
 	
 	//bi-directional many-to-one association to CursoParalelo
 	@ManyToOne
-	@JoinColumn(name="id_curso_paralelo")
-	private CursoParalelo cursoParalelo;
+	@JoinColumn(name="id_malla")
+	private Malla malla;
 
 	//bi-directional many-to-one association to ProgramaInstitucion
 	@ManyToOne
 	@JoinColumn(name="id_programa_institucion")
 	private ProgramaInstitucion programaInstitucion;
-
-	//bi-directional many-to-one association to MallaDocente
-	@OneToMany(mappedBy="docenteCurso")
-	private List<MallaDocente> mallaDocentes;
 
 	public DocenteCurso() {
 	}
@@ -101,12 +97,12 @@ public class DocenteCurso implements Serializable {
 		this.docente = docente;
 	}
 	
-	public CursoParalelo getCursoParalelo() {
-		return this.cursoParalelo;
+	public Malla getCursoParalelo() {
+		return this.malla;
 	}
 
-	public void setCursoParalelo(CursoParalelo cursoParalelo) {
-		this.cursoParalelo = cursoParalelo;
+	public void setCursoParalelo(Malla malla) {
+		this.malla = malla;
 	}
 
 	public ProgramaInstitucion getProgramaInstitucion() {
@@ -115,28 +111,6 @@ public class DocenteCurso implements Serializable {
 
 	public void setProgramaInstitucion(ProgramaInstitucion programaInstitucion) {
 		this.programaInstitucion = programaInstitucion;
-	}
-
-	public List<MallaDocente> getMallaDocentes() {
-		return this.mallaDocentes;
-	}
-
-	public void setMallaDocentes(List<MallaDocente> mallaDocentes) {
-		this.mallaDocentes = mallaDocentes;
-	}
-
-	public MallaDocente addMallaDocente(MallaDocente mallaDocente) {
-		getMallaDocentes().add(mallaDocente);
-		mallaDocente.setDocenteCurso(this);
-
-		return mallaDocente;
-	}
-
-	public MallaDocente removeMallaDocente(MallaDocente mallaDocente) {
-		getMallaDocentes().remove(mallaDocente);
-		mallaDocente.setDocenteCurso(null);
-
-		return mallaDocente;
 	}
 
 }

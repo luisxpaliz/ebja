@@ -55,9 +55,15 @@ public class Matricula implements Serializable {
 	@JoinColumn(name="id_tipo_proceso_catalogo", referencedColumnName = "id")
 	private CatalogoEbja catalogoTipoProceso;
 	
-	//bi-directional many-to-one association to Nota
-	@OneToMany(mappedBy="matricula")
-	private List<PlantillaEstudiante> plantillaEstudiante;
+	// bi-directional many-to-one association to ModeloAsistencia
+	@OneToMany(mappedBy = "matricula")
+	private List<ModeloAsistencia> modeloAsistencias;
+	
+	//bi-directional many-to-one association to ParaleloGrado
+		@ManyToOne
+		@JoinColumn(name="id_paralelo_grado")
+		private ParaleloGrado paraleloGrado;
+
 	
 	@Transient
 	private boolean asignarParalelo;
@@ -161,15 +167,14 @@ public class Matricula implements Serializable {
 	public void setAsignarParalelo(boolean asignarParalelo) {
 		this.asignarParalelo = asignarParalelo;
 	}
-
-	public List<PlantillaEstudiante> getPlantillaEstudiante() {
-		return plantillaEstudiante;
+	
+	public ParaleloGrado getParaleloGrado() {
+		return this.paraleloGrado;
 	}
 
-	public void setPlantillaEstudiante(List<PlantillaEstudiante> plantillaEstudiante) {
-		this.plantillaEstudiante = plantillaEstudiante;
+	public void setParaleloGrado(ParaleloGrado paraleloGrado) {
+		this.paraleloGrado = paraleloGrado;
 	}
-	
-	
+
 
 }

@@ -119,7 +119,7 @@ public class AsignarParaleloPorInstitucionBean extends BaseControlador implement
 		programaInstitucion = new ProgramaInstitucion();
 		programaInstitucion = programaInstitucionFacadeLocal.obtenerProgramaInstitucionPorId(idProgramaInstitucion);
 		nombreInstitucion = programaInstitucion.getInstitucEstablec().getIdInstitucion().getDescripcion();
-		nombreProgramaEbja = programaInstitucion.getProgramaGrado().getProgramaEbja().getNombre();
+	//	nombreProgramaEbja = programaInstitucion.getProgramaGrado().getProgramaEbja().getNombre();
 		cupoDisponibleOrigen = programaInstitucion.getCupoDisponible();
 		
 		listaCursoParalelo = new ArrayList<>();

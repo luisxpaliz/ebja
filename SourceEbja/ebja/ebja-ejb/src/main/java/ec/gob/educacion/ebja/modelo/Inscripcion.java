@@ -35,11 +35,10 @@ public class Inscripcion implements Serializable {
 	@JoinColumn(name="id_grado_aprobado", referencedColumnName = "id")
 	private Grado gradoAprobado;
 
-
-@Column(name="id_programa_aprobado")
+    @Column(name="id_programa_aprobado")
 	private long ProgramaAprobado;
 	
-@Column(name="id_fase_aprobado")
+    @Column(name="id_fase_aprobado")
 	private long FaseAprobado;
 
 
@@ -61,6 +60,10 @@ public class Inscripcion implements Serializable {
 	//bi-directional many-to-one association to RegistroEstudiante
 	@OneToMany(mappedBy="inscripcion")
 	private List<RegistroEstudiante> registroEstudiantes;
+	
+	//bi-directional many-to-one association to RegistroEstudiante
+	@OneToMany(mappedBy="inscripcion")
+	private List<Estudiante> estudiante;
 
 	@Column(name="apellidos_nombres_usuario")
 	private String apellidosNombresUsuario;
@@ -169,7 +172,7 @@ public class Inscripcion implements Serializable {
 	}
 
 	
-
+ 
 	public ProgramaGrado getProgramaGrado() {
 		return programaGrado;
 	}
@@ -229,5 +232,15 @@ public class Inscripcion implements Serializable {
 	public void setFaseAprobado(long faseAprobado) {
 		FaseAprobado = faseAprobado;
 	}
+
+	public List<Estudiante> getEstudiante() {
+		return estudiante;
+	}
+
+	public void setEstudiante(List<Estudiante> estudiante) {
+		this.estudiante = estudiante;
+	}
+	
+	
 
 }

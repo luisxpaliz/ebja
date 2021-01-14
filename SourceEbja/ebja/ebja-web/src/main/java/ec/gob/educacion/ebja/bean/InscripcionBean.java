@@ -15,6 +15,7 @@ import ec.gob.educacion.ebja.facade.local.GradoFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.GrupoFaseFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.InsParametroFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.InscripcionFacadeLocal;
+import ec.gob.educacion.ebja.facade.local.InstitucEstablecFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.MensajeFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.PaisFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.ParroquiaFacadeLocal;
@@ -49,6 +50,7 @@ import ec.gob.educacion.ebja.modelo.zeus.Circuito;
 import ec.gob.educacion.ebja.modelo.zeus.Distrito;
 import ec.gob.educacion.ebja.modelo.zeus.Etnia;
 import ec.gob.educacion.ebja.modelo.zeus.Grado;
+import ec.gob.educacion.ebja.modelo.zeus.InstitucEstablec;
 import ec.gob.educacion.ebja.modelo.zeus.Parroquia;
 import ec.gob.educacion.ebja.modelo.zeus.Provincia;
 import ec.gob.educacion.ebja.modelo.zeus.Zona;
@@ -147,6 +149,8 @@ public class InscripcionBean extends BaseControlador implements Serializable {
 	private GrupoFaseFacadeLocal grupoFaseProgramaFacadeLocal;
 	@EJB
 	private ProgramaGradoFacadeLocal programaGradoFacadeLocal;
+	@EJB
+	private InstitucEstablecFacadeLocal institucionEstablecimiento;
 
 	private boolean visiblePanelA;
 	private boolean visiblePanelB;
@@ -330,6 +334,9 @@ public class InscripcionBean extends BaseControlador implements Serializable {
 	private List<ProgramaEbja> listaProgramaEbjaAprobado;
 	private List<GrupoFasePrograma> listaGradoFasePrograma;
 	private List<GrupoFasePrograma> listaGradoFaseProgramaUltimaAprobado;
+	private List<InstitucEstablec> listaEstablecimientos;
+	private String nemonicoGrupoFaseProg;
+	private Integer idInstitucion;
 
 	private SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
 	private static final Logger LOGGER = Logger.getLogger(InscripcionBean.class.getName());
@@ -383,6 +390,8 @@ public class InscripcionBean extends BaseControlador implements Serializable {
 		inscripcion.setProgramaGrado(new ProgramaGrado());
 
 		listaProgramaEbjaInscripcion = new ArrayList<>();
+		
+		
 
 		visiblePanelA = false;
 		visiblePanelB = false;
@@ -574,16 +583,23 @@ public class InscripcionBean extends BaseControlador implements Serializable {
 	}
 
 	public void obtenerFasesProyectos() {
-
-		gradoOfertaSeleccionadoInscripcion = 0;
+		
+		/* Limpiar listas de periodo, oferta y grado */
+		faseProgramaSeleccionado = 0;
+		programaOfertaSeleccionado = "";
+		gradoOfertaSeleccionado = 0;
 		programaOfertaInscripcion = "";
+		gradoOfertaSeleccionadoInscripcion = 0;
 		faseProgramaSeleccionadoUltimo = 0;
-		// listaGradoFasePrograma.clear();
+
+		listaGradoFaseProgramaUltimaAprobado.clear();
+		listaProgramaEbjaAprobado.clear();
+		listaGrado.clear();
+		listaGradoFasePrograma.clear();
 		listaProgramaEbjaInscripcion.clear();
 		listaGradoInscripcion.clear();
 
 		listaGradoFasePrograma = grupoFaseProgramaFacadeLocal.buscarTodosGrupoFaseProgramaActivos(proyectoSelecionado);
-
 	}
 
 	public void obtenerFasesProyectosUltimoAprobado() {
@@ -592,44 +608,55 @@ public class InscripcionBean extends BaseControlador implements Serializable {
 		faseProgramaSeleccionado = 0;
 		programaOfertaSeleccionado = "";
 		gradoOfertaSeleccionado = 0;
-		faseProgramaSeleccionadoUltimo = 0;
 		programaOfertaInscripcion = "";
 		gradoOfertaSeleccionadoInscripcion = 0;
+		
 
-		// listaGradoFaseProgramaUltimaAprobado.clear();
+		listaGradoFaseProgramaUltimaAprobado.clear();
 		listaProgramaEbjaAprobado.clear();
 		listaGrado.clear();
-		listaGradoFasePrograma.clear();
 		listaProgramaEbjaInscripcion.clear();
 		listaGradoInscripcion.clear();
 
-		listaGradoFaseProgramaUltimaAprobado = grupoFaseProgramaFacadeLocal
+       listaGradoFaseProgramaUltimaAprobado = grupoFaseProgramaFacadeLocal
 				.buscarTodosGrupoFaseProgramaActivosExternos(proyectoSelecionado);
+		
 
 	}
 
 	public void obtenerOfertaAprobada() {
-
+	
+		/* Limpiar listas de periodo, oferta y grado */
+		
+		nemonicoGrupoFaseProg ="";
 		programaOfertaSeleccionado = "";
 		gradoOfertaSeleccionado = 0;
-		faseProgramaSeleccionadoUltimo = 0;
 		programaOfertaInscripcion = "";
 		gradoOfertaSeleccionadoInscripcion = 0;
-
-		// listaProgramaEbjaAprobado.clear();
+		
+		listaProgramaEbjaAprobado.clear();
 		listaGrado.clear();
-		listaGradoFasePrograma.clear();
 		listaProgramaEbjaInscripcion.clear();
 		listaGradoInscripcion.clear();
 
-		listaProgramaEbjaAprobado = programaEbjaFacadeLocal.obtenerProgramaEbjaGrupoFase(faseProgramaSeleccionado);
+		//listaProgramaEbjaAprobado = programaEbjaFacadeLocal.obtenerProgramaEbjaGrupoFase(faseProgramaSeleccionadoUltimo,faseProgramaSeleccionado);
+		
+		nemonicoGrupoFaseProg = grupoFaseProgramaFacadeLocal.find(faseProgramaSeleccionado).getNemonico();
+
+		if(nemonicoGrupoFaseProg.contains("NING")|| (nemonicoGrupoFaseProg.contains("ORD")&&!nemonicoGrupoFaseProg.contains("EXT"))) {
+			//si es ninguno			
+			listaProgramaEbjaAprobado = programaEbjaFacadeLocal.obtenerProgramaEbjaNinguno();
+		}else if(nemonicoGrupoFaseProg.contains("EXT")){
+			// si es ext
+			listaProgramaEbjaAprobado = programaEbjaFacadeLocal.obtenerProgramaEbjaGrupoFaseExtraordinaria(faseProgramaSeleccionadoUltimo); 
+		}
 
 	}
 
 	public void obtenerOferta() {
 
 		listaProgramaEbjaInscripcion = programaEbjaFacadeLocal
-				.obtenerProgramaEbjaGrupoFase(faseProgramaSeleccionadoUltimo);
+				.obtenerProgramaEbjaGrupoFase(faseProgramaSeleccionadoUltimo,faseProgramaSeleccionadoUltimo);
 		gradoOfertaSeleccionado = 0;
 		gradoOfertaSeleccionadoInscripcion = 0;
 		programaOfertaInscripcion = "";
@@ -642,11 +669,25 @@ public class InscripcionBean extends BaseControlador implements Serializable {
 		programaOfertaInscripcion = "";
 		listaProgramaEbjaInscripcion.clear();
 		listaGradoInscripcion.clear();
-		List<ProgramaEbja> listaProgramaEbjaInscripcionTemp = programaGradoFacadeLocal
-				.buscarProgramaEbjaPorGrado(faseProgramaSeleccionadoUltimo, gradoOfertaSeleccionado);
-		ProgramaEbja progEbjaTemp = (listaProgramaEbjaInscripcionTemp.isEmpty() == false)
-				? listaProgramaEbjaInscripcionTemp.get(0)
-				: null;
+		ProgramaEbja progEbjaTemp = null;
+		
+		//Si no tiene ninguna instruccion
+		if(gradoOfertaSeleccionado==50) { //eligio ninguna oferta aprobada y ningun grado
+			
+			List<ProgramaEbja> listaProgramaEbjaInscripcionTemp = programaGradoFacadeLocal
+					.buscarPrimerProgramaPorPeriodo(faseProgramaSeleccionadoUltimo);
+			progEbjaTemp = (listaProgramaEbjaInscripcionTemp.isEmpty() == false)
+					? listaProgramaEbjaInscripcionTemp.get(0)
+					: null;	
+			
+		}else {
+			List<ProgramaEbja> listaProgramaEbjaInscripcionTemp = programaGradoFacadeLocal
+					.buscarProgramaEbjaPorGrado(faseProgramaSeleccionadoUltimo, gradoOfertaSeleccionado);
+			progEbjaTemp = (listaProgramaEbjaInscripcionTemp.isEmpty() == false)
+					? listaProgramaEbjaInscripcionTemp.get(0)
+					: null;	
+		}
+		
 
 		if (progEbjaTemp != null) {
 
@@ -657,8 +698,17 @@ public class InscripcionBean extends BaseControlador implements Serializable {
 			/* Resto Ofertas y Grados */
 			if (programaGradoFacadeLocal.programaEbjaTieneAsignadoPackCurso(progEbjaTemp.getNemonico()) == 1) {
 				/* Si es pack */
-				Integer gradoTemp = programaGradoFacadeLocal
-						.buscarProgramaGrado(gradoOfertaSeleccionado, progEbjaTemp.getNemonico()).getGradoInicial();
+				Integer gradoTemp;
+				
+				if(gradoOfertaSeleccionado ==50) {// si es grado aprobado ninguno
+					gradoTemp = programaGradoFacadeLocal
+							.buscarProgramaGradoInicial(progEbjaTemp.getNemonico()).getGradoInicial();
+				}else {
+					gradoTemp = programaGradoFacadeLocal
+							.buscarProgramaGrado(gradoOfertaSeleccionado, progEbjaTemp.getNemonico()).getGradoInicial();
+				}
+				
+				
 				/* Si es pack y si es grado es inicial =1 o =2 devolver oferta que selecciono */
 				if (gradoTemp == 1 || gradoTemp == 2) { // grado = 1 y 2 programaGradoFacadeLocal.buscar
 
@@ -840,18 +890,38 @@ public class InscripcionBean extends BaseControlador implements Serializable {
 
 	public void obtenerGrado() {
 
-		listaGrado = programaGradoFacadeLocal.buscarGradoUnificados(programaOfertaSeleccionado);
-		listaGrado = programaGradoFacadeLocal.buscarGradoUnificados(programaOfertaSeleccionado);
 		gradoOfertaSeleccionado = 0;
-		faseProgramaSeleccionadoUltimo = 0;
 		programaOfertaInscripcion = "";
 		gradoOfertaSeleccionadoInscripcion = 0;
 		listaGrado.clear();
-		listaGradoFasePrograma.clear();
 		listaProgramaEbjaInscripcion.clear();
 		listaGradoInscripcion.clear();
 
-		listaGrado = programaGradoFacadeLocal.buscarGradoUnificados(programaOfertaSeleccionado);
+		
+		
+		if(programaOfertaSeleccionado.contains("NING")) {
+			
+			if(nemonicoGrupoFaseProg.contains("NING"))  {
+				// AÑADE NUNGUNO
+				
+				listaGrado = programaGradoFacadeLocal.buscarGradoNinguno();
+				
+			}else if(nemonicoGrupoFaseProg.contains("ORD") ){
+				
+				listaGrado = programaGradoFacadeLocal.buscarGradoUnificadosPorProgramaOrdinario(faseProgramaSeleccionadoUltimo);
+			}
+			
+		}else{ // OFERTA EXTRAORDINARIA
+			
+			listaGrado = programaGradoFacadeLocal.buscarGradoUnificados(programaOfertaSeleccionado);
+		}
+		
+		//verificar ninguno en sistema edu y ninguno oferta
+		//pone ninguno en grado aprobado y elige el primero de la oferta inscripcion
+		
+		// ordinaria    ninguno    lista de intensivo costa de todos los grados
+		
+		// extraordinaria   lista ofertas lista de grados
 
 	}
 
@@ -918,7 +988,9 @@ public class InscripcionBean extends BaseControlador implements Serializable {
 		switch (nombreTipoDocumento) {
 		case "C":
 			registroEstudiante.setFechaNacimiento(new Date());
+			listaProgramasEducativos = (List<ProgramaEducativo>) programaEducativoFacadeLocal.buscarTodosProgramaEducativoActivos();
 			break;
+			
 		case "N":
 			readonlyNumeroIdentificacion = true;
 			visibleNumeroIdentificacion = false;
@@ -936,6 +1008,15 @@ public class InscripcionBean extends BaseControlador implements Serializable {
 			disabledNacionalidad = true;
 			disabledParentesco = false;
 			break;
+		case "S":
+			listaProgramasEducativos = (List<ProgramaEducativo>) programaEducativoFacadeLocal.buscarProgramaCPL();
+			registroEstudiante.setNacionalidadEcuatoriana("0");
+			visibleNacionalidad = false;
+			disabledNacionalidad = true;
+			visiblePgParentesco = true;
+			disabledParentesco = false;
+			break;
+		
 		}
 
 		cedulaBuscar = "";
@@ -954,7 +1035,12 @@ public class InscripcionBean extends BaseControlador implements Serializable {
 			}
 		}
 		ceduladoMeducacion = ceduladoMeducacionFacadeLocal.findCeduladoMeducacion(cedulaBuscar);
+		
+		
 		if (ceduladoMeducacion != null) {
+			
+			if(ceduladoMeducacion.getFechaFallecimiento()==null) {
+			
 			// Validar si número de identificación, pertenece a la condición de fallecido.
 			if (ceduladoMeducacion.getCodCondicionCedulado() != null && ceduladoMeducacion.getCodCondicionCedulado()
 					.equals(new BigDecimal(Constantes.CONDICION_FALLECIDO_INT))) {
@@ -1003,6 +1089,11 @@ public class InscripcionBean extends BaseControlador implements Serializable {
 			// Validar existencia del registro de inscripción pendiente.
 			// (estadoAsignación=2)
 			validarInscripcionPendiente();
+			
+           }else {
+           textosalidaPanelA = Constantes.ERROR_INSCRIPCION_FALLECIDO;
+		}
+			
 		} else {
 			textosalidaPanelA = Constantes.ERROR_NUMERO_CEDULA;
 		}
@@ -1334,6 +1425,9 @@ public class InscripcionBean extends BaseControlador implements Serializable {
 		// (estadoAsignación=2)
 		validarInscripcionPendiente();
 
+		// Obtener lista Programas Educativos.
+		listaProgramasEducativos = programaEducativoFacadeLocal.buscarTodosProgramaEducativoActivos();
+		
 		registroEstudiante.setNumeroIdentificacion(cedulaBuscar);
 
 		if (!calcularEdad()) {
@@ -1357,6 +1451,16 @@ public class InscripcionBean extends BaseControlador implements Serializable {
 
 			visiblePgParentesco = true;
 			disabledParentesco = false;
+			break;
+		case "S":
+			listaProgramasEducativos = (List<ProgramaEducativo>) programaEducativoFacadeLocal.buscarProgramaCPL();
+			registroEstudiante.setNacionalidadEcuatoriana("0");
+			visibleNacionalidad = false;
+			disabledNacionalidad = true;
+
+			visiblePgParentesco = true;
+			disabledParentesco = false;
+			break;
 		}
 	}
 
@@ -1872,7 +1976,7 @@ public class InscripcionBean extends BaseControlador implements Serializable {
 	public void aceptarUbicacionGeografica() {
 		inscripcion.setNumeroIdentificacionUsuario(sesionControlador.getUsuarioSesion().getCedula());
 		inscripcion.setApellidosNombresUsuario(sesionControlador.getUsuarioSesion().getNombre());
-
+		ubicacion.setIdInstitucion(idInstitucion);
 		visiblePanelD = true;
 		visiblePanelCUE = true;
 		readonlyUbicacionCUE = true;
@@ -1998,10 +2102,10 @@ public class InscripcionBean extends BaseControlador implements Serializable {
 		setearDatosAdicionales();
 
 		// validación que las reglas de negocio entren dentro de la fase del proyecto.
-		if (!validarRangoFechaFaseReglaNegocio()) {
-			textosalida = "La Oferta Educativa no se encuentra dentro de la Fase de Inscripción y/o el día de hoy no se encuentra dentro del rango de la Fase de Inscripción";
-			tmpPeriodoFaseOferta = true;
-		}
+//		if (!validarRangoFechaFaseReglaNegocio()) {
+//			textosalida = "La Oferta Educativa no se encuentra dentro de la Fase de Inscripción y/o el día de hoy no se encuentra dentro del rango de la Fase de Inscripción";
+//			tmpPeriodoFaseOferta = true;
+//		}
 
 		// Verificar si se invoca al proceso de grabar inscripcion pendiente.
 		if (procesarInscripcionPendiente) {
@@ -2039,23 +2143,18 @@ public class InscripcionBean extends BaseControlador implements Serializable {
 		ahoraTmp = new Date();
 		
 		if (reglaNegocio.getFechaInicio().after(programaEbja.getGrupoFasePrograma().getFechaInicio()) == true && 
-			reglaNegocio.getFechaFin().before(programaEbja.getGrupoFasePrograma().getFechaFin()) == true ) {
-			
+			reglaNegocio.getFechaFin().before(programaEbja.getGrupoFasePrograma().getFechaFin()) == true ) {	
 			if((ahoraTmp.after(reglaNegocio.getFechaInicio()) == true 
 				&& ahoraTmp.before(reglaNegocio.getFechaFin()) == true)
 				|| ahoraTmp.compareTo(reglaNegocio.getFechaInicio())==0 
-				|| ahoraTmp.compareTo(reglaNegocio.getFechaFin())==0) {
-			   
+				|| ahoraTmp.compareTo(reglaNegocio.getFechaFin())==0) {  
 				return true;
 			}else {
 				return false;
-			}
-			
-			
+			}			
 		} else {
 			return false;
 		}
-
 	}
 
 	public void setearDatosAdicionales() {
@@ -2643,11 +2742,14 @@ public class InscripcionBean extends BaseControlador implements Serializable {
 			circuito = circuitoFacadeLocal.buscarPorCodigoCircuito(suministroLuz.getCodCircui());
 			if (circuito != null) {
 				ubicacion.setCircuito(circuito);
+				listaEstablecimientos = institucionEstablecimiento.institucionFindByCircuito(circuito.getId());
 			}
 
 			// Asignar coordenadas desde suministroLuz a ubicacion.
 			ubicacion.setCoordenadaX(suministroLuz.getCX());
 			ubicacion.setCoordenadaY(suministroLuz.getCY());
+
+			
 		}
 	}
 
@@ -4006,5 +4108,23 @@ public class InscripcionBean extends BaseControlador implements Serializable {
 	public void setDisabledCmbDocumentoMotivo(boolean disabledCmbDocumentoMotivo) {
 		this.disabledCmbDocumentoMotivo = disabledCmbDocumentoMotivo;
 	}
+
+	public List<InstitucEstablec> getListaEstablecimientos() {
+		return listaEstablecimientos;
+	}
+
+	public void setListaEstablecimientos(List<InstitucEstablec> listaEstablecimientos) {
+		this.listaEstablecimientos = listaEstablecimientos;
+	}
+
+	public Integer getIdInstitucion() {
+		return idInstitucion;
+	}
+
+	public void setIdInstitucion(Integer idInstitucion) {
+		this.idInstitucion = idInstitucion;
+	}
+
+	
 
 }

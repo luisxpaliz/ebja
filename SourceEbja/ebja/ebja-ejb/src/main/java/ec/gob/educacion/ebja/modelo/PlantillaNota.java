@@ -42,6 +42,11 @@ public class PlantillaNota implements Serializable {
 	@Column(name="nombre_plantilla")
 	private String nombrePlantilla;
 
+	//bi-directional many-to-one association to ModeloEvaluacion
+	@ManyToOne
+	@JoinColumn(name="id_modelo_evaluacion")
+	private ModeloEvaluacion modeloEvaluacion;
+		
 	//bi-directional many-to-one association to TipoNota
 	@ManyToOne
 	@JoinColumn(name="id_tipo_nota")
@@ -49,7 +54,7 @@ public class PlantillaNota implements Serializable {
 
 	//bi-directional many-to-one association to Nota
 	@OneToMany(mappedBy="plantillaNota")
-	private List<Notas> notas;
+	private List<Nota> nota;
 	
 	//bi-directional many-to-one association to TipoNota
 	@ManyToOne
@@ -122,6 +127,14 @@ public class PlantillaNota implements Serializable {
 	public void setNombrePlantilla(String nombrePlantilla) {
 		this.nombrePlantilla = nombrePlantilla;
 	}
+	
+	public ModeloEvaluacion getModeloEvaluacion() {
+		return this.modeloEvaluacion;
+	}
+
+	public void setModeloEvaluacion(ModeloEvaluacion modeloEvaluacion) {
+		this.modeloEvaluacion = modeloEvaluacion;
+	}
 
 	public TipoNota getTipoNota() {
 		return this.tipoNota;
@@ -131,23 +144,23 @@ public class PlantillaNota implements Serializable {
 		this.tipoNota = tipoNota;
 	}
 
-	public List<Notas> getNotas() {
-		return this.notas;
+	public List<Nota> getNota() {
+		return this.nota;
 	}
 
-	public void setNotas(List<Notas> notas) {
-		this.notas = notas;
+	public void setNotas(List<Nota> nota) {
+		this.nota = nota;
 	}
 
-	public Notas addNota(Notas nota) {
-		getNotas().add(nota);
+	public Nota addNota(Nota nota) {
+		getNota().add(nota);
 		nota.setPlantillaNota(this);
 
 		return nota;
 	}
 
-	public Notas removeNota(Notas nota) {
-		getNotas().remove(nota);
+	public Nota removeNota(Nota nota) {
+		getNota().remove(nota);
 		nota.setPlantillaNota(null);
 
 		return nota;

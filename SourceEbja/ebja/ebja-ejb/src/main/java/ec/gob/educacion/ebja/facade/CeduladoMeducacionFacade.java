@@ -1,8 +1,6 @@
 package ec.gob.educacion.ebja.facade;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-import com.thoughtworks.xstream.io.xml.XmlFriendlyReplacer;
+
 
 import ec.gob.educacion.ebja.dto.Persona;
 import ec.gob.educacion.ebja.facade.local.CeduladoMeducacionFacadeLocal;
@@ -16,6 +14,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.io.xml.XmlFriendlyReplacer;
 
 @SuppressWarnings("deprecation")
 @Stateless
@@ -128,6 +130,7 @@ public class CeduladoMeducacionFacade extends AbstractFacade<CeduladoMeducacion>
 		stream.alias("ROW", Persona.class);
 		stream.processAnnotations(Persona.class);
 		String xml = stream.toXML(persona);
+
 		return xml;
 	}
 }

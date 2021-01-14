@@ -18,6 +18,8 @@ public abstract interface MatriculaFacadeLocal {
 	int count();
 	
 	List<Object[]> obtenerEstudiantesParaMatricula(Integer idProgramaEbja, Integer idZoda);
+	List<Object[]> obtenerEstudiantesParaAgrupar(Integer idProgramaEbja, Integer idZoda);
+	List<Object[]> obtenerEstudiantesAgrupados(Integer idProgramaEbja, Integer idZoda);
 	TotalesMatriculaDTO procesoMatriculaAutomaticaFuncion(Integer idProgramaEbja, Integer idZona, Integer idUsuarioCreacion, String ipUsuario);
 	Integer cantidadEstudiantesParaMatricula(Integer idProgramaEbja, Integer idZona); 
 	List<Object[]> obtenerEstudiantesParaMatriculaSU(Integer idProgramaEbja, Integer idZoda);

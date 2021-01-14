@@ -205,7 +205,8 @@ public class SeleccionDocenteBean extends BaseControlador implements Serializabl
 	public void editarDocenteCurso() {
 		try {
 			if (idCursoParalelo != null && idCursoParalelo.toString().isEmpty() == false)
-				docenteCurso.setCursoParalelo(cursoParaleloFacadeLocal.find(idCursoParalelo));
+			//	docenteCurso.setCursoParalelo(cursoParaleloFacadeLocal.find(idCursoParalelo));
+				System.out.println();
 			else
 				docenteCurso.setCursoParalelo(null);
 			docenteCursoFacadeLocal.edit(docenteCurso);
@@ -274,7 +275,8 @@ public class SeleccionDocenteBean extends BaseControlador implements Serializabl
 	private void cargaDatosRegistro() {
 		docenteCurso.setProgramaInstitucion(selectedInstitucion);
 		if (idCursoParalelo != null && idCursoParalelo.toString().isEmpty() == false)
-			docenteCurso.setCursoParalelo(cursoParaleloFacadeLocal.find(idCursoParalelo));
+			//docenteCurso.setCursoParalelo(cursoParaleloFacadeLocal.find(idCursoParalelo));
+			System.out.println();
 		else
 			docenteCurso.setCursoParalelo(null);
 			

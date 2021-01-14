@@ -20,13 +20,12 @@ import ec.gob.educacion.ebja.controlador.SesionControlador;
 import ec.gob.educacion.ebja.facade.local.CursoParaleloFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.DocenteCursoFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.InstitucEstablecFacadeLocal;
-import ec.gob.educacion.ebja.facade.local.MallaDocenteFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.NotaFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.ProgramaGradoFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.ProgramaInstitucionFacadeLocal;
 import ec.gob.educacion.ebja.modelo.Asignatura;
 import ec.gob.educacion.ebja.modelo.CursoParalelo;
-import ec.gob.educacion.ebja.modelo.Notas;
+import ec.gob.educacion.ebja.modelo.Nota;
 import ec.gob.educacion.ebja.modelo.ProgramaEbja;
 import ec.gob.educacion.ebja.modelo.ProgramaInstitucion;
 import ec.gob.educacion.ebja.modelo.seguridades.RolAplicacion;
@@ -72,8 +71,6 @@ public class NotasBean extends BaseControlador implements Serializable {
 	private CursoParaleloFacadeLocal cursoParalelo;
 	@EJB
 	private ProgramaGradoFacadeLocal programaGrado;
-	@EJB
-	private MallaDocenteFacadeLocal mallaDocente;
 	
 	@PostConstruct
 	public void init() {
@@ -121,7 +118,7 @@ public class NotasBean extends BaseControlador implements Serializable {
 		
 		listaProgramaInstitucion = programaInstitucion.buscarProgramaInstitucion(institucionSeleccionada,programaSeleccionado);
 		listaCursoParalelo = cursoParalelo.obtenerCursoParaleloPorinstitucion(new Integer(paraleloSeleccionado),listaProgramaInstitucion.get(0).getId());
-		listaAsignatura = mallaDocente.buscarAsignatura(listaCursoParalelo.get(0).getId(),listaProgramaInstitucion.get(0).getId());
+		//listaAsignatura = mallaDocente.buscarAsignatura(listaCursoParalelo.get(0).getId(),listaProgramaInstitucion.get(0).getId());
 
 	}
 	

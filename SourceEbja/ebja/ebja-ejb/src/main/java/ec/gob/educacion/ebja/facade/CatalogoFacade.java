@@ -194,4 +194,20 @@ public class CatalogoFacade extends AbstractFacade<Catalogo> implements Catalogo
 		return  (Materia) em.createNamedQuery("Materia.findById").setParameter("id", Integer.parseInt(idMateria)).getSingleResult();
 	}
 
+	@Override
+	public List<Pais> listaPaisUbicacionEcuador() {
+		StringBuilder sql = new StringBuilder();
+		sql.append("select p from Pais p ");
+		sql.append(" where (p.estado = :estado or p.estado = :estado1) ");
+		sql.append("   and (p.id = 345) ");
+		sql.append(" order by p.nombre ");
+		
+		TypedQuery<Pais> q = em.createQuery(sql.toString(), Pais.class)
+			.setParameter("estado", Constantes.ESTADO_REGISTRO_ACTIVO)
+			.setParameter("estado1", Constantes.ESTADO_REGISTRO_ACTIVO1);
+		
+		return q.getResultList();
+	
+	}
+
 }

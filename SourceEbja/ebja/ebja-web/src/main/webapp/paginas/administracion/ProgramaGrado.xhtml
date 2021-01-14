@@ -27,13 +27,43 @@
 							<p:column>
 								<div class="userIcon-Grado-ebja"></div>
 							</p:column>
-							<p:column styleClass="panelBusqueda-primeraCol-ebja">
-								<h:outputText value=" Seleccione una Oferta: " />
-							</p:column>
+							<p:column styleClass="ebja_global_2ndColBusqueda4objetos_004_2">
+										<h:outputText value=" Tipo Proyecto: " />
+										<p:selectOneMenu id="combListProyecto"
+											value="#{programaGradoBean.tipoProyectoSeleccionadoBusqueda}"
+											styleClass="ebja_oferta_cmbCreacionOferta_tipoPrograma_029_3">
+											<f:selectItem itemLabel="Seleccionar Tip. Proyecto" />
+											<f:selectItems
+												value="#{programaGradoBean.listaProgramaEducativo}"
+												var="varTipoProyecto"
+												itemLabel="#{varTipoProyecto.nombrePrograma}"
+												itemValue="#{varTipoProyecto.nemonico}"></f:selectItems>
+											<p:ajax execute="@this"
+												update=":#{p:component('combListFase')}"
+												listener="#{programaGradoBean.obtenerFasesdeProyectoBusqueda}" />
+										</p:selectOneMenu>
+									</p:column>
+									<p:column styleClass="ebja_global_2ndColBusqueda4objetos_004_2">
+										<h:outputText value=" Tipo Fase: " />
+										<p:selectOneMenu id="combListFase"
+											value="#{programaGradoBean.tipoFaseSeleccionadaBusqueda}"
+											styleClass="ebja_oferta_cmbCreacionOferta_tipoPrograma_029_3">
+											<f:selectItem itemLabel="Seleccionar Tip. Proyecto" />
+											<f:selectItems
+												value="#{programaGradoBean.listaGrupoFaseProg}"
+												var="varTipoGrupofase"
+												itemLabel="#{varTipoGrupofase.nombre}"
+												itemValue="#{varTipoGrupofase.nemonico}"></f:selectItems>
+											<p:ajax execute="@this"
+												update=":#{p:component('combListModuloReglas')}"
+												listener="#{programaGradoBean.obtenerOfertaBusqueda}" />
+										</p:selectOneMenu>
+									</p:column>
 							<p:column styleClass="panelBusqueda-terceraCol-reglas-ebja">
+							<h:outputText value=" Tipo Oferta: " />
 								<p:selectOneMenu id="combListModuloReglas"
 									value="#{programaGradoBean.programaSeleccionado}"
-									styleClass="comboReglaGradoBusqueda-ebja">
+									styleClass="ebja_oferta_cmbCreacionOferta_tipoPrograma_029_3">
 									<f:selectItem itemLabel="Seleccionar Oferta" />
 									<f:selectItems value="#{programaGradoBean.listaProgramaEbja}"
 										var="varModulo" itemLabel="#{varModulo.nombre}"
@@ -77,6 +107,22 @@
 								styleClass="tabla-Nombre-ebja">
 								<h:outputText value="#{progGrado[0].grado.descripcionNemonico}" />
 							</p:column>
+							<p:column headerText="Secuencia Grado" sortBy="#{progGrado[0].secuenciaGrado}"
+								styleClass="tabla-Estado-ebja">
+								<h:outputText value="#{progGrado[0].secuenciaGrado}" />
+							</p:column>
+							<p:column headerText="Grupo Pack" sortBy="#{progGrado[0].idpack}"
+								styleClass="tabla-Estado-ebja">
+								<h:outputText value="#{progGrado[0].idpack}" />
+							</p:column>
+							<p:column headerText="Inicio Fin Grado" sortBy="#{progGrado[0].gradoInicial}"
+								styleClass="tabla-Estado-ebja">
+								<h:outputText value="#{progGrado[0].gradoInicial}" />
+							</p:column>
+							<p:column headerText="Visible" sortBy="#{progGrado[0].visible}"
+								styleClass="tabla-Estado-ebja">
+								<h:outputText value="#{progGrado[0].visible}" />
+							</p:column>
 							<p:column headerText="Estado" styleClass="tabla-Estado-ebja">
 								<h:outputText value="#{progGrado[1]}" />
 							</p:column>
@@ -110,6 +156,16 @@
 									</p:commandLink>
 								</div>
 							</p:column>
+							<p:column styleClass="ebja_acuerdo_tblAcuerdo_6thColInactivar_007" headerText="Borrar">
+								<div style="text-align: center;">
+									<p:commandLink
+										actionListener="#{programaGradoBean.gradoSeleccionadoEliminar(progGrado)}"
+										oncomplete="PF('popConfirmarEliminarGrado').show();"
+										ajax="true">
+										<h:graphicImage value="../../img/eliminarIcon.png" />
+									</p:commandLink>
+								</div>
+							</p:column>
 							<f:facet name="paginatorBottomRight">
 								<p:commandButton type="button" icon="fa fa-sync" />
 							</f:facet>
@@ -120,7 +176,7 @@
 			<h:form id="formGuardarGrado">
 				<p:dialog header="Guardar Grado Seleccionado"
 					widgetVar="popGuardarGrado" resizable="false" autosized="false" width="425"
-					height="140">
+					height="300">
 					<div>
 						<h:panelGrid id="pnlNuevoRegistroMensaje" columns="2"
 							cellpadding="5" cellspacing="1" border="0"
@@ -149,6 +205,36 @@
 									var="varFormulario" itemLabel="#{varFormulario.descripcionNemonico}"
 									itemValue="#{varFormulario.nemonico}"></f:selectItems>
 							</p:selectOneMenu>
+								<h:outputText value="Secuencia Grado " />
+						<p:inputText styleClass="ebja_oferta_inpTxtCreacionOferta_edadMin_023"
+						value="#{programaGradoBean.secuenciaGrado}" required="true"
+						requiredMessage="El campo 'Edad Mínima' está vacío" maxlength="2">
+						<p:keyFilter regEx="/[0-9]/i" />
+						</p:inputText>
+				  <h:outputText value="Grupo Pack " />
+					<p:inputText styleClass="ebja_oferta_inpTxtCreacionOferta_edadMin_023"
+						value="#{programaGradoBean.secPack}" required="true"
+						requiredMessage="El campo 'Edad Mínima' está vacío" maxlength="2">
+						<p:keyFilter regEx="/[0-9]/i" />
+					</p:inputText>
+					<h:outputText value="Grado Inicial " />
+					<p:inputText styleClass="ebja_oferta_inpTxtCreacionOferta_edadMin_023"
+						value="#{programaGradoBean.gradoInicial}" required="true"
+						requiredMessage="El campo 'Edad Mínima' está vacío" maxlength="2">
+						<p:keyFilter regEx="/[0-9]/i" />
+					</p:inputText>
+					<h:outputText value="El Grado es Visible? " />
+					<p:selectOneMenu id="combVisible"
+						value="#{programaGradoBean.esVisible}"
+						styleClass="ebja_oferta_cmbCreacionOferta_cobExtrajeros_031" required="true"
+						requiredMessage="Debe escojer si es visible o no">
+						<f:selectItem itemLabel="Seleccionar Visibilidad" />
+						<f:selectItems
+							value="#{programaGradoBean.listaSiNO}"
+							var="varCobertura" itemLabel="#{varCobertura.nombre}"
+							itemValue="#{varCobertura.nemonico}"></f:selectItems>
+					</p:selectOneMenu>
+					
 						</h:panelGrid>
 					</div>
 					<h:panelGrid columns="2"
@@ -215,6 +301,31 @@
 					</h:panelGrid>
 				</p:dialog>
 			</h:form>
+			
+			<h:form>
+				<p:dialog header="Eliminar Registro"
+					widgetVar="popConfirmarEliminarGrado" resizable="false" autosized="false"
+					width="250" height="100">
+					<h:panelGrid border="0" columns="2"
+						columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
+						<div class="ebja_global_classIcono_001"></div>
+						<h:outputLabel value="Está seguro que desea Activar Registro?"
+							styleClass="texto-confirmar-borrar-archivo-ebja" />
+					</h:panelGrid>
+					<h:panelGrid columns="2"
+						styleClass="popUpCreacionMensajeBotones-ebja"
+						columnClasses="popUpBusqueda-botones-ebja,popUpBusqueda-botones-ebja"
+						border="0">
+						<p:commandButton value="Sí" styleClass="popUpBoton-ebja"
+							ajax="true" actionListener="#{programaGradoBean.eliminarGradoLogico}"
+							oncomplete="PF('popConfirmarEliminarGrado').hide();"
+							update=":#{p:component('tblGrado')},:#{p:component('messagePagGrado')}" />
+						<p:commandButton value="No" styleClass="popUpBoton-ebja"
+							ajax="true" oncomplete="PF('popConfirmarEliminarGrado').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+			
 		</div>
 	</ui:define>
 </ui:composition>

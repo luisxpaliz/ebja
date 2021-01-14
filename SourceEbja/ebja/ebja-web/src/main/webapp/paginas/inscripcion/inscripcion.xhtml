@@ -687,27 +687,28 @@ a.claseParaBotonLink:hover {
 						</p:panelGrid>
 
 						<p:panelGrid id="pgDatosOferta" cellpadding="10" cellspacing="1"
-							border="1" styleClass="panelBusqueda-ebja">
+							border="1" styleClass="panelBusqueda-ebja" >
 							<p:row>
-								<p:column rowspan="3" styleClass="panelBEstudianteColIcon">
+							
+							<p:column rowspan="4" styleClass="panelBEstudianteColIcon">
 									<div class="userIcon-Estudiante-AnioCursado-ebja"></div>
 								</p:column>
-								<p:column styleClass="panelBEstudianteCol3">
+								<p:column styleClass="panelBEstudianteCol3_1" colspan="2" >
 									<p:fieldset legend="Certificado"
 										style=" text-align: center; width:100%">
-										<p:panelGrid id="pgPresentaCertificado1">
+										<p:panelGrid id="pgPresentaCertificado1" style=" text-align: center; width:100%">
 											<p:row>
-												<p:column>
+												<p:column colspan="2">
 													<p:outputLabel value="¿Presenta Certificado?" />
 												</p:column>
 											</p:row>
 											<p:row>
-												<p:column>
+												<p:column colspan="2"  style=" text-align: center; width:100%">
 													<p:selectOneRadio id="sorPresentaCertificado1"
 														styleClass="radioButton-Estudiante-ebja" required="true"
 														requiredMessage="Debe seleccionar si presenta o no certificado."
 														disabled="#{inscripcionBean.disabledDocumentoHabilitante}"
-														value="#{inscripcionBean.inscripcion.presentaCertificado}">
+														value="#{inscripcionBean.inscripcion.presentaCertificado}" style=" text-align: center">
 														<f:selectItem itemValue="1" itemLabel="Si" />
 														<f:selectItem itemValue="0" itemLabel="No" />
 														<p:ajax execute="@this"
@@ -718,11 +719,16 @@ a.claseParaBotonLink:hover {
 											</p:row>
 										</p:panelGrid>
 									</p:fieldset>
+								
+								
+								</p:column>
+								<p:column styleClass="panelBEstudianteCol3_1" colspan="2">
+								
 									<p:fieldset legend="Servicio Educativo"
 										style=" text-align: center; width:100%">
-										<p:panelGrid style=" text-align: center; width:100%">
+										<p:panelGrid style=" text-align: center; width:100%" >
 											<p:row>
-												<p:column>
+												<p:column >
 													<p:selectOneMenu id="cmbProyecto"
 														styleClass="comboModuloNuevoNemonico-ebja" required="true"
 														requiredMessage="seleccione proyecto"
@@ -736,23 +742,45 @@ a.claseParaBotonLink:hover {
 															itemValue="#{reg.idProgramaEducativo}" />
 														<p:ajax execute="@this"
 															update="frmForm:cmbFaseProyectoInscripcion frmForm:cmbFaseProyecto frmForm:cmbOfertaAprobada frmForm:cmbGradoAprobado frmForm:cmbOfertaEducativaInscripcion frmForm:cmbGradoInscripcion"
-															listener="#{inscripcionBean.obtenerFasesProyectosUltimoAprobado()}" />
+															listener="#{inscripcionBean.obtenerFasesProyectos()}" />
 													</p:selectOneMenu>
 												</p:column>
 											</p:row>
 										</p:panelGrid>
 									</p:fieldset>
+								
 								</p:column>
-
-								<p:column id="cRegistroEstudiante"
-									styleClass="panelBEstudianteCol2" colspan="2">
+							</p:row>
+							<p:row>
+							
+							<p:column id="cRegistroEstudiante"
+									styleClass="panelBEstudianteCol2" colspan="3">
 									<p:fieldset legend="Periodo / Oferta / Grado"
 										style=" text-align: center; width:100%">
 
 										<p:panelGrid style=" text-align: center; width:100%">
 											<p:row>
 												<p:column>
-													<p:outputLabel value="Último Sistema Educativo:" />
+												<p:outputLabel value="Periodo Inscripción:" />
+													<p:selectOneMenu id="cmbFaseProyecto"
+														styleClass="comboModuloNuevoNemonico-ebja" required="true"
+														requiredMessage="seleccione fase"
+														readonly="#{inscripcionBean.disabledUltimoAnioAprobado}"
+														value="#{inscripcionBean.faseProgramaSeleccionadoUltimo}">
+														<f:selectItem itemLabel=" Seleccione Periodo "
+															noSelectionOption="false" itemDisabled="false" />
+														<f:selectItems
+															value="#{inscripcionBean.listaGradoFasePrograma}"
+															var="reg" itemLabel="#{reg.nombre}"
+															itemValue="#{reg.idGrupoFaseNotas}" />
+														<p:ajax execute="@this"
+															update="frmForm:cmbFaseProyectoInscripcion frmForm:cmbOfertaAprobada frmForm:cmbGradoAprobado frmForm:cmbOfertaEducativaInscripcion frmForm:cmbGradoInscripcion"
+															listener="#{inscripcionBean.obtenerFasesProyectosUltimoAprobado()}" />
+													</p:selectOneMenu>
+
+												</p:column>
+												<p:column>
+												<p:outputLabel value="Último Sistema Educativo:" />
 													<p:selectOneMenu id="cmbFaseProyectoInscripcion"
 														styleClass="comboModuloNuevoNemonico-ebja" required="true"
 														requiredMessage="seleccione fase"
@@ -765,13 +793,13 @@ a.claseParaBotonLink:hover {
 															var="reg" itemLabel="#{reg.nombre}"
 															itemValue="#{reg.idGrupoFaseNotas}" />
 														<p:ajax execute="@this"
-															update="frmForm:cmbFaseProyecto frmForm:cmbOfertaAprobada frmForm:cmbGradoAprobado frmForm:cmbOfertaEducativaInscripcion frmForm:cmbGradoInscripcion"
+															update="frmForm:cmbOfertaAprobada frmForm:cmbGradoAprobado frmForm:cmbOfertaEducativaInscripcion frmForm:cmbGradoInscripcion"
 															listener="#{inscripcionBean.obtenerOfertaAprobada()}" />
 													</p:selectOneMenu>
-
+													
 												</p:column>
 												<p:column>
-													<p:outputLabel value="Última Oferta Aprobada:" />
+												<p:outputLabel value="Última Oferta Aprobada:" />
 													<p:selectOneMenu id="cmbOfertaAprobada"
 														styleClass="comboModuloNuevoNemonico-ebja" required="true"
 														requiredMessage="seleccione &#250;ltimo A&#241;o Aprobado"
@@ -783,10 +811,16 @@ a.claseParaBotonLink:hover {
 															noSelectionOption="false" itemDisabled="false" var="reg"
 															itemLabel="#{reg.nombre}" itemValue="#{reg.nemonico}" />
 														<p:ajax execute="@this"
-															update="frmForm:cmbFaseProyecto frmForm:cmbGradoAprobado frmForm:cmbOfertaEducativaInscripcion frmForm:cmbGradoInscripcion"
+															update="frmForm:cmbGradoAprobado frmForm:cmbOfertaEducativaInscripcion frmForm:cmbGradoInscripcion"
 															listener="#{inscripcionBean.obtenerGrado()}" />
 													</p:selectOneMenu>
+													
 												</p:column>
+											</p:row>
+										</p:panelGrid>
+
+										<p:panelGrid style=" text-align: center; width:100%">
+											<p:row>
 												<p:column>
 													<p:outputLabel value="Último Grado Aprobado:" />
 													<p:selectOneMenu id="cmbGradoAprobado"
@@ -800,31 +834,8 @@ a.claseParaBotonLink:hover {
 															var="reg" itemLabel="#{reg.nemonico}"
 															itemValue="#{reg.id}" />
 														<p:ajax execute="@this"
-															update="frmForm:cmbFaseProyecto frmForm:cmbOfertaEducativaInscripcion frmForm:cmbGradoInscripcion"
-															listener="#{inscripcionBean.obtenerFasesProyectos()}" />
-													</p:selectOneMenu>
-												</p:column>
-											</p:row>
-										</p:panelGrid>
-
-										<p:panelGrid style=" text-align: center; width:100%">
-											<p:row>
-												<p:column>
-													<p:outputLabel value="Periodo Inscripción:" />
-													<p:selectOneMenu id="cmbFaseProyecto"
-														styleClass="comboModuloNuevoNemonico-ebja" required="true"
-														requiredMessage="seleccione fase"
-														readonly="#{inscripcionBean.disabledUltimoAnioAprobado}"
-														value="#{inscripcionBean.faseProgramaSeleccionadoUltimo}">
-														<f:selectItem itemLabel=" Seleccione Periodo "
-															noSelectionOption="false" itemDisabled="false" />
-														<f:selectItems
-															value="#{inscripcionBean.listaGradoFasePrograma}"
-															var="reg" itemLabel="#{reg.nombre}"
-															itemValue="#{reg.idGrupoFaseNotas}" />
-														<p:ajax execute="@this"
 															update="frmForm:cmbOfertaEducativaInscripcion frmForm:cmbGradoInscripcion"
-															listener="#{inscripcionBean.buscarOfertaGrado()}" />
+															listener="#{inscripcionBean.buscarOfertaGrado() }" />
 													</p:selectOneMenu>
 												</p:column>
 												<p:column>
@@ -874,8 +885,6 @@ a.claseParaBotonLink:hover {
 										</p:commandButton>
 									</p:fieldset>
 								</p:column>
-
-
 							</p:row>
 							<p:row>
 
@@ -1347,7 +1356,22 @@ a.claseParaBotonLink:hover {
 									</p:column>
 								</p:row>
 								<p:row>
-									<p:column styleClass="panelBEstudianteCol1Geografica">
+								
+								<p:column styleClass="panelBEstudianteCol1Geografica">
+										<p:outputLabel value="Institución: " />
+									</p:column>
+									<p:column styleClass="panelBEstudianteCol2Geografica">
+										<h:panelGroup>
+											<p:selectOneMenu id="cmbInstitucion"
+											value="#{inscripcionBean.idInstitucion}">
+											<f:selectItems value="#{inscripcionBean.listaEstablecimientos}"
+													var="item" itemLabel="#{item.idInstitucion.descripcion}"
+													itemValue="#{item.idInstitucion.id}" />
+											</p:selectOneMenu>
+										</h:panelGroup>
+									</p:column>
+									
+									<p:column styleClass="panelBEstudianteCol2Geografica">
 										<p:outputLabel for="itDireccion" value="Dirección: " />
 									</p:column>
 									<p:column>
@@ -1364,6 +1388,9 @@ a.claseParaBotonLink:hover {
 											</p:inputTextarea>
 										</h:panelGroup>
 									</p:column>
+									
+									
+									
 								</p:row>
 							</p:panelGrid>
 						</p:panel>

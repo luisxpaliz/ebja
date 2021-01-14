@@ -27,11 +27,11 @@ public class Nota implements Serializable {
 	@Column(name="fecha_creacion")
 	private Timestamp fechaCreacion;
 
+	@Column(name="id_jornada")
+	private Integer idJornada;
+
 	@Column(name="id_usuario_creacion")
 	private Integer idUsuarioCreacion;
-
-	@Column(name="ins_observacion")
-	private String insObservacion;
 
 	@Column(name="ip_usuario")
 	private String ipUsuario;
@@ -40,18 +40,10 @@ public class Nota implements Serializable {
 
 	private BigDecimal nota;
 
-	@Column(name="tipo_nota_abc")
-	private Integer tipoNotaAbc;
-
-	//bi-directional many-to-one association to ModeloEvaluacion
+	//bi-directional many-to-one association to Matricula
 	@ManyToOne
-	@JoinColumn(name="id_modelo_evaluacion")
-	private ModeloEvaluacion modeloEvaluacion;
-
-	//bi-directional many-to-one association to PlantillaEstudiante
-	@ManyToOne
-	@JoinColumn(name="id_plantilla_estudiante")
-	private PlantillaEstudiante plantillaEstudiante;
+	@JoinColumn(name="id_matricula")
+	private Matricula matricula;
 
 	//bi-directional many-to-one association to PlantillaNota
 	@ManyToOne
@@ -85,20 +77,20 @@ public class Nota implements Serializable {
 		this.fechaCreacion = fechaCreacion;
 	}
 
+	public Integer getIdJornada() {
+		return this.idJornada;
+	}
+
+	public void setIdJornada(Integer idJornada) {
+		this.idJornada = idJornada;
+	}
+
 	public Integer getIdUsuarioCreacion() {
 		return this.idUsuarioCreacion;
 	}
 
 	public void setIdUsuarioCreacion(Integer idUsuarioCreacion) {
 		this.idUsuarioCreacion = idUsuarioCreacion;
-	}
-
-	public String getInsObservacion() {
-		return this.insObservacion;
-	}
-
-	public void setInsObservacion(String insObservacion) {
-		this.insObservacion = insObservacion;
 	}
 
 	public String getIpUsuario() {
@@ -125,28 +117,12 @@ public class Nota implements Serializable {
 		this.nota = nota;
 	}
 
-	public Integer getTipoNotaAbc() {
-		return this.tipoNotaAbc;
+	public Matricula getMatricula() {
+		return this.matricula;
 	}
 
-	public void setTipoNotaAbc(Integer tipoNotaAbc) {
-		this.tipoNotaAbc = tipoNotaAbc;
-	}
-
-	public ModeloEvaluacion getModeloEvaluacion() {
-		return this.modeloEvaluacion;
-	}
-
-	public void setModeloEvaluacion(ModeloEvaluacion modeloEvaluacion) {
-		this.modeloEvaluacion = modeloEvaluacion;
-	}
-
-	public PlantillaEstudiante getPlantillaEstudiante() {
-		return this.plantillaEstudiante;
-	}
-
-	public void setPlantillaEstudiante(PlantillaEstudiante plantillaEstudiante) {
-		this.plantillaEstudiante = plantillaEstudiante;
+	public void setMatricula(Matricula matricula) {
+		this.matricula = matricula;
 	}
 
 	public PlantillaNota getPlantillaNota() {

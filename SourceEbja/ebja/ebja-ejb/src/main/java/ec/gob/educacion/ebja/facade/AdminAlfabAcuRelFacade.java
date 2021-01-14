@@ -9,6 +9,8 @@ import javax.persistence.PersistenceContext;
 
 import ec.gob.educacion.ebja.facade.local.AdminAlfabAcuRelFacadeLocal;
 import ec.gob.educacion.ebja.modelo.Acuerdo;
+import ec.gob.educacion.ebja.modelo.AcuerdoJTA;
+import ec.gob.educacion.ebja.modelo.ProgramaEbja;
 
 @Stateless
 public class AdminAlfabAcuRelFacade extends AbstractFacade<Acuerdo> implements AdminAlfabAcuRelFacadeLocal {
@@ -65,6 +67,19 @@ public class AdminAlfabAcuRelFacade extends AbstractFacade<Acuerdo> implements A
 	@SuppressWarnings("unchecked")
 	public List<Acuerdo> buscarTodosAcuerdosActivos() {
 		return (List<Acuerdo>) em.createNamedQuery("Acuerdo.findActiveAll").getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<AcuerdoJTA> buscarTodosAcuerdosActivosJTA() {
+		return (List<AcuerdoJTA>) em.createNamedQuery("AcuerdoJTA.findActiveAll").getResultList();
+	}
+	
+	/*Se necesita para relizar una consulta rapida en una relación EAGER del mapeo Hibernate*/
+	@Override
+	public List<Acuerdo> buscarTodosAcuerdosActivosNat(){
+		sql = " ";
+		sql="select a.id,a.nombre,a.nemonico,a.archivo_pdf,a.id_usuario_creacion,a.fecha_creacion,a.ip_usuario,a.estado from ebja.acuerdo a where a.estado='1' ";
+		return (List<Acuerdo>) em.createNativeQuery(sql,Acuerdo.class).getResultList();
 	}
 
 	@SuppressWarnings("unchecked")

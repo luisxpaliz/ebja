@@ -21,79 +21,170 @@
 				<f:facet name="header">Búsqueda de Oferta:</f:facet>
 				<p:panelGrid id="pnlBusqueda" cellpadding="10" cellspacing="1"
 					border="1" styleClass="ebja_global_pnlBusqueda4objetos_002">
+
 					<p:row>
 						<p:column>
 							<div class="userIdMap-Modulo-ebja"></div>
 						</p:column>
-						<p:column styleClass="ebja_global_1stColBusqueda4objetos_003">
-							<h:outputText value=" Búsqueda de Oferta por: " />
-						</p:column>
-						<p:column styleClass="ebja_global_2ndColBusqueda4objetos_004">
-							<p:selectOneRadio layout="pageDirection"
-								styleClass="ebja_global_rdbtnBusqueda4objetos_005"
-								value="#{adminAlfabModuloControlador.busquedaTipo}">
-								<f:selectItem itemLabel="Código" itemValue="1" />
-								<f:selectItem itemLabel="Nombre de Oferta" itemValue="2" />
-							</p:selectOneRadio>
-						</p:column>
-						<p:column styleClass="ebja_global_3rdColBusqueda4objetos_006">
-							<p:inputText styleClass="ebja_global_inpTxtBusqueda4objetos_007"
-								id="inputTxtModuloIngresarBuscar"
-								value="#{adminAlfabModuloControlador.busquedaContenido}" maxlength="60">
-								<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ_-\s]+$/i" preventPaste="false"/>
-							</p:inputText>
+						<p:column>
+							<p:panelGrid id="pnlSubBusqueda" cellpadding="10" cellspacing="1"
+								border="1" styleClass="ebja_global_pnlBusqueda4objetos_002">
+								<p:row>
+									<p:column styleClass="ebja_global_1stColBusqueda4objetos_003">
+										<h:outputText value=" Búsqueda Oferta por Fase: " />
+									</p:column>
+									<p:column styleClass="ebja_global_2ndColBusqueda4objetos_004_2">
+										<h:outputText value=" Tipo Proyecto: " />
+										<p:selectOneMenu id="combListProyecto"
+											value="#{adminAlfabModuloControlador.tipoProyectoSeleccionadoBusqueda}"
+											styleClass="ebja_oferta_cmbCreacionOferta_tipoPrograma_029_3">
+											<f:selectItem itemLabel="Seleccionar Tip. Proyecto" />
+											<f:selectItems
+												value="#{adminAlfabModuloControlador.listaProgramaEducativo}"
+												var="varTipoProyecto"
+												itemLabel="#{varTipoProyecto.nombrePrograma}"
+												itemValue="#{varTipoProyecto.nemonico}"></f:selectItems>
+											<p:ajax execute="@this"
+												update=":#{p:component('combListFase')}"
+												listener="#{adminAlfabModuloControlador.obtenerFasesdeProyectoBusqueda}" />
+										</p:selectOneMenu>
+									</p:column>
+									<p:column styleClass="ebja_global_2ndColBusqueda4objetos_004_2">
+										<h:outputText value=" Tipo Fase: " />
+										<p:selectOneMenu id="combListFase"
+											value="#{adminAlfabModuloControlador.tipoFaseSeleccionadaBusqueda}"
+											styleClass="ebja_oferta_cmbCreacionOferta_tipoPrograma_029_4">
+											<f:selectItem itemLabel="Seleccionar Tip. Proyecto" />
+											<f:selectItems
+												value="#{adminAlfabModuloControlador.listaGrupoFaseProg}"
+												var="varTipoGrupofase"
+												itemLabel="#{varTipoGrupofase.nombre}"
+												itemValue="#{varTipoGrupofase.nemonico}"></f:selectItems>
+										</p:selectOneMenu>
+									</p:column>
+									<p:column style="text-align:center" styleClass="ebja_global_2ndColBusqueda4objetos_004_3">
+										<h:panelGroup style="display:block ">
+											<p:commandButton id="submitFase" value="Buscar"
+												actionListener="#{adminAlfabModuloControlador.buscarModuloProyecto}"
+												styleClass="botonBuscar-ebja_2" ajax="true" update="@form" />
+										</h:panelGroup>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="ebja_global_1stColBusqueda4objetos_003">
+										<h:outputText value=" Búsqueda de Oferta individual: " />
+									</p:column>
+									<p:column styleClass="ebja_global_2ndColBusqueda4objetos_004">
+										<p:selectOneRadio
+											styleClass="ebja_global_rdbtnBusqueda4objetos_005"
+											value="#{adminAlfabModuloControlador.busquedaTipo}">
+											<f:selectItem itemLabel="Código" itemValue="1" />
+											<f:selectItem itemLabel="Nombre de Oferta" itemValue="2" />
+										</p:selectOneRadio>
+									</p:column>
+									<p:column styleClass="ebja_global_3rdColBusqueda4objetos_006">
+										<p:inputText
+											styleClass="ebja_oferta_cmbCreacionOferta_tipoPrograma_029_4"
+											id="inputTxtModuloIngresarBuscar"
+											value="#{adminAlfabModuloControlador.busquedaContenido}"
+											maxlength="60">
+											<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ_-\s]+$/i"
+												preventPaste="false" />
+										</p:inputText>
+									</p:column>
+									<p:column style="text-align:center" styleClass="ebja_global_2ndColBusqueda4objetos_004_3">
+										<h:panelGroup style="display:block ">
+											<p:commandButton id="submitIndividual" value="Buscar"
+												actionListener="#{adminAlfabModuloControlador.buscarModulo}"
+												styleClass="botonBuscar-ebja_2" ajax="true" update="@form" />
+										</h:panelGroup>
+									</p:column>
+								</p:row>
+
+							</p:panelGrid>
 						</p:column>
 					</p:row>
-					<p:row>
-						<p:column style="text-align:center" colspan="4">
-							<h:panelGroup style="display:block ">
-								<p:commandButton id="submit" value="Buscar"
-									actionListener="#{adminAlfabModuloControlador.buscarModulo}"
-									styleClass="botonBuscar-ebja" ajax="true" update="@form" />
-							</h:panelGroup>
-						</p:column>
-					</p:row>
+
 				</p:panelGrid>
 				<br></br>
-				<p:messages id="messageModulo" styleClass="ebja_global_msgbtn4objetos009" />
-				<h:panelGrid id="pnlIngresoRegistro" columns="1" border="0" width="100%">
+				<p:messages id="messageModulo"
+					styleClass="ebja_global_msgbtn4objetos009" />
+				<h:panelGrid id="pnlIngresoRegistro" columns="1" border="0"
+					width="100%">
 					<h:panelGroup style="display:block; text-align:center">
 						<p:commandButton value="Crear Oferta"
 							actionListener="#{adminAlfabModuloControlador.setearCrearModulo}"
 							styleClass="ebja_global_btn4objetos_010"
 							oncomplete="PF('popGuardarModulo').show();" ajax="true"
-							update=":#{p:component('formGuardarModulo')},:#{p:component('combListAcuerdos')},:#{p:component('combListPrograma')},:#{p:component('combListModalidad')},:#{p:component('combListCobertura')}" />
+							update=":#{p:component('formGuardarModulo')},:#{p:component('combListAcuerdos')},:#{p:component('combListPrograma')},:#{p:component('combListModalidad')},:#{p:component('combListCobertura')},:#{p:component('combPack')},:#{p:component('combVisible')}" />
 					</h:panelGroup>
-					</h:panelGrid>
-					<p:panel styleClass="ebja_oferta_pnlOferta_001" border="0">
+				</h:panelGrid>
+				<p:panel styleClass="ebja_oferta_pnlOferta_001" border="0">
 					<p:dataTable id="tblModulo" var="modulo"
 						value="#{adminAlfabModuloControlador.listaModulos}"
-						scrollable="true"
-						scrollWidth="98%"
+						scrollable="true" scrollWidth="98%"
 						styleClass="ebja_oferta_tblOferta_002" paginator="true" rows="10"
 						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 						rowsPerPageTemplate="5,10,15">
-
+						<p:column styleClass="ebja_oferta_tblOferta_13thCol_015"
+							headerText="Editar">
+							<div style="text-align: center;">
+								<p:commandLink
+									actionListener="#{adminAlfabModuloControlador.moduloSeleccionadoEditar(modulo)}"
+									oncomplete="PF('popGuardarModulo').show();" ajax="true"
+									update=":#{p:component('formGuardarModulo')},:#{p:component('combListPrograma')},:#{p:component('combListAcuerdos')},:#{p:component('combListModalidad')},:#{p:component('combListCobertura')},:#{p:component('combPack')},:#{p:component('combVisible')}">
+									<h:graphicImage value="../../img/edit.png" />
+								</p:commandLink>
+							</div>
+						</p:column>
+						<p:column headerText="Secuencia Programa"
+							styleClass="ebja_oferta_tblOferta_18thCol_045">
+							<div style="text-align: center;">
+								<h:outputText value="#{modulo[0].secuenciaPrograma}" />
+							</div>
+						</p:column>
+						<p:column headerText="Secuencia Inscripcion"
+							styleClass="ebja_oferta_tblOferta_18thCol_045">
+							<div style="text-align: center;">
+								<h:outputText value="#{modulo[0].secInscripcion}" />
+							</div>
+						</p:column>
 						<p:column headerText="Código"
 							styleClass="ebja_oferta_tblOferta_1stCol_003">
 							<h:outputText value="#{modulo[0].nemonico}" />
-						</p:column>
-						<p:column headerText="Tipo Proyecto"
-							styleClass="ebja_oferta_tblOferta_2ndCol_004">
-							<h:outputText value="#{modulo[0].programaEducativo.nombrePrograma}" />
 						</p:column>
 						<p:column headerText="Nombre de Oferta"
 							styleClass="ebja_oferta_tblOferta_2ndCol_004">
 							<h:outputText value="#{modulo[0].nombre}" />
 						</p:column>
+						<p:column styleClass="ebja_oferta_tblOferta_13thCol_015"
+							headerText="Ver. Sec.">
+							<div style="text-align: center;">
+								<p:commandLink
+									actionListener="#{adminAlfabModuloControlador.moduloSeleccionadoEditar(modulo)}"
+									oncomplete="PF('popGuardarModulo').show();" ajax="true"
+									update=":#{p:component('formGuardarModulo')},:#{p:component('combListPrograma')},:#{p:component('combListAcuerdos')},:#{p:component('combListModalidad')},:#{p:component('combListCobertura')},:#{p:component('combPack')},:#{p:component('combVisible')}">
+									<h:graphicImage value="../../img/cadena.png" />
+								</p:commandLink>
+							</div>
+						</p:column>
 						<p:column headerText="Nombre/s Acuerdo/s"
 							styleClass="ebja_oferta_tblOferta_3rdCol_005">
-						<p:dataTable id="subtblModulo" var="submodulo"
-						value="#{modulo[0].acuerdos}">
-						<p:column styleClass="ebja_oferta_tblOferta_1stCol_003">
-							<h:outputText value="#{submodulo.nemonico}" />
+							<p:dataTable id="subtblModulo" var="submodulo"
+								value="#{modulo[0].acuerdos}">
+								<p:column styleClass="ebja_oferta_tblOferta_1stCol_003">
+									<h:outputText value="#{submodulo.nemonico}" />
+								</p:column>
+							</p:dataTable>
 						</p:column>
-						</p:dataTable>
+						<p:column headerText="Programa Educativo"
+							styleClass="ebja_oferta_tblOferta_2ndCol_004">
+							<h:outputText
+								value="#{modulo[0].grupoFasePrograma.programaEducativo.nombrePrograma}" />
+						</p:column>
+						<p:column headerText="Grupo Fase"
+							styleClass="ebja_oferta_tblOferta_2ndCol_004">
+							<h:outputText value="#{modulo[0].grupoFasePrograma.nombre}" />
 						</p:column>
 						<p:column headerText="Tipo Programa"
 							styleClass="ebja_oferta_tblOferta_4thCol_006">
@@ -106,7 +197,7 @@
 						<p:column headerText="Cobertura Extrajera"
 							styleClass="ebja_oferta_tblOferta_6thCol_008">
 							<div style="text-align: center;">
-							<h:outputText value="#{modulo[0].cobertura==1?'SÍ':'NO'}" />
+								<h:outputText value="#{modulo[0].cobertura==1?'SÍ':'NO'}" />
 							</div>
 						</p:column>
 						<p:column headerText="Edad Mínima"
@@ -124,40 +215,53 @@
 						<p:column headerText="Fecha Inicio"
 							styleClass="ebja_oferta_tblOferta_9thCol_011">
 							<div style="text-align: center;">
-							<h:outputText value="#{modulo[0].fechaInicio}">
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</h:outputText>
+								<h:outputText value="#{modulo[0].fechaInicio}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
 							</div>
 						</p:column>
 						<p:column headerText="Fecha Inicio Clases"
 							styleClass="ebja_oferta_tblOferta_10thCol_012">
 							<div style="text-align: center;">
-							<h:outputText value="#{modulo[0].fechaInicioClases}">
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</h:outputText>
+								<h:outputText value="#{modulo[0].fechaInicioClases}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
 							</div>
 						</p:column>
 						<p:column headerText="Fecha Fin"
 							styleClass="ebja_oferta_tblOferta_11thCol_013">
 							<div style="text-align: center;">
-							<h:outputText value="#{modulo[0].fechaFin}">
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</h:outputText>
+								<h:outputText value="#{modulo[0].fechaFin}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
 							</div>
 						</p:column>
 						<p:column headerText="Estado"
 							styleClass="ebja_oferta_tblOferta_12thCol_014">
 							<div style="text-align: center;">
-							<h:outputText value="#{modulo[1]}" />
+								<h:outputText value="#{modulo[1]}" />
 							</div>
 						</p:column>
+						<p:column headerText="Es Pack"
+							styleClass="ebja_oferta_tblOferta_16thCol_043">
+							<div style="text-align: center;">
+								<h:outputText value="#{modulo[0].esPack> 0 ? 'Sí':'No'}" />
+							</div>
+						</p:column>
+						<p:column headerText="Visible"
+							styleClass="ebja_oferta_tblOferta_18thCol_045">
+							<div style="text-align: center;">
+								<h:outputText value="#{modulo[0].visible> 0 ? 'Sí':'No'}" />
+							</div>
+						</p:column>
+						
 						<p:column styleClass="ebja_oferta_tblOferta_13thCol_015"
 							headerText="Editar">
 							<div style="text-align: center;">
 								<p:commandLink
 									actionListener="#{adminAlfabModuloControlador.moduloSeleccionadoEditar(modulo)}"
 									oncomplete="PF('popGuardarModulo').show();" ajax="true"
-									update=":#{p:component('formGuardarModulo')},:#{p:component('combListPrograma')},:#{p:component('combListAcuerdos')},:#{p:component('combListModalidad')},:#{p:component('combListCobertura')}">
+									update=":#{p:component('formGuardarModulo')},:#{p:component('combListPrograma')},:#{p:component('combListAcuerdos')},:#{p:component('combListModalidad')},:#{p:component('combListCobertura')},:#{p:component('combPack')},:#{p:component('combVisible')}">
 									<h:graphicImage value="../../img/edit.png" />
 								</p:commandLink>
 							</div>
@@ -199,78 +303,106 @@
 							<p:commandButton type="button" icon="fa fa-sync" />
 						</f:facet>
 					</p:dataTable>
-                    </p:panel>
-				
+				</p:panel>
+
 			</p:panel>
 
 		</h:form>
 		<h:form id="formGuardarModulo">
 			<p:dialog header="Guardar Oferta Seleccionada"
-				widgetVar="popGuardarModulo" resizable="false" autosized="false" width="300"
-				height="610">
-				<h:panelGrid id="pnlNuevoRegistroModulo" columns="2" cellpadding="5"
-					cellspacing="1" border="0" styleClass="ebja_oferta_pnlGrdOfertaModulo_018"
+				widgetVar="popGuardarModulo" resizable="false" autosized="false"
+				width="600" height="550">
+				<h:panelGrid id="pnlNuevoRegistroModulo" columns="4" cellpadding="5"
+					cellspacing="1" border="0"
+					styleClass="ebja_oferta_pnlGrdOfertaModulo_018"
 					columnClasses="ebja_oferta_pnlGrdCreacionOferta_1stCol_019,ebja_oferta_pnlGrdCreacionOferta_2ndCol_020"
 					rendered="true">
-					
+
 					<h:outputText value=" Tipo Proyecto: " />
 					<p:selectOneMenu id="combListProyecto"
 						value="#{adminAlfabModuloControlador.tipoProyectoSeleccionado}"
-						styleClass="ebja_oferta_cmbCreacionOferta_tipoPrograma_029" required="true"
+						styleClass="ebja_oferta_cmbCreacionOferta_tipoPrograma_029"
+						required="true"
 						requiredMessage="Debe escojer un Proyecto para guardar el registro">
 						<f:selectItem itemLabel="Seleccionar Tip. Proyecto" />
 						<f:selectItems
 							value="#{adminAlfabModuloControlador.listaProgramaEducativo}"
-							var="varTipoProyecto" itemLabel="#{varTipoProyecto.nombrePrograma}"
+							var="varTipoProyecto"
+							itemLabel="#{varTipoProyecto.nombrePrograma}"
 							itemValue="#{varTipoProyecto.nemonico}"></f:selectItems>
+						<p:ajax execute="@this" update=":#{p:component('combListFaseSeleccion')}"
+							listener="#{adminAlfabModuloControlador.obtenerFasesdeProyecto}" />
+					</p:selectOneMenu>
+					<h:outputText value=" Tipo Fase: " />
+					<p:selectOneMenu id="combListFaseSeleccion"
+						value="#{adminAlfabModuloControlador.tipoFaseSeleccionada}"
+						styleClass="ebja_oferta_cmbCreacionOferta_tipoPrograma_029"
+						required="true"
+						requiredMessage="Debe escojer una Fase para guardar el registro">
+						<f:selectItem itemLabel="Seleccionar Tip. Proyecto" />
+						<f:selectItems
+							value="#{adminAlfabModuloControlador.listaGrupoFaseProg}"
+							var="varTipoGrupofase" itemLabel="#{varTipoGrupofase.nombre}"
+							itemValue="#{varTipoGrupofase.nemonico}"></f:selectItems>
 					</p:selectOneMenu>
 					<h:outputText value=" Código: " />
-					<p:inputText styleClass="ebja_oferta_inpTxtCreacionOferta_codigo_021"
+					<p:inputText
+						styleClass="ebja_oferta_inpTxtCreacionOferta_codigo_021"
 						value="#{adminAlfabModuloControlador.nemonico}" required="true"
 						requiredMessage="El campo 'Código' está vacío" maxlength="40">
-						<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ_-\s]+$/i" preventPaste="false" />
+						<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ_-\s]+$/i"
+							preventPaste="false" />
 					</p:inputText>
 					<h:outputText value=" Nombre Oferta: " />
-					<p:inputText styleClass="ebja_oferta_inpTxtCreacionOferta_nombre_022"
+					<p:inputText
+						styleClass="ebja_oferta_inpTxtCreacionOferta_nombre_022"
 						value="#{adminAlfabModuloControlador.nombre}" required="true"
-						requiredMessage="El campo 'Nombre Programa' está vacío" maxlength="40">
-						<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ_-\s]+$/i" preventPaste="false"/>
+						requiredMessage="El campo 'Nombre Programa' está vacío"
+						maxlength="40">
+						<p:keyFilter regEx="/^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ_-\s]+$/i"
+							preventPaste="false" />
 					</p:inputText>
 					<h:outputText value=" Edad Mínima: " />
-					<p:inputText styleClass="ebja_oferta_inpTxtCreacionOferta_edadMin_023"
+					<p:inputText
+						styleClass="ebja_oferta_inpTxtCreacionOferta_edadMin_023"
 						value="#{adminAlfabModuloControlador.edadMinima}" required="true"
 						requiredMessage="El campo 'Edad Mínima' está vacío" maxlength="2">
 						<p:keyFilter regEx="/[0-9]/i" />
 					</p:inputText>
 					<h:outputText value=" Rezago Mínimo: " />
-					<p:inputText styleClass="ebja_oferta_inpTxtCreacionOferta_rezMin_024"
+					<p:inputText
+						styleClass="ebja_oferta_inpTxtCreacionOferta_rezMin_024"
 						value="#{adminAlfabModuloControlador.regazoMinimo}"
 						required="true"
-						requiredMessage="El campo 'Rezago Mínimo' está vacío" maxlength="2">
+						requiredMessage="El campo 'Rezago Mínimo' está vacío"
+						maxlength="2">
 						<p:keyFilter regEx="/[0-9]/i" />
 					</p:inputText>
 					<p:outputLabel for="calModuloInicio" value=" Fecha Inicio: " />
 					<p:calendar id="calModuloInicio" mask="true"
 						value="#{adminAlfabModuloControlador.fechaInicio}" showOn="button"
-						styleClass="ebja_oferta_calCreacionOferta_inicio_025" mindate="#{adminAlfabModuloControlador.fechaInicio}" pattern="yyyy-MM-dd"/>
-					<p:outputLabel for="calModuloInicioClases" value=" Fecha Inicio Clases: " />
+						styleClass="ebja_oferta_calCreacionOferta_inicio_025"
+						mindate="#{adminAlfabModuloControlador.fechaInicio}"
+						pattern="yyyy-MM-dd" />
+					<p:outputLabel for="calModuloInicioClases"
+						value=" Fecha Inicio Clases: " />
 					<p:calendar id="calModuloInicioClases" mask="true"
-						value="#{adminAlfabModuloControlador.fechaInicioClases}" showOn="button"
-						styleClass="ebja_oferta_calCreacionOferta_inicioClases_026" mindate="#{adminAlfabModuloControlador.fechaInicio}" pattern="yyyy-MM-dd"/>
+						value="#{adminAlfabModuloControlador.fechaInicioClases}"
+						showOn="button"
+						styleClass="ebja_oferta_calCreacionOferta_inicioClases_026"
+						mindate="#{adminAlfabModuloControlador.fechaInicio}"
+						pattern="yyyy-MM-dd" />
 					<p:outputLabel for="calModuloFin" value=" Fecha Fin: " />
 					<p:calendar id="calModuloFin" mask="true"
 						value="#{adminAlfabModuloControlador.fechaFin}" showOn="button"
-						styleClass="ebja_oferta_calCreacionOferta_fin_027" mindate="#{adminAlfabModuloControlador.fechaFin}" pattern="yyyy-MM-dd" />
-					<h:outputText value=" Acuerdos: " />
-					<p:commandButton id="anadirAcuerdos" value="Añadir Acuerdos"
-						styleClass="ebja_oferta_btnAnadirAcuerdo_032" ajax="true"
-						update=":#{p:component('combListAcuerdos')},:#{p:component('tblModuloAcuerdo')}"
-						oncomplete="PF('popGuardarAcuerdos').show();"/>
-					
+						styleClass="ebja_oferta_calCreacionOferta_fin_027"
+						mindate="#{adminAlfabModuloControlador.fechaFin}"
+						pattern="yyyy-MM-dd" />
 					<h:outputText value=" Tipo Programa: " />
 					<p:selectOneMenu id="combListPrograma"
 						value="#{adminAlfabModuloControlador.tipoProgramaSeleccionado}"
-						styleClass="ebja_oferta_cmbCreacionOferta_tipoPrograma_029" required="true"
+						styleClass="ebja_oferta_cmbCreacionOferta_tipoPrograma_029"
+						required="true"
 						requiredMessage="Debe escojer un Programa para guardar el registro">
 						<f:selectItem itemLabel="Seleccionar Tip. Programa" />
 						<f:selectItems
@@ -281,7 +413,8 @@
 					<h:outputText value=" Modalidad: " />
 					<p:selectOneMenu id="combListModalidad"
 						value="#{adminAlfabModuloControlador.modalidadSeleccionada}"
-						styleClass="ebja_oferta_cmbCreacionOferta_modalidad_030" required="true"
+						styleClass="ebja_oferta_cmbCreacionOferta_modalidad_030"
+						required="true"
 						requiredMessage="Debe escojer una Modalidad para guardar el registro">
 						<f:selectItem itemLabel="Seleccionar Modalidad" />
 						<f:selectItems
@@ -292,14 +425,55 @@
 					<h:outputText value="Cobertura Extrajera: " />
 					<p:selectOneMenu id="combListCobertura"
 						value="#{adminAlfabModuloControlador.coberturaExtrajera}"
-						styleClass="ebja_oferta_cmbCreacionOferta_cobExtrajeros_031" required="true"
+						styleClass="ebja_oferta_cmbCreacionOferta_cobExtrajeros_031"
+						required="true"
 						requiredMessage="Debe escojer la Cobertura Extranjera">
 						<f:selectItem itemLabel="Seleccionar Cobertura" />
-						<f:selectItems
-							value="#{adminAlfabModuloControlador.listaSiNO}"
+						<f:selectItems value="#{adminAlfabModuloControlador.listaSiNO}"
 							var="varCobertura" itemLabel="#{varCobertura.nombre}"
 							itemValue="#{varCobertura.nemonico}"></f:selectItems>
 					</p:selectOneMenu>
+					<h:outputText value="Es Pack? " />
+					<p:selectOneMenu id="combPack"
+						value="#{adminAlfabModuloControlador.esPack}"
+						styleClass="ebja_oferta_cmbCreacionOferta_cobExtrajeros_031"
+						required="true" requiredMessage="Debe escojer si es pack o no">
+						<f:selectItem itemLabel="Seleccionar si es Pack" />
+						<f:selectItems value="#{adminAlfabModuloControlador.listaSiNO}"
+							var="varCobertura" itemLabel="#{varCobertura.nombre}"
+							itemValue="#{varCobertura.nemonico}"></f:selectItems>
+					</p:selectOneMenu>
+					<h:outputText value="La Oferta es Visible? " />
+					<p:selectOneMenu id="combVisible"
+						value="#{adminAlfabModuloControlador.esVisible}"
+						styleClass="ebja_oferta_cmbCreacionOferta_cobExtrajeros_031"
+						required="true" requiredMessage="Debe escojer si es visible o no">
+						<f:selectItem itemLabel="Seleccionar Visibilidad" />
+						<f:selectItems value="#{adminAlfabModuloControlador.listaSiNO}"
+							var="varCobertura" itemLabel="#{varCobertura.nombre}"
+							itemValue="#{varCobertura.nemonico}"></f:selectItems>
+					</p:selectOneMenu>
+					<h:outputText value="Secuencia Programa " />
+					<p:inputText
+						styleClass="ebja_oferta_inpTxtCreacionOferta_edadMin_023"
+						value="#{adminAlfabModuloControlador.secPrograma}" required="true"
+						requiredMessage="El campo 'Edad Mínima' está vacío" maxlength="2">
+						<p:keyFilter regEx="/[0-9]/i" />
+					</p:inputText>
+					<h:outputText value="Secuencia Inscripción " />
+					<p:inputText
+						styleClass="ebja_oferta_inpTxtCreacionOferta_edadMin_023"
+						value="#{adminAlfabModuloControlador.secInscripcion}"
+						required="true"
+						requiredMessage="El campo 'Edad Mínima' está vacío" maxlength="2">
+						<p:keyFilter regEx="/[0-9]/i" />
+					</p:inputText>
+					
+					<h:outputText value=" Acuerdos: " />
+					<p:commandButton id="anadirAcuerdos" value="Añadir Acuerdos"
+						styleClass="ebja_oferta_btnAnadirAcuerdo_032" ajax="true"
+						update=":#{p:component('combListAcuerdos')},:#{p:component('tblModuloAcuerdo')}"
+						oncomplete="PF('popGuardarAcuerdos').show();" />
 
 				</h:panelGrid>
 
@@ -319,12 +493,13 @@
 			</p:dialog>
 		</h:form>
 
-        <h:form id="formGuardarSubModulo">
+		<h:form id="formGuardarSubModulo">
 			<p:dialog header="Seleccionar Acuerdos"
-				widgetVar="popGuardarAcuerdos"  modal="true" resizable="false" autosized="false" width="600"
-				minheight="320">
-				<h:panelGrid id="pnlNuevoRegistroModuloSubAcuerdos" columns="2" cellpadding="5"
-					cellspacing="1" border="0" styleClass="ebja_oferta_pnlGrdOfertaModuloAcuerdo_037"
+				widgetVar="popGuardarAcuerdos" modal="true" resizable="false"
+				autosized="false" width="600" minheight="320">
+				<h:panelGrid id="pnlNuevoRegistroModuloSubAcuerdos" columns="2"
+					cellpadding="5" cellspacing="1" border="0"
+					styleClass="ebja_oferta_pnlGrdOfertaModuloAcuerdo_037"
 					columnClasses="ebja_oferta_pnlGrdCreacionOferta_1stCol_019,ebja_oferta_pnlGrdCreacionOferta_2ndCol_020"
 					rendered="true">
 					<h:outputText value=" Acuerdo: " />
@@ -332,13 +507,14 @@
 						value="#{adminAlfabModuloControlador.acuerdoSeleccionado}"
 						styleClass="ebja_oferta_cmbCreacionOferta_acuerdo_028">
 						<f:selectItem itemLabel="Seleccionar Acuerdo" />
-						<f:selectItems 
+						<f:selectItems
 							value="#{adminAlfabModuloControlador.listaAcuerdos}"
-						    var="varAcuerdo" itemLabel="#{varAcuerdo.nombre}"
+							var="varAcuerdo" itemLabel="#{varAcuerdo.nombre}"
 							itemValue="#{varAcuerdo.nemonico}"></f:selectItems>
 					</p:selectOneMenu>
-			    </h:panelGrid>
-			   <p:messages id="messageModuloAcuerdo" styleClass="ebja_oferta_msgAcuerdo_038" />
+				</h:panelGrid>
+				<p:messages id="messageModuloAcuerdo"
+					styleClass="ebja_oferta_msgAcuerdo_038" />
 				<h:panelGrid border="0" columns="2"
 					styleClass="popUpCreacionAcuerdoBotones-ebja"
 					columnClasses="ebja_global_pnlGrd_col1st_GuardarRegistro_006,ebja_global_pnlGrd_col2nd_CancelarRegistro_007">
@@ -351,20 +527,21 @@
 						actionListener="#{adminAlfabModuloControlador.quitarAcuerdoLista}"
 						update=":#{p:component('tblModuloAcuerdo')},:#{p:component('messageModuloAcuerdo')}" />
 				</h:panelGrid>
-			    <h:panelGrid border="0" columns="1"
+				<h:panelGrid border="0" columns="1"
 					styleClass="popUpCreacionAcuerdoBotones-ebja"
 					columnClasses="ebja_ofera_pnlGrd_col1st_GuardarAcuerdo_033">
-					
+
 					<p:dataTable id="tblModuloAcuerdo" var="modAcuerdo"
 						value="#{adminAlfabModuloControlador.listaAcuerdosAnadir}"
-						scrollable="true"
-						scrollWidth="98%"
+						scrollable="true" scrollWidth="98%"
 						rowKey="#{modAcuerdo.nemonico}"
 						selection="#{adminAlfabModuloControlador.listaAcuerdosAnadirEditar}"
-						styleClass="ebja_oferta_tblOfertaAcuerdo_034" paginator="true" rows="3"
+						styleClass="ebja_oferta_tblOfertaAcuerdo_034" paginator="true"
+						rows="3"
 						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 						rowsPerPageTemplate="3,6,9">
-						<p:column selectionMode="multiple" style="width:30px;text-align:center"/>
+						<p:column selectionMode="multiple"
+							style="width:30px;text-align:center" />
 						<p:column headerText="Nemónico"
 							styleClass="ebja_oferta_tblOfertaAcuerdo_col3rd_039">
 							<h:outputText value="#{modAcuerdo.nemonico}" />
@@ -377,7 +554,7 @@
 							<p:commandButton type="button" icon="fa fa-sync" />
 						</f:facet>
 					</p:dataTable>
-					
+
 				</h:panelGrid>
 				<h:panelGrid border="0" columns="3"
 					styleClass="popUpCreacionAcuerdoBotones-ebja"
@@ -386,11 +563,11 @@
 					ebja_oferta_acuerdo_pnlGrdBtn_col3rd_CancelarRegistro_042">
 					<p:commandButton id="guardarRegistroModulo" value="Aceptar"
 						styleClass="ebja_global_btnGuardarRegistro_008" ajax="true"
-						oncomplete="PF('popGuardarAcuerdos').hide();"/>
+						oncomplete="PF('popGuardarAcuerdos').hide();" />
 					<p:commandButton id="cancelarRegistroModulo" value="Cancelar"
 						styleClass="ebja_global_btnCancelarRegistro_009"
 						oncomplete="PF('popGuardarAcuerdos').hide();" />
-				    <p:commandButton id="BorrarSalirRegistroModulo" value="Borrar"
+					<p:commandButton id="BorrarSalirRegistroModulo" value="Borrar"
 						styleClass="ebja_global_btnCancelarRegistro_009"
 						actionListener="#{adminAlfabModuloControlador.vaciarRegistrosAcuerdos}"
 						oncomplete="PF('popGuardarAcuerdos').hide();" />
@@ -401,8 +578,8 @@
 
 		<h:form>
 			<p:dialog header="Inactivar Registro"
-				widgetVar="popConfirmarInactivarModulo" resizable="false" autosized="false"
-				width="250" height="100">
+				widgetVar="popConfirmarInactivarModulo" resizable="false"
+				autosized="false" width="250" height="100">
 				<h:panelGrid id="pnlConfirmarEliminarModulo" columns="2" border="0"
 					width="100%" height="100%"
 					columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
@@ -428,8 +605,8 @@
 
 		<h:form>
 			<p:dialog header="Activar Registro"
-				widgetVar="popConfirmarActivarModulo" resizable="false" autosized="false" width="250"
-				height="100">
+				widgetVar="popConfirmarActivarModulo" resizable="false"
+				autosized="false" width="250" height="100">
 				<h:panelGrid border="0" columns="2"
 					columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
 					<div class="ebja_global_classIcono_001"></div>
@@ -450,13 +627,13 @@
 				</h:panelGrid>
 			</p:dialog>
 		</h:form>
-		
+
 		<h:form>
 			<p:dialog header="Eliminar Registro"
-				widgetVar="popConfirmarEliminarModulo" resizable="false" autosized="false"
-				width="250" height="100">
-				<h:panelGrid id="pnlConfirmarEliminarRegistroModulo" columns="2" border="0"
-					width="100%" height="100%"
+				widgetVar="popConfirmarEliminarModulo" resizable="false"
+				autosized="false" width="250" height="100">
+				<h:panelGrid id="pnlConfirmarEliminarRegistroModulo" columns="2"
+					border="0" width="100%" height="100%"
 					columnClasses="popUpBusqueda-primeraCol-ebja,popUpBusqueda-segundaCol-ebja">
 					<div class="ebja_global_classIcono_001"></div>
 					<h:outputLabel value="Está seguro que desea Eliminar el Registro?"
@@ -476,6 +653,6 @@
 				</h:panelGrid>
 			</p:dialog>
 		</h:form>
-		
+
 	</ui:define>
 </ui:composition>

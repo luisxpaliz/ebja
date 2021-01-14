@@ -12,8 +12,7 @@ import java.util.List;
 @Table(name="programa_institucion", schema = "ebja")
 @NamedQueries({
     @NamedQuery(name = "ProgramaInstitucion.findAll", query = "Select p from Paralelo p")
-    , @NamedQuery(name = "ProgramaInstitucion.findById", query = "SELECT pi FROM ProgramaInstitucion pi WHERE pi.id = :id")
-    , @NamedQuery(name = "ProgramaInstitucion.findByIdProgramaEbja", query = "SELECT pi FROM ProgramaInstitucion pi WHERE pi.programaGrado.programaEbja.id = :idProgramaEbja and pi.estado = '1'")})
+    , @NamedQuery(name = "ProgramaInstitucion.findById", query = "SELECT pi FROM ProgramaInstitucion pi WHERE pi.idGrupoFasePrograma = :idFase")})
 public class ProgramaInstitucion implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -43,30 +42,20 @@ public class ProgramaInstitucion implements Serializable {
 	@Column(name="total_banca")
 	private Integer totalBanca;
 	
-	//bi-directional many-to-one association to CursoParalelo
-	@OneToMany(mappedBy="programaInstitucion")
-	private List<CursoParalelo> cursoParalelos;
-
-	//bi-directional many-to-one association to DocenteCurso
-	@OneToMany(mappedBy="programaInstitucion")
-	private List<DocenteCurso> docenteCursos;
-
-	//bi-directional many-to-one association to Matricula
-	@OneToMany(mappedBy="programaInstitucion")
-	private List<Matricula> matriculas;
-
-	//bi-directional many-to-one association to ProgramaEbja
-	@ManyToOne
-	@JoinColumn(name="id_programa_grado")
-	private ProgramaGrado programaGrado;
+	@Column(name="id_grupo_fase_programa")
+	private Integer idGrupoFasePrograma;
 
 	//bi-directional many-to-one association to ProgramaEbja
 	@ManyToOne
 	@JoinColumn(name="id_instituc_establec")
 	private InstitucEstablec institucEstablec;
 	
-	@Transient
-	private boolean estadoProceso;
+	@Column(name="id_sostenimiento")
+	private Integer idSostenimiento;
+	
+	//bi-directional many-to-one association to CursoParalelo
+	@OneToMany(mappedBy="programaInstitucion", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<CursoParalelo> cursoParalelos;
 	
 	public ProgramaInstitucion() {
 	}
@@ -135,80 +124,6 @@ public class ProgramaInstitucion implements Serializable {
 		this.totalBanca = totalBanca;
 	}
 
-	public List<CursoParalelo> getCursoParalelos() {
-		return this.cursoParalelos;
-	}
-
-	public void setCursoParalelos(List<CursoParalelo> cursoParalelos) {
-		this.cursoParalelos = cursoParalelos;
-	}
-
-	public CursoParalelo addCursoParalelo(CursoParalelo cursoParalelo) {
-		getCursoParalelos().add(cursoParalelo);
-		cursoParalelo.setProgramaInstitucion(this);
-
-		return cursoParalelo;
-	}
-
-	public CursoParalelo removeCursoParalelo(CursoParalelo cursoParalelo) {
-		getCursoParalelos().remove(cursoParalelo);
-		cursoParalelo.setProgramaInstitucion(null);
-
-		return cursoParalelo;
-	}
-
-	public List<DocenteCurso> getDocenteCursos() {
-		return this.docenteCursos;
-	}
-
-	public void setDocenteCursos(List<DocenteCurso> docenteCursos) {
-		this.docenteCursos = docenteCursos;
-	}
-
-	public DocenteCurso addDocenteCurso(DocenteCurso docenteCurso) {
-		getDocenteCursos().add(docenteCurso);
-		docenteCurso.setProgramaInstitucion(this);
-
-		return docenteCurso;
-	}
-
-	public DocenteCurso removeDocenteCurso(DocenteCurso docenteCurso) {
-		getDocenteCursos().remove(docenteCurso);
-		docenteCurso.setProgramaInstitucion(null);
-
-		return docenteCurso;
-	}
-
-	public List<Matricula> getMatriculas() {
-		return this.matriculas;
-	}
-
-	public void setMatriculas(List<Matricula> matriculas) {
-		this.matriculas = matriculas;
-	}
-
-	public Matricula addMatricula(Matricula matricula) {
-		getMatriculas().add(matricula);
-		matricula.setProgramaInstitucion(this);
-
-		return matricula;
-	}
-
-	public Matricula removeMatricula(Matricula matricula) {
-		getMatriculas().remove(matricula);
-		matricula.setProgramaInstitucion(null);
-
-		return matricula;
-	}
-
-	public ProgramaGrado getProgramaGrado() {
-		return programaGrado;
-	}
-
-	public void setProgramaGrado(ProgramaGrado programaGrado) {
-		this.programaGrado = programaGrado;
-	}
-
 	public InstitucEstablec getInstitucEstablec() {
 		return this.institucEstablec;
 	}
@@ -217,11 +132,29 @@ public class ProgramaInstitucion implements Serializable {
 		this.institucEstablec = institucEstablec;
 	}
 
-	public boolean getEstadoProceso() {
-		return estadoProceso;
+	public Integer getIdSostenimiento() {
+		return idSostenimiento;
 	}
 
-	public void setEstadoProceso(boolean estadoProceso) {
-		this.estadoProceso = estadoProceso;
+	public void setIdSostenimiento(Integer idSostenimiento) {
+		this.idSostenimiento = idSostenimiento;
 	}
+
+	public List<CursoParalelo> getCursoParalelos() {
+		return this.cursoParalelos;
+	}
+
+	public void setCursoParalelos(List<CursoParalelo> cursoParalelos) {
+		this.cursoParalelos = cursoParalelos;
+	}
+
+	public Integer getIdGrupoFasePrograma() {
+		return idGrupoFasePrograma;
+	}
+
+	public void setIdGrupoFasePrograma(Integer idGrupoFasePrograma) {
+		this.idGrupoFasePrograma = idGrupoFasePrograma;
+	}
+	
+	
 }

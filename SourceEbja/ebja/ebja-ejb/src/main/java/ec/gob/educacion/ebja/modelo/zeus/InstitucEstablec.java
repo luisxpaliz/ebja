@@ -76,7 +76,7 @@ public class InstitucEstablec implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Establecimiento idEstablecimiento;
     @JoinColumn(name = "id_institucion", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Institucion idInstitucion;
 
     public InstitucEstablec() {

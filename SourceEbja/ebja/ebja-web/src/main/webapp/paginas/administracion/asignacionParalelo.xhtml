@@ -24,25 +24,7 @@
 						<p:row>
 							<p:column>
 								<div class="userIcon-Asignacion-Paralelo-ebja"></div>
-							</p:column>
-							<p:column styleClass="panelBusqueda-primeraCol-ebja">
-								<h:outputText value=" Seleccione un Programa: " />
-							</p:column>
-							<p:column styleClass="panelBusqueda-terceraCol-reglas-ebja">
-								<p:selectOneMenu id="cmbListPrograma"
-									value="#{asignacionParaleloBean.idProgramaEbja}"
-									styleClass="comboReglaModulo-ebja" required="true"
-								    requiredMessage="Debe seleccionar un 'Programa' para desplegar la lista">
-									<f:selectItem itemLabel="Seleccionar Programa" />
-									<f:selectItems value="#{asignacionParaleloBean.listaProgramaEbja}"
-										var="varPrograma" itemLabel="#{varPrograma.nombre}"
-										itemValue="#{varPrograma.id}" />
-									<p:ajax execute="@this" update="@form" 
-	                							listener="#{asignacionParaleloBean.reseteaObjetos()}"/>
-								</p:selectOneMenu>
-							</p:column>
-						</p:row>
-						<p:row>								
+							</p:column>							
 							<p:column styleClass="panelBusqueda-primeraCol-ebja">
 								<h:outputText value=" Busqueda de Institución por: " />
 							</p:column>

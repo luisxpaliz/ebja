@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Connection;
 import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -243,4 +244,29 @@ public class ReporteJasper {
 
 		FacesContext.getCurrentInstance().responseComplete();
 	}
+	
+	
+		@SuppressWarnings("deprecation")
+		public void generarReporteConfiguracionOfertas(Map<String, Object> parametros, Connection conn, String nombreReporte) {
+			this.nombreReporte = nombreReporte;
+			byte[] archivo;
+			try {
+				aux = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+				String realPath = aux.getRealPath("/");
+			
+				JasperReport report = (JasperReport) JRLoader.loadObjectFromFile(realPath + PATH_REPORTES + nombreReporte + ".jasper");
+				JasperPrint jasperPrint = JasperFillManager.fillReport(report, parametros, conn);
+				archivo = JasperExportManager.exportReportToPdf(jasperPrint);
+				ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+				JRExporter<?, ?, ?, ?> exporter = new JRPdfExporter();
+				exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+				exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, outputStream);
+				exporter.exportReport();
+				archivo = outputStream.toByteArray();
+				verReporteNavegador(archivo);
+			} catch (Exception e) {
+				e.printStackTrace();
+				FacesContext.getCurrentInstance().addMessage("general", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", ""));
+			}
+		}
 }

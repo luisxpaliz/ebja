@@ -127,7 +127,7 @@ public class ModeloAsistenciaBean  extends BaseControlador implements Serializab
 		modeloAsistencia.setIdUsuarioCreacion(sesionControlador.getUsuarioSesion().getId().intValue());
 		modeloAsistencia.setPorcentajeAsistenciaMateria(asistenciaMateria);
 		modeloAsistencia.setPorcentajeAsistenciaParcial(asistenciaParcial);
-		modeloAsistencia.setProgramaEbja(programaEbja.obtenerProgramaEbja(programaSeleccionadoGuardar));
+		//modeloAsistencia.setProgramaEbja(programaEbja.obtenerProgramaEbja(programaSeleccionadoGuardar));
 		modeloAsistencia.setIpUsuario(sesionControlador.getIpAdressLocal());		
 	}
 
@@ -158,7 +158,7 @@ public class ModeloAsistenciaBean  extends BaseControlador implements Serializab
 	public void asistenciaSeleccionadoEditar(Object[] object) {
 		setearEditarAsistencia();
 		this.modeloAsistencia = (ModeloAsistencia) (object[0]);
-		setProgramaSeleccionadoGuardar(modeloAsistencia.getProgramaEbja().getNemonico());
+	//	setProgramaSeleccionadoGuardar(modeloAsistencia.getProgramaEbja().getNemonico());
 		setTipoAsistenciaSeleccionada(((CatalogoEbja)catalogo.find(modeloAsistencia.getCatalogoTipoAsistencia())).getNemonico());
 		setAsistenciaMateria(modeloAsistencia.getPorcentajeAsistenciaMateria());
 		setAsistenciaParcial(modeloAsistencia.getPorcentajeAsistenciaParcial());
@@ -178,7 +178,7 @@ public class ModeloAsistenciaBean  extends BaseControlador implements Serializab
 			modeloAsistencia.setCatalogoTipoAsistencia(((CatalogoEbja)catalogo.obtenerTipoAsistenciaNemonico(tipoAsistenciaSeleccionada)).getId());
 		    modeloAsistencia.setPorcentajeAsistenciaMateria(asistenciaMateria);
 		    modeloAsistencia.setPorcentajeAsistenciaParcial(asistenciaParcial);
-		    modeloAsistencia.setProgramaEbja(programaEbja.obtenerProgramaEbja(programaSeleccionadoGuardar));
+		 //   modeloAsistencia.setProgramaEbja(programaEbja.obtenerProgramaEbja(programaSeleccionadoGuardar));
 		    asistencia.edit(modeloAsistencia);
 			FacesContext.getCurrentInstance().addMessage("frmForm:messageAcuerdo",
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "El registro de Editó exitosamente", ""));

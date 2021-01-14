@@ -40,7 +40,7 @@ public class CursoParalelo implements Serializable {
 	private Integer numeroMatriculado;
 
 	//bi-directional many-to-one association to ProgramaInstitucion
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name="id_programa_institucion")
 	private ProgramaInstitucion programaInstitucion;
 
@@ -49,13 +49,12 @@ public class CursoParalelo implements Serializable {
 	@JoinColumn(name="id_paralelo")
 	private Paralelo paralelo;
 		
-	//bi-directional many-to-one association to DocenteCurso
-	@OneToMany(mappedBy="cursoParalelo")
-	private List<DocenteCurso> docenteCursos;
 
-	//bi-directional many-to-one association to Matricula
+	
+	//bi-directional many-to-one association to ParaleloGrado
 	@OneToMany(mappedBy="cursoParalelo")
-	private List<Matricula> matriculas;
+	private List<ParaleloGrado> paraleloGrados;
+
 
 	public CursoParalelo() {
 	}
@@ -140,48 +139,13 @@ public class CursoParalelo implements Serializable {
 		this.paralelo = paralelo;
 	}
 
-	public List<DocenteCurso> getDocenteCursos() {
-		return this.docenteCursos;
+	
+	public List<ParaleloGrado> getParaleloGrados() {
+		return this.paraleloGrados;
 	}
 
-	public void setDocenteCursos(List<DocenteCurso> docenteCursos) {
-		this.docenteCursos = docenteCursos;
-	}
-
-	public DocenteCurso addDocenteCurso(DocenteCurso docenteCurso) {
-		getDocenteCursos().add(docenteCurso);
-		docenteCurso.setCursoParalelo(this);
-
-		return docenteCurso;
-	}
-
-	public DocenteCurso removeDocenteCurso(DocenteCurso docenteCurso) {
-		getDocenteCursos().remove(docenteCurso);
-		docenteCurso.setCursoParalelo(null);
-
-		return docenteCurso;
-	}
-
-	public List<Matricula> getMatriculas() {
-		return this.matriculas;
-	}
-
-	public void setMatriculas(List<Matricula> matriculas) {
-		this.matriculas = matriculas;
-	}
-
-	public Matricula addMatricula(Matricula matricula) {
-		getMatriculas().add(matricula);
-		matricula.setCursoParalelo(this);
-
-		return matricula;
-	}
-
-	public Matricula removeMatricula(Matricula matricula) {
-		getMatriculas().remove(matricula);
-		matricula.setCursoParalelo(null);
-
-		return matricula;
+	public void setParaleloGrados(List<ParaleloGrado> paraleloGrados) {
+		this.paraleloGrados = paraleloGrados;
 	}
 
 }

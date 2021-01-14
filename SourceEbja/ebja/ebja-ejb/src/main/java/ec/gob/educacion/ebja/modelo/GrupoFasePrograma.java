@@ -19,7 +19,7 @@ public class GrupoFasePrograma implements Serializable {
 	@SequenceGenerator(name = "grupo_fase_acuerdo_generador", sequenceName = "ebja.grupo_fase_programa_id_grupo_fase_programa_seq", allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.IDENTITY, generator="grupo_fase_acuerdo_generador")
 	@Column(name="id_grupo_fase_programa")
-	private long idGrupoFaseNotas;
+	private Long idGrupoFaseNotas;
 
 	private String estado;
 	
@@ -39,6 +39,9 @@ public class GrupoFasePrograma implements Serializable {
 	
 	@Column(name="fase_externa")
 	private Integer faseExterna;
+	
+	@Column(name="secuencia_fase")
+	private Integer secuenciaFase;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="fecha_inicio")
@@ -52,7 +55,7 @@ public class GrupoFasePrograma implements Serializable {
 	@JoinColumn(name="id_programa_educativo")
 	private ProgramaEducativo programaEducativo;
 	
-	@OneToMany(mappedBy="grupoFasePrograma")
+	@OneToMany(mappedBy="grupoFasePrograma",fetch = FetchType.EAGER,  cascade = CascadeType.MERGE)
 	private List<ProgramaEbja> programasEbja;
 	
 	public GrupoFasePrograma() {
@@ -62,7 +65,7 @@ public class GrupoFasePrograma implements Serializable {
 		return idGrupoFaseNotas;
 	}
 
-	public void setIdGrupoFaseNotas(long idGrupoFaseNotas) {
+	public void setIdGrupoFaseNotas(Long idGrupoFaseNotas) {
 		this.idGrupoFaseNotas = idGrupoFaseNotas;
 	}
 
@@ -152,6 +155,14 @@ public class GrupoFasePrograma implements Serializable {
 
 	public void setFaseExterna(Integer faseExterna) {
 		this.faseExterna = faseExterna;
+	}
+
+	public Integer getSecuenciaFase() {
+		return secuenciaFase;
+	}
+
+	public void setSecuenciaFase(Integer secuenciaFase) {
+		this.secuenciaFase = secuenciaFase;
 	}
 	
 	

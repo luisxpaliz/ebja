@@ -5,7 +5,9 @@ import java.util.List;
 import javax.ejb.Local;
 
 import ec.gob.educacion.ebja.modelo.Acuerdo;
+import ec.gob.educacion.ebja.modelo.GrupoFasePrograma;
 import ec.gob.educacion.ebja.modelo.ProgramaEbja;
+import ec.gob.educacion.ebja.modelo.ProgramaGrado;
 
 
 
@@ -26,10 +28,14 @@ public interface AdminAlfabModuloFacadeLocal {
 	    
 	    List<ProgramaEbja> buscarProgramaEbjaActivos();
 	    
+	    List<ProgramaEbja> buscarProgramaEbjaActivosNat();
+	    
 	    List<Object[]> findByNombre (String nombreAcuerdo);
 
 	    List<ProgramaEbja> findAll();
 	    
 	    List<ProgramaEbja> findAllActive();
+	    
+	    List<Object[]> findByFase(String codigoFaseGrupo);
 	    
 }

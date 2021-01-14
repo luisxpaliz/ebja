@@ -50,13 +50,14 @@ public class Malla implements Serializable {
 	@JoinColumn(name="id_programa_grado")
 	private ProgramaGrado programaGrado;
 
-	//bi-directional many-to-one association to MallaDocente
-	@OneToMany(mappedBy="malla")
-	private List<MallaDocente> mallaDocentes;
 	
 	//bi-directional many-to-one association to PlantillaNota
 	@OneToMany(mappedBy="malla")
 	private List<PlantillaNota> plantillaNota;
+	
+	//bi-directional many-to-one association to PlantillaNota
+	@OneToMany(mappedBy="malla")
+	private List<DocenteCurso> docenteCurso;
 
 	public Malla() {
 	}
@@ -135,29 +136,6 @@ public class Malla implements Serializable {
 		this.programaGrado = programaGrado;
 	}
 
-	public List<MallaDocente> getMallaDocentes() {
-		return this.mallaDocentes;
-	}
-
-	public void setMallaDocentes(List<MallaDocente> mallaDocentes) {
-		this.mallaDocentes = mallaDocentes;
-	}
-
-	public MallaDocente addMallaDocente(MallaDocente mallaDocente) {
-		getMallaDocentes().add(mallaDocente);
-		mallaDocente.setMalla(this);
-
-		return mallaDocente;
-	}
-
-	public MallaDocente removeMallaDocente(MallaDocente mallaDocente) {
-		getMallaDocentes().remove(mallaDocente);
-		mallaDocente.setMalla(null);
-
-		return mallaDocente;
-	}
-	
-
 	public String getNemonico() {
 		return nemonico;
 	}
@@ -172,6 +150,14 @@ public class Malla implements Serializable {
 
 	public void setPlantillaNota(List<PlantillaNota> plantillaNota) {
 		this.plantillaNota = plantillaNota;
+	}
+
+	public List<DocenteCurso> getDocenteCurso() {
+		return docenteCurso;
+	}
+
+	public void setDocenteCurso(List<DocenteCurso> docenteCurso) {
+		this.docenteCurso = docenteCurso;
 	}
 	
 	

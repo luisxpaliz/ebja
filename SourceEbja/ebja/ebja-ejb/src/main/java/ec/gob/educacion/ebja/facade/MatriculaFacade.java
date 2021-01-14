@@ -76,6 +76,87 @@ public class MatriculaFacade extends AbstractFacade<Matricula> implements Matric
 		
 		return listaEstudiantesParaMatricula;
     }
+	
+	   @SuppressWarnings("unchecked")
+		public List<Object[]> obtenerEstudiantesParaAgrupar(Integer idProgramaEbja, Integer idZona) {
+	    	short idZona1 = idZona.shortValue();
+			List<Object[]> listaEstudiantesParaMatricula = new ArrayList<Object[]>();
+	    	
+			try {
+				String sql = 
+
+						  " select distinct ins, ubi, res, cir "
+						+ "   from Inscripcion ins, "
+						+ "        Ubicacion ubi, "
+						+ "        RegistroEstudiante res, "
+						+ "        Circuito cir, "
+						+ "        Distrito dis, "
+						+ "        CircuitoParroquia cirpar "
+						+ "        left join res.estudiante est "
+						+ "    where ins.estado = '1' "
+						+ "    and res.estadoAsignacion = '0' "
+						+ "    and ins.id = ubi.inscripcion.id "
+						+ "    and ins.id = res.inscripcion.id "
+						+ "    and cir.id = ubi.circuito.id "
+						+ "    and cirpar.idCircuito.id = ubi.circuito.id "
+						+ "    and ubi.parroquia <> null "
+						+ "    and ubi.circuito <> null "
+						+ "    and ins.programaGrado.programaEbja.id = :idProgramaEbja "
+						+ "    and dis.idZona.id = :idZona "
+						+ "    and est.registroEstudiante.id = null "
+						+ "  order by cir.codigoSenpladesCircuito ,res.apellidosNombres";
+				Query query = em.createQuery(sql)
+								.setParameter("idProgramaEbja", idProgramaEbja)
+								.setParameter("idZona", idZona1);
+				query.setMaxResults(100);
+				listaEstudiantesParaMatricula = query.getResultList();
+			} catch (Exception exc) {
+				exc.printStackTrace();
+			}
+			
+			return listaEstudiantesParaMatricula;
+	    }
+		
+		
+		@SuppressWarnings("unchecked")
+		public List<Object[]> obtenerEstudiantesAgrupados(Integer idProgramaEbja, Integer idZona) {
+	    	short idZona1 = idZona.shortValue();
+			List<Object[]> listaEstudiantesParaMatricula = new ArrayList<Object[]>();
+	    	
+			try {
+				String sql = 
+
+						  " select distinct ins, ubi, res, dis, cir "
+						+ "   from Inscripcion ins, "
+						+ "        Ubicacion ubi, "
+						+ "        RegistroEstudiante res, "
+						+ "        Circuito cir, "
+						+ "        Distrito dis, "
+						+ "        CircuitoParroquia cirpar "
+						+ "        left join res.estudiante est "
+						+ "    where ins.estado = '1' "
+						+ "    and res.estadoAsignacion = '0' "
+						+ "    and ins.id = ubi.inscripcion.id "
+						+ "    and ins.id = res.inscripcion.id "
+						+ "    and cir.id = ubi.circuito.id "
+						+ "    and cirpar.idCircuito.id = ubi.circuito.id "
+						+ "    and ubi.parroquia <> null "
+						+ "    and ubi.circuito <> null "
+						+ "    and ins.programaGrado.programaEbja.id = :idProgramaEbja "
+						+ "    and dis.idZona.id = :idZona "
+						+ "    and est.registroEstudiante.id <> null "
+						+ "  order by cir.codigoSenpladesCircuito ,res.apellidosNombres";
+				Query query = em.createQuery(sql)
+								.setParameter("idProgramaEbja", idProgramaEbja)
+								.setParameter("idZona", idZona1);
+				query.setMaxResults(100);
+				listaEstudiantesParaMatricula = query.getResultList();
+			} catch (Exception exc) {
+				exc.printStackTrace();
+			}
+			
+			return listaEstudiantesParaMatricula;
+	    }
     
 	public Integer cantidadEstudiantesParaMatricula(Integer idProgramaEbja, Integer idZona) {
     	Long cantidadEstudiantesParaMatricula = null;

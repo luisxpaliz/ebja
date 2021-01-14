@@ -45,9 +45,6 @@ public class Ubicacion implements Serializable {
 	@Column(name="ip_usuario")
 	private String ipUsuario;
 	
-	@Column(name="sector")
-	private String sector;
-	
 	//bi-directional many-to-one association to Inscripcion
 	@ManyToOne
 	@JoinColumn(name="id_circuito")
@@ -72,6 +69,9 @@ public class Ubicacion implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="id_pais")
 	private Pais pais;
+	
+	@Column(name="institucion")
+	private Integer idInstitucion;
 
 	public Ubicacion() {
 	}
@@ -204,12 +204,14 @@ public class Ubicacion implements Serializable {
 		this.coordenadaY = coordenadaY;
 	}
 
-	public String getSector() {
-		return sector;
+	public Integer getIdInstitucion() {
+		return idInstitucion;
 	}
 
-	public void setSector(String sector) {
-		this.sector = sector;
+	public void setIdInstitucion(Integer idInstitucion) {
+		this.idInstitucion = idInstitucion;
 	}
+	
+	
 
 }

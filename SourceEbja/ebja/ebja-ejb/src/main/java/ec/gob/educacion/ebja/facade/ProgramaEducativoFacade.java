@@ -12,7 +12,9 @@ import ec.gob.educacion.ebja.modelo.ProgramaEducativo;
 @Stateless
 public class ProgramaEducativoFacade extends AbstractFacade<ProgramaEducativo> implements ProgramaEducativoFacadeLocal {
 
+	private List<Object[]> listaObjectResultado;
 	private ProgramaEducativo programaEducativo;
+	private String sql = "";
 	
 	@PersistenceContext(unitName = "zeusPU")
 	private EntityManager em;
@@ -30,16 +32,12 @@ public class ProgramaEducativoFacade extends AbstractFacade<ProgramaEducativo> i
 		super(entityClass);
 	}
 
-	@Override
-	public ProgramaEducativo find(Object id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public List<Object[]> findByCodigo(String codigoProgramaEducativo) {
-		// TODO Auto-generated method stub
-		return null;
+		sql = "";
+		sql = "select a, c.nombre from ProgramaEducativo a, CatalogoEbja c where a.estado = c.nemonico and a.nemonico like concat('%',:nem,'%')";
+		return validarBusquedaSimpleOTotal(sql, "nem", codigoProgramaEducativo);
 	}
 
 	@Override
@@ -66,11 +64,36 @@ public class ProgramaEducativoFacade extends AbstractFacade<ProgramaEducativo> i
 	public List<ProgramaEducativo> buscarTodosProgramaEducativoActivos() {
 		return  em.createNamedQuery("ProgramaEducativo.findAllActive").getResultList();
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ProgramaEducativo> buscarTodosProgramaEducativoCPLPCEI() {
+		return  em.createNamedQuery("ProgramaEducativo.findAllPCEICPL").getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ProgramaEducativo> buscarProgramaCPL() {
+		return em.createQuery("SELECT p FROM ProgramaEducativo p WHERE p.nemonico = 'CPL'").getResultList();
+	}
 
 	@Override
 	public ProgramaEducativo findByCodigoSoloProgramaEducativo(String codigoProgramaEducativo) {
 		programaEducativo = (ProgramaEducativo) em.createQuery("SELECT p FROM ProgramaEducativo p WHERE p.nemonico =:nem").setParameter("nem", codigoProgramaEducativo ).getSingleResult();
 		return programaEducativo;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<Object[]> validarBusquedaSimpleOTotal(String NamedQuery, String variable, String valorVariable) {
+
+		if (valorVariable.isEmpty()) {
+			sql = "";
+			sql = "select a, c.nombre from ProgramaEducativo  a, CatalogoEbja c where a.estado = c.nemonico ";
+			listaObjectResultado = em.createQuery(sql).getResultList();
+		} else {
+			listaObjectResultado = em.createQuery(NamedQuery).setParameter(variable, valorVariable).getResultList();
+		}
+		return listaObjectResultado;
 	}
 
 	

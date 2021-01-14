@@ -11,10 +11,12 @@ import org.hibernate.Hibernate;
 
 import ec.gob.educacion.ebja.facade.local.InstitucEstablecFacadeLocal;
 import ec.gob.educacion.ebja.modelo.zeus.InstitucEstablec;
+import ec.gob.educacion.ebja.modelo.zeus.Institucion;
 
 @Stateless
 public class InstitucEstablecFacade extends AbstractFacade<InstitucEstablec> implements InstitucEstablecFacadeLocal {
 	private List<InstitucEstablec> listaResultado;
+	private List<Institucion> listaResultadoInstitucion;
 	
 	@PersistenceContext(unitName = "zeusPU")
     private EntityManager em;
@@ -91,20 +93,22 @@ public class InstitucEstablecFacade extends AbstractFacade<InstitucEstablec> imp
 		return listaResultado;
 	}
 	
+	
 	@SuppressWarnings("unchecked")
-	public List<InstitucEstablec> institucionFindByParroquia (short idParroquia, String sostenimiento){
+	@Override
+	public List<InstitucEstablec> institucionFindByCircuitoSostenimiento(Integer idCircuito ,Integer idSostenimiento) {
 		String sql = "";
 		List<InstitucEstablec> listaAux = new ArrayList<>();
 		listaResultado = new ArrayList<>();
 		
 		sql = "select ins"
 				+ " from InstitucEstablec ins"
-				+ " where ins.idCircuitoParroquia.idParroquia.id = :idParroquia"
-				+ " and ins.idInstitucion.sostenimiento.descripcion = :sostenimiento"
+				+ " where ins.idCircuitoParroquia.idCircuito.id = :idCircuito"
 				+ " and ins.estado = '1'"
-				+ " and ins.estadoVigencia = '1' order by ins.idInstitucion.amie asc ";
+				+ " and ins.idInstitucion.idSostenimiento = :idSostenimiento"
+				+ " and ins.estadoVigencia = '1'";
 		
-		listaAux = em.createQuery(sql).setParameter("idParroquia", idParroquia).setParameter("sostenimiento", sostenimiento).getResultList();
+		listaAux = em.createQuery(sql).setParameter("idCircuito", idCircuito).setParameter("idSostenimiento", idSostenimiento).getResultList();
 		
 		if (!listaAux.isEmpty()) {
 			int index = 0;
@@ -113,7 +117,6 @@ public class InstitucEstablecFacade extends AbstractFacade<InstitucEstablec> imp
 				Hibernate.initialize(institucEstablecAux.getIdCircuitoParroquia().getIdCircuito().getIdDistrito().getIdZona());
 				Hibernate.initialize(institucEstablecAux.getIdCircuitoParroquia().getIdParroquia().getIdCanton().getIdProvincia());
 				Hibernate.initialize(institucEstablecAux.getIdInstitucion());
-				Hibernate.initialize(institucEstablecAux.getIdInstitucion().getSostenimiento());
 				Hibernate.initialize(institucEstablecAux.getIdEstablecimiento());
 				listaResultado.add(institucEstablecAux);
 				index++;
@@ -122,5 +125,6 @@ public class InstitucEstablecFacade extends AbstractFacade<InstitucEstablec> imp
 		
 		return listaResultado;
 	}
+	
 
 }

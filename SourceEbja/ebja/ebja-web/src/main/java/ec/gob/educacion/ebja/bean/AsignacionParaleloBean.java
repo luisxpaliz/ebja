@@ -116,17 +116,17 @@ public class AsignacionParaleloBean extends BaseControlador implements Serializa
 	}
 	
 	public void buscarInstituciones() {
-		this.setNombreProgramaEbja(programaEbjaFacadeLocal.find(this.getIdProgramaEbja()).getNombre());
+		
 		listaCursoParalelo = null;
 		
 		switch (this.getBusquedaTipo()) {
 			case 1: {
-				listaProgramaInstitucion = programaInstitucionFacadeLocal.findByIdProgramaEbjaAmie(this.getIdProgramaEbja(), this.getBusquedaContenido());
+				listaProgramaInstitucion = programaInstitucionFacadeLocal.findByIdInstitucionAmie(this.getBusquedaContenido());
 				this.setBusquedaContenido("");
 				break;
 			}
 			case 2: {
-				listaProgramaInstitucion = programaInstitucionFacadeLocal.findByIdProgramaEbjaCircuito(this.getIdProgramaEbja(), this.getIdCircuito());
+				listaProgramaInstitucion = programaInstitucionFacadeLocal.findByIdInstitucionCircuito(this.getIdCircuito());
 				break;
 			}
 		}

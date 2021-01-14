@@ -12,7 +12,9 @@ import java.util.List;
  */
 @Entity
 @Table(name="programa_educativo",schema="ebja")
-@NamedQuery(name="ProgramaEducativo.findAllActive", query="SELECT p FROM ProgramaEducativo p where p.estado='1'")
+@NamedQueries({
+@NamedQuery(name="ProgramaEducativo.findAllActive", query="SELECT p FROM ProgramaEducativo p where p.estado='1'"),
+@NamedQuery(name="ProgramaEducativo.findAllPCEICPL", query="SELECT p FROM ProgramaEducativo p where p.estado='1' and p.nemonico in ('PCEI','CPL')")})
 public class ProgramaEducativo implements Serializable {
 	private static final long serialVersionUID = 1L;
 

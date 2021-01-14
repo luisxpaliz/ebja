@@ -95,10 +95,8 @@ public class Institucion implements Serializable {
     @ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="tipo_horario")
     private Catalogo tipoHorario;
-    
-    @ManyToOne(fetch=FetchType.LAZY)
-   	@JoinColumn(name="id_sostenimiento")
-    private Sostenimiento sostenimiento;
+    @Column(name = "id_sostenimiento")
+    private Integer idSostenimiento;
 
     public Institucion() {
     	//Constructor vacio
@@ -262,11 +260,12 @@ public class Institucion implements Serializable {
 		this.tipoHorario = tipoHorario;
 	}
 
-	public Sostenimiento getSostenimiento() {
-		return sostenimiento;
+	public Integer getIdSostenimiento() {
+		return idSostenimiento;
 	}
 
-	public void setSostenimiento(Sostenimiento sostenimiento) {
-		this.sostenimiento = sostenimiento;
+	public void setIdSostenimiento(Integer idSostenimiento) {
+		this.idSostenimiento = idSostenimiento;
 	}
+
 }

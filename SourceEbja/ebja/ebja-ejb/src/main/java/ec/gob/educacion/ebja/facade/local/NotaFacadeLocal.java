@@ -2,26 +2,26 @@ package ec.gob.educacion.ebja.facade.local;
 
 import java.util.List;
 import javax.ejb.Local;
-import ec.gob.educacion.ebja.modelo.Notas;
+import ec.gob.educacion.ebja.modelo.Nota;
 
 
 @Local
 public interface NotaFacadeLocal {
 
-	void create(Notas nota);
+	void create(Nota nota);
 
-    void edit(Notas nota);
+    void edit(Nota nota);
 
-    void remove(Notas nota);
+    void remove(Nota nota);
     
     boolean findCodigo(); 
 
-    Notas find(Object id);
+    Nota find(Object id);
     
     List<Object[]> findByCodigo (String codigoNota);
-    List<Notas> buscarNotaActivos();
+    List<Nota> buscarNotaActivos();
     List<Object[]> findByNombre (String nombreNota);
-    List<Notas> findAll();
+    List<Nota> findAll();
     List<Object[]> findAllPivot();
-    List<Notas> findAllActive();
+    List<Nota> findAllActive();
 }

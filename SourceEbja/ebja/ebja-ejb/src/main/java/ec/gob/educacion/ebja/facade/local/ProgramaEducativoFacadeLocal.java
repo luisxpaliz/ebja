@@ -27,6 +27,10 @@ public interface ProgramaEducativoFacadeLocal {
 	    
 	    List<ProgramaEducativo> buscarTodosProgramaEducativoActivos();
 	    
+	    List<ProgramaEducativo> buscarProgramaCPL();
+	    
 	    ProgramaEducativo findByCodigoSoloProgramaEducativo(String codigoProgramaEducativo);
+	    
+	    List<ProgramaEducativo> buscarTodosProgramaEducativoCPLPCEI();
 	
 }

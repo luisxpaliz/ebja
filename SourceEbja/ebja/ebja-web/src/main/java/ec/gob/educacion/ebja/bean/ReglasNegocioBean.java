@@ -2,6 +2,7 @@ package ec.gob.educacion.ebja.bean;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,10 +17,14 @@ import javax.inject.Inject;
 import ec.gob.educacion.ebja.controlador.BaseControlador;
 import ec.gob.educacion.ebja.controlador.SesionControlador;
 import ec.gob.educacion.ebja.facade.local.FaseFacadeLocal;
+import ec.gob.educacion.ebja.facade.local.GrupoFaseFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.ProgramaEbjaFacadeLocal;
+import ec.gob.educacion.ebja.facade.local.ProgramaEducativoFacadeLocal;
 import ec.gob.educacion.ebja.facade.local.ReglaNegocioFacadeLocal;
 import ec.gob.educacion.ebja.modelo.Fase;
+import ec.gob.educacion.ebja.modelo.GrupoFasePrograma;
 import ec.gob.educacion.ebja.modelo.ProgramaEbja;
+import ec.gob.educacion.ebja.modelo.ProgramaEducativo;
 import ec.gob.educacion.ebja.modelo.ReglaNegocio;
 import ec.gob.educacion.ebja.recursos.Constantes;
 import ec.gob.educacion.ebja.recursos.Util;
@@ -40,6 +45,10 @@ public class ReglasNegocioBean extends BaseControlador implements Serializable {
 	private FaseFacadeLocal fases;
 	@Inject
 	private SesionControlador sesionControlador;
+	@EJB
+	private ProgramaEducativoFacadeLocal programasEducativos;
+	@EJB
+	private GrupoFaseFacadeLocal grupoFases;
 
 	private String ModuloSeleccionado;
 	private String ModuloNuevoRegistro;
@@ -53,33 +62,47 @@ public class ReglasNegocioBean extends BaseControlador implements Serializable {
 	private Date fechaFin;
 	private ProgramaEbja programaEbjaVar;
 	private Fase faseVar;
-	
-	 
+	private String tipoProyectoSeleccionadoBusqueda;
+	private List<ProgramaEducativo> listaProgramaEducativo;
+	private List<GrupoFasePrograma> listaGrupoFaseProg;
+	private String tipoFaseSeleccionadaBusqueda;
+
 	@PostConstruct
 	public void init() {
-		consultarModulos();
+		
 		consultarFases();
 	}
-	
-    public void buscarModulo() {
-		
+
+	public void buscarModulo() {
+
 		if (ModuloNuevoRegistro == null && ModuloSeleccionado == null) {
-		}else {		
+		} else {
 			listReglas = reglasNegocios.findByProgramaEbja(ModuloSeleccionado);
 		}
 	}
-    
-    public void buscarModuloGuardado() {
+
+	public void buscarModuloGuardado() {
 		setModuloSeleccionado(ModuloNuevoRegistro);
 		listReglas = reglasNegocios.findByProgramaEbja(ModuloNuevoRegistro);
 	}
-    
-    public void buscarModuloActivado() {
+
+	public void obtenerFasesdeProyectoBusqueda() {
+
+		if (tipoProyectoSeleccionadoBusqueda.isEmpty()) {
+			listaGrupoFaseProg = new ArrayList<GrupoFasePrograma>();
+		} else {
+			listaGrupoFaseProg = grupoFases.buscarGrupoFaseProgActInternosXProyecto(tipoProyectoSeleccionadoBusqueda);
+		}
+	}
+
+	public void buscarModuloActivado() {
 		listReglas = reglasNegocios.findByProgramaEbja(ModuloSeleccionado);
-    }
+	}
 
 	public void consultarFases() {
 		listaFases = fases.findAllActive();
+		listaProgramaEducativo = new ArrayList();
+		listaProgramaEducativo = programasEducativos.buscarTodosProgramaEducativoActivos();
 	}
 
 	public void setearCrearRegla() {
@@ -93,7 +116,7 @@ public class ReglasNegocioBean extends BaseControlador implements Serializable {
 
 	private void setearRegla() {
 		setCrearOEditar(2);
-		
+
 	}
 
 	public void ejecutarCrearOEditarRegistro() {
@@ -123,7 +146,7 @@ public class ReglasNegocioBean extends BaseControlador implements Serializable {
 		setFechaInicio(reglaNegocio.getFechaInicio());
 		setModuloNuevoRegistro(reglaNegocio.getProgramaEbja().getNemonico());
 		setFaseSeleccionada(reglaNegocio.getFase().getNemonico());
-		
+
 	}
 
 	public void reglaSeleccionadoActivar(Object[] object) {
@@ -139,43 +162,38 @@ public class ReglasNegocioBean extends BaseControlador implements Serializable {
 	}
 
 	public void activarRegla() {
-		
-		if(reglaNegocio.getEstado().contentEquals("1")) {
+
+		if (reglaNegocio.getEstado().contentEquals("1")) {
 			FacesContext.getCurrentInstance().addMessage("frmForm:messageRegla",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, Constantes.REGISTRO_BBDD_ACTIVO, ""));
-		}else {
+		} else {
 			this.reglaNegocio.setEstado("1");
 			reglasNegocios.edit(reglaNegocio);
 			buscarModuloActivado();
 			FacesContext.getCurrentInstance().addMessage("frmForm:messageRegla",
 					new FacesMessage(FacesMessage.SEVERITY_INFO, Constantes.REGISTRO_BBDD_INACTIVO_EXITOSAMENTE, ""));
 		}
-		
+
 	}
 
 	/*------------------------------------Funciones de Apoyo----------------------------------------*/
 
 	private void borrarReglaLogico() {
-		
-		if(reglaNegocioBorrar.getEstado().contentEquals("0")) {
+
+		if (reglaNegocioBorrar.getEstado().contentEquals("0")) {
 			FacesContext.getCurrentInstance().addMessage("frmForm:messageRegla",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, Constantes.REGISTRO_BBDD_INACTIVO, ""));
-		}else {
+		} else {
 			this.reglaNegocioBorrar.setEstado("0");
 			reglasNegocios.edit(reglaNegocioBorrar);
 			buscarModuloActivado();
 			FacesContext.getCurrentInstance().addMessage("frmForm:messageRegla",
 					new FacesMessage(FacesMessage.SEVERITY_INFO, Constantes.REGISTRO_BBDD_ACTIVO_EXITOSAMENTE, ""));
 		}
-				
-		
-		
 
 	}
 
-	private void consultarModulos() {
-		listaModulos = programasEbja.findAllActive();
-	}
+	
 
 	public void crearRegistroRegla() {
 		try {
@@ -185,46 +203,45 @@ public class ReglasNegocioBean extends BaseControlador implements Serializable {
 
 			if (!validarRegistroExistentes(programaEbjaVar, faseVar, fechaInicio, fechaFin)) {
 
-					reglasNegocios.create(reglaNegocio);
-					buscarModuloGuardado();
-					FacesContext.getCurrentInstance().addMessage("frmForm:messageRegla",
-							new FacesMessage(FacesMessage.SEVERITY_INFO, Constantes.REGISTRO_BBDD_GUARDADO_EXITOSO, ""));	
-				
+				reglasNegocios.create(reglaNegocio);
+				buscarModuloGuardado();
+				FacesContext.getCurrentInstance().addMessage("frmForm:messageRegla",
+						new FacesMessage(FacesMessage.SEVERITY_INFO, Constantes.REGISTRO_BBDD_GUARDADO_EXITOSO, ""));
+
 			} else {
-				FacesContext.getCurrentInstance().addMessage("frmForm:messageRegla", new FacesMessage(
-						FacesMessage.SEVERITY_ERROR, "No se puede crear, ya existe un registro con la misma Oferta, Fase y Periodo", ""));
+				FacesContext.getCurrentInstance().addMessage("frmForm:messageRegla",
+						new FacesMessage(FacesMessage.SEVERITY_ERROR,
+								"No se puede crear, ya existe un registro con la misma Oferta, Fase y Periodo", ""));
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
-				FacesContext.getCurrentInstance().addMessage("frmForm:messageRegla",
-						new FacesMessage(FacesMessage.SEVERITY_FATAL, Constantes.ERROR_BBDD_GUARDAR_REGISTRO, ""));			
+			FacesContext.getCurrentInstance().addMessage("frmForm:messageRegla",
+					new FacesMessage(FacesMessage.SEVERITY_FATAL, Constantes.ERROR_BBDD_GUARDAR_REGISTRO, ""));
 		}
 
 	}
-	
-
 
 	public boolean validarRegistroExistentes(ProgramaEbja modalidadVar, Fase faseVar, Date fechaInicioVar,
 			Date fechaFinVar) {
 		listaModulosActivos = reglasNegocios.findByProgramaEbjaValido(modalidadVar.getNemonico());
 
 		boolean registroRepetido = true;
-		
-		if(getCrearOEditar()==2) {
-			
-			for (int i=0 ; i<listaModulosActivos.size();i++) {
-				if(listaModulosActivos.get(i).getFase().getNemonico().contentEquals(faseVar.getNemonico())) {
+
+		if (getCrearOEditar() == 2) {
+
+			for (int i = 0; i < listaModulosActivos.size(); i++) {
+				if (listaModulosActivos.get(i).getFase().getNemonico().contentEquals(faseVar.getNemonico())) {
 					listaModulosActivos.remove(i);
-				}		
+				}
 			}
 		}
-		
+
 		if (listaModulosActivos.isEmpty()) {
 			registroRepetido = false;
 		} else {
 
 			for (ReglaNegocio var : listaModulosActivos) {
-				
+
 				if (var.getFase().getNemonico().contentEquals(faseVar.getNemonico())) {
 					registroRepetido = true;
 					break;
@@ -255,9 +272,6 @@ public class ReglasNegocioBean extends BaseControlador implements Serializable {
 		}
 		return registroRepetido;
 	}
-	
-	
-	
 
 	public void editarRegla() {
 
@@ -266,21 +280,22 @@ public class ReglasNegocioBean extends BaseControlador implements Serializable {
 			reglaNegocio.setFechaFin(new Timestamp(fechaFin.getTime()));
 			faseVar = fases.obtenerFase(FaseSeleccionada);
 			reglaNegocio.setFase(faseVar);
-			programaEbjaVar= programasEbja.obtenerProgramaEbja(ModuloNuevoRegistro);
+			programaEbjaVar = programasEbja.obtenerProgramaEbja(ModuloNuevoRegistro);
 			reglaNegocio.setProgramaEbja(programaEbjaVar);
-		
+
 			if (!validarRegistroExistentes(programaEbjaVar, faseVar, fechaInicio, fechaFin)) {
 				reglasNegocios.edit(reglaNegocio);
 				buscarModuloGuardado();
 				FacesContext.getCurrentInstance().addMessage("frmForm:messageRegla",
 						new FacesMessage(FacesMessage.SEVERITY_INFO, Constantes.REGISTRO_BBDD_EDITO_EXITOSAMENTE, ""));
-			
-		} else {
-			buscarModuloGuardado();
-			FacesContext.getCurrentInstance().addMessage("frmForm:messageRegla", new FacesMessage(
-					FacesMessage.SEVERITY_ERROR, "No se puede crear, ya existe un registro con la misma Oferta, Fase y Periodo", ""));
-		}
-			
+
+			} else {
+				buscarModuloGuardado();
+				FacesContext.getCurrentInstance().addMessage("frmForm:messageRegla",
+						new FacesMessage(FacesMessage.SEVERITY_ERROR,
+								"No se puede crear, ya existe un registro con la misma Oferta, Fase y Periodo", ""));
+			}
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			FacesContext.getCurrentInstance().addMessage("frmForm:messageRegla",
@@ -300,8 +315,11 @@ public class ReglasNegocioBean extends BaseControlador implements Serializable {
 		reglaNegocio.setIpUsuario(sesionControlador.getIpAdressLocal());
 		programaEbjaVar = (ProgramaEbja) programasEbja.obtenerProgramaEbja(ModuloNuevoRegistro);
 		reglaNegocio.setProgramaEbja(programaEbjaVar);
-		
-		
+
+	}
+	
+	public void obtenerOfertaBusqueda() {
+		listaModulos = programasEbja.obtenerProgramaEbjaGrupoFaseExtraordinariaNemonico(tipoFaseSeleccionadaBusqueda);
 	}
 
 	/*------------------------------------Getters and Setters---------------------------------------*/
@@ -377,6 +395,39 @@ public class ReglasNegocioBean extends BaseControlador implements Serializable {
 	public void setModuloNuevoRegistro(String moduloNuevoRegistro) {
 		ModuloNuevoRegistro = moduloNuevoRegistro;
 	}
+
+	public String getTipoProyectoSeleccionadoBusqueda() {
+		return tipoProyectoSeleccionadoBusqueda;
+	}
+
+	public void setTipoProyectoSeleccionadoBusqueda(String tipoProyectoSeleccionadoBusqueda) {
+		this.tipoProyectoSeleccionadoBusqueda = tipoProyectoSeleccionadoBusqueda;
+	}
+
+	public List<ProgramaEducativo> getListaProgramaEducativo() {
+		return listaProgramaEducativo;
+	}
+
+	public void setListaProgramaEducativo(List<ProgramaEducativo> listaProgramaEducativo) {
+		this.listaProgramaEducativo = listaProgramaEducativo;
+	}
+
+	public List<GrupoFasePrograma> getListaGrupoFaseProg() {
+		return listaGrupoFaseProg;
+	}
+
+	public void setListaGrupoFaseProg(List<GrupoFasePrograma> listaGrupoFaseProg) {
+		this.listaGrupoFaseProg = listaGrupoFaseProg;
+	}
+
+	public String getTipoFaseSeleccionadaBusqueda() {
+		return tipoFaseSeleccionadaBusqueda;
+	}
+
+	public void setTipoFaseSeleccionadaBusqueda(String tipoFaseSeleccionadaBusqueda) {
+		this.tipoFaseSeleccionadaBusqueda = tipoFaseSeleccionadaBusqueda;
+	}
+	
 	
 
 }

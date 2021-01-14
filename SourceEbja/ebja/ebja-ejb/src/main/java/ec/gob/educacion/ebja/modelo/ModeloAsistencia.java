@@ -39,8 +39,8 @@ public class ModeloAsistencia implements Serializable {
 
 	//bi-directional many-to-one association to ProgramaEbja
 	@ManyToOne
-	@JoinColumn(name="id_programa_ebja")
-	private ProgramaEbja programaEbja;
+	@JoinColumn(name="id_matricula")
+	private Matricula matricula;
 
 	public ModeloAsistencia() {
 	}
@@ -101,12 +101,14 @@ public class ModeloAsistencia implements Serializable {
 		this.porcentajeAsistenciaParcial = porcentajeAsistenciaParcial;
 	}
 	
-	public ProgramaEbja getProgramaEbja() {
-		return this.programaEbja;
+	
+
+	public Matricula getMatricula() {
+		return matricula;
 	}
 
-	public void setProgramaEbja(ProgramaEbja programaEbja) {
-		this.programaEbja = programaEbja;
+	public void setMatricula(Matricula matricula) {
+		this.matricula = matricula;
 	}
 
 	public Integer getCatalogoTipoAsistencia() {

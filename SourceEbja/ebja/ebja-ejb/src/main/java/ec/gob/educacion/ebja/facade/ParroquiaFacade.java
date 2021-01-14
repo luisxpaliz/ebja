@@ -46,6 +46,28 @@ public class ParroquiaFacade extends AbstractFacade<Parroquia> implements Parroq
       	return new ArrayList();
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+   	public List<Parroquia> listaParroquiaPorCantonSector(String codigoCanton,String sector)
+       {
+         try
+         {
+        	
+           StringBuilder sentencia = new StringBuilder();
+           sentencia.append(" select distinct p from Parroquia p ");
+           sentencia.append(" where p.idCanton.codigoCanton = :codigoCanton ");
+           sentencia.append("   and p.estado = :estado and p.zona =:sector ");
+           sentencia.append(" order by p.descripcion asc ");
+
+           Query q = em.createQuery(sentencia.toString())
+           			.setParameter("codigoCanton", codigoCanton)
+           			.setParameter("sector", sector.charAt(0))
+           			.setParameter("estado", Constantes.ESTADO_REGISTRO_ACTIVO);
+           return q.getResultList();
+         } catch (Exception e) {
+           e.printStackTrace(); }
+         	return new ArrayList();
+       }
+    
 	public Parroquia buscarPorCodigoParroquia(String codigoParroquia)
     {
       try
@@ -63,5 +85,7 @@ public class ParroquiaFacade extends AbstractFacade<Parroquia> implements Parroq
         e.printStackTrace(); }
       	return new Parroquia();
     }
+
+	
 
 }

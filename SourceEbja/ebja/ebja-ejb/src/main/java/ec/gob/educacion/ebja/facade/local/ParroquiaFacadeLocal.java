@@ -18,5 +18,6 @@ public interface ParroquiaFacadeLocal {
 
     List<Parroquia> listaParroquiaPorCanton(String codigoParroquia);
     Parroquia buscarPorCodigoParroquia(String codigoParroquia);
+    List<Parroquia> listaParroquiaPorCantonSector(String codigoCanton, String sector);
     
 }

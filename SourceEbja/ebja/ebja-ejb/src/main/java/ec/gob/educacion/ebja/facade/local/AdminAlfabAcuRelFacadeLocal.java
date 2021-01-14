@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 import ec.gob.educacion.ebja.modelo.Acuerdo;
+import ec.gob.educacion.ebja.modelo.AcuerdoJTA;
 
 
 @Local
@@ -27,6 +28,10 @@ public interface AdminAlfabAcuRelFacadeLocal {
     List<Acuerdo> buscarTodosAcuerdos();
     
     List<Acuerdo> buscarTodosAcuerdosActivos();
+    
+    List<AcuerdoJTA> buscarTodosAcuerdosActivosJTA();
+    
+    List<Acuerdo> buscarTodosAcuerdosActivosNat();
     
 	Acuerdo findByCodigoSoloAcuerdo(String codigoAcuerdo);
 

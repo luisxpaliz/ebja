@@ -27,7 +27,7 @@ public class Modalidad implements Serializable {
 	private String nombre;
 
 	//bi-directional many-to-one association to ProgramaEbja
-	@OneToMany(mappedBy="modalidad")
+	@OneToMany(mappedBy="modalidad",fetch = FetchType.EAGER)
 	private List<ProgramaEbja> programaEbjas;
 
 	public Modalidad() {

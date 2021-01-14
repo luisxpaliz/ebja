@@ -7,10 +7,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import ec.gob.educacion.ebja.facade.local.NotaFacadeLocal;
-import ec.gob.educacion.ebja.modelo.Notas;
+import ec.gob.educacion.ebja.modelo.Nota;
 
 @Stateless
-public class NotaFacade extends AbstractFacade<Notas>implements NotaFacadeLocal {
+public class NotaFacade extends AbstractFacade<Nota>implements NotaFacadeLocal {
 
 	private List<Object[]> listaObjectResultado;
 	private String sql = "";
@@ -23,12 +23,12 @@ public class NotaFacade extends AbstractFacade<Notas>implements NotaFacadeLocal 
 		return em;
 	}
 
-	public NotaFacade(Class<Notas> entityClass) {
+	public NotaFacade(Class<Nota> entityClass) {
 		super(entityClass);
 	}
 	
 	public NotaFacade() {
-		super(Notas.class);
+		super(Nota.class);
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class NotaFacade extends AbstractFacade<Notas>implements NotaFacadeLocal 
 	}
 
 	@Override
-	public Notas find(Object id) {
+	public Nota find(Object id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -50,7 +50,7 @@ public class NotaFacade extends AbstractFacade<Notas>implements NotaFacadeLocal 
 	}
 
 	@Override
-	public List<Notas> buscarNotaActivos() {
+	public List<Nota> buscarNotaActivos() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -70,7 +70,7 @@ public class NotaFacade extends AbstractFacade<Notas>implements NotaFacadeLocal 
 	}
 
 	@Override
-	public List<Notas> findAllActive() {
+	public List<Nota> findAllActive() {
 		// TODO Auto-generated method stub
 		return null;
 	}
